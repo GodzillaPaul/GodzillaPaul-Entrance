@@ -8,7 +8,7 @@
   <title>GodzillaPaul｜會員登入</title>
   <link rel="icon" href="login-assets/favicon.ico">
   <link rel="apple-touch-icon" href="login-assets/icon-512x512.png">
-  <link rel="stylesheet" href="login.css?v=2">
+  <link rel="stylesheet" href="login.css?v=10">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
@@ -26,14 +26,13 @@
 
     <main class="login-layout">
       <section class="intro" aria-labelledby="intro-title">
-        <div class="eyebrow"><span></span>ADVISOR TOOLKIT</div>
-        <h1 id="intro-title"><span>你的專屬財務工具，</span><em>從這裡開始。</em></h1>
-        <p class="lead">整合人生缺口、退休規劃、現金流、商品試算與理賠案例，讓每一次溝通都有清楚的下一步。</p>
-
-        <div class="feature-row" aria-label="平台特色">
-          <div><b>01</b><span><strong>集中管理</strong><small>工具與資料一次到位</small></span></div>
-          <div><b>02</b><span><strong>專屬權限</strong><small>僅限受邀帳號使用</small></span></div>
-          <div><b>03</b><span><strong>安全連線</strong><small>登入後才開放內容</small></span></div>
+        <div class="hero-logo-stage" aria-hidden="true">
+          <div class="hero-logo-ring"><img src="login-assets/logo-hero.jpg" alt="" width="600" height="600"></div>
+        </div>
+        <div class="intro-copy">
+          <div class="eyebrow"><span></span>ADVISOR COMMAND CENTER</div>
+          <h1 id="intro-title"><span>財務顧問</span><em>作戰系統</em></h1>
+          <p class="lead">缺口診斷、商品試算、理賠案例，<br>一站整合，讓規劃更快掌握。</p>
         </div>
       </section>
 
@@ -52,13 +51,7 @@
         </div>
 
         <div class="auth-panel" id="loginPanel" role="tabpanel" aria-labelledby="loginTab">
-          <div class="card-copy compact-copy">
-            <span class="card-kicker">MEMBER SIGN IN</span>
-            <h2 id="login-title">歡迎回來</h2>
-            <p>請使用受邀信箱與密碼登入。</p>
-          </div>
-
-          <form id="loginForm" class="auth-form">
+          <form id="loginForm" class="auth-form compact-form">
             <label class="field">
               <span>電子信箱</span>
               <span class="input-wrap">
@@ -75,12 +68,12 @@
               </span>
             </label>
 
-            <div class="form-help"><span>帳號即為受邀的 Email</span><button id="recoveryButton" type="button">忘記密碼？</button></div>
+            <div class="form-help"><span></span><button id="recoveryButton" type="button">忘記密碼？</button></div>
             <div id="loginStatus" class="status" role="status" aria-live="polite" hidden></div>
 
             <button id="loginButton" class="login-button" type="submit">
               <span class="button-lock"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
-              <span id="loginButtonText">登入專屬工具庫</span>
+              <span id="loginButtonText">登入</span>
               <span class="button-arrow">→</span>
             </button>
           </form>
@@ -88,9 +81,8 @@
 
         <div class="auth-panel" id="requestPanel" role="tabpanel" aria-labelledby="requestTab" hidden>
           <div class="card-copy compact-copy">
-            <span class="card-kicker">REQUEST ACCESS</span>
             <h2>申請使用權</h2>
-            <p>送出資料後，由管理者確認並寄發邀請。</p>
+            <p>審核後寄送會員邀請。</p>
           </div>
 
           <form id="requestForm" class="auth-form" name="access-request" method="POST" action="/?request=sent" data-netlify="true" netlify-honeypot="website">
@@ -106,7 +98,7 @@
             <div id="requestStatus" class="status" role="status" aria-live="polite" hidden></div>
             <button id="requestButton" class="login-button request-button" type="submit">
               <span class="button-lock"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span>
-              <span>送出使用權申請</span>
+              <span>送出申請</span>
               <span class="button-arrow">→</span>
             </button>
           </form>
@@ -114,7 +106,7 @@
 
         <div class="login-note">
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-4"></path></svg>
-          <span>帳號採邀請制；登入驗證由 Netlify Identity 安全處理。</span>
+          <span>僅限受邀帳號使用</span>
         </div>
       </section>
     </main>
@@ -125,6 +117,6 @@
     </footer>
   </div>
 
-  <script src="login.js?v=3"></script>
+  <script src="login.js?v=4"></script>
 </body>
 </html>

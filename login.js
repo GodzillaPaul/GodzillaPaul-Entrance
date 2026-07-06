@@ -13,7 +13,10 @@
   const requestStatus = document.getElementById("requestStatus");
   const password = document.getElementById("loginPassword");
   const passwordToggle = document.getElementById("passwordToggle");
+  const emailInput = document.getElementById("loginEmail");
+  const recoveryButton = document.getElementById("recoveryButton");
   const wasRejected = params.get("reason") === "auth";
+  const isRecoveryCallback = window.location.hash.includes("recovery_token=");
 
   const showStatus = (element, message, isError = false) => {
     element.textContent = message;
@@ -97,6 +100,13 @@
     // expired record in localStorage; protected pages trust the server session.
     identity.on("login", async () => {
       identity.close();
+      if (isRecoveryCallback) {
+        await clearWidgetSession();
+        window.history.replaceState({}, "", window.location.pathname);
+        password.value = "";
+        showStatus(loginStatus, "密碼已更新，請使用新密碼登入。", false);
+        return;
+      }
       if (!(await verifyAndEnter())) {
         await clearWidgetSession();
         showStatus(loginStatus, "請使用下方表單重新登入，以更新安全憑證。", true);
@@ -112,9 +122,30 @@
     passwordToggle.setAttribute("aria-label", reveal ? "隱藏密碼" : "顯示密碼");
   });
 
-  document.getElementById("recoveryButton").addEventListener("click", () => {
-    if (identity) identity.open("login");
-    else showStatus(loginStatus, "密碼重設服務尚未載入，請重新整理後再試。", true);
+  recoveryButton.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    if (!email || !emailInput.checkValidity()) {
+      showStatus(loginStatus, "請先輸入註冊信箱。", true);
+      emailInput.focus();
+      return;
+    }
+
+    recoveryButton.disabled = true;
+    recoveryButton.textContent = "寄送中…";
+    try {
+      const response = await fetch("/.netlify/identity/recover", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) throw new Error();
+      showStatus(loginStatus, "重設信已寄出，請查看信箱。", false);
+    } catch {
+      showStatus(loginStatus, "重設信暫時無法寄送，請稍後再試。", true);
+    } finally {
+      recoveryButton.disabled = false;
+      recoveryButton.textContent = "忘記密碼？";
+    }
   });
 
   loginForm.addEventListener("submit", async event => {
@@ -146,7 +177,7 @@
     } catch (error) {
       showStatus(loginStatus, error.message || "目前無法登入，請稍後再試。", true);
       loginButton.disabled = false;
-      loginButtonText.textContent = "登入專屬工具庫";
+      loginButtonText.textContent = "登入";
     }
   });
 

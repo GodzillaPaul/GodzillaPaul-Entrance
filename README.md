@@ -22,6 +22,7 @@ package.json            Netlify Identity 伺服器驗證套件
 6. 若帳號是在此功能部署前建立，請進入該使用者明細頁，手動加入 `member` 角色，再登出、重新登入。
 7. 入口的「申請使用權」會送到 Netlify `Forms > access-request`；收到申請後，依本名與 Email 確認身分，再到 Identity 寄出邀請。
 8. 如需收到新申請通知，可在 Netlify 的 Forms 通知設定中加入你的管理信箱。
+9. 「忘記密碼」會寄送 Netlify Identity 重設信；使用者點信件連結設定新密碼後，回入口以新密碼登入。
 
 ## 權限行為
 

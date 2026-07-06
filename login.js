@@ -13,6 +13,7 @@
   const requestStatus = document.getElementById("requestStatus");
   const password = document.getElementById("loginPassword");
   const passwordToggle = document.getElementById("passwordToggle");
+  const wasRejected = params.get("reason") === "auth";
 
   const showStatus = (element, message, isError = false) => {
     element.textContent = message;
@@ -32,31 +33,74 @@
     });
   };
 
-  const rolesFor = user => user?.app_metadata?.roles || [];
-  const hasAccess = user => rolesFor(user).includes("member");
   const goToCatalog = () => window.location.replace("/catalog/");
+
+  const getServerUser = async () => {
+    const response = await fetch("/.netlify/functions/me", { credentials: "same-origin" });
+    if (!response.ok) return null;
+    return response.json();
+  };
+
+  const clearServerSession = async () => {
+    try {
+      await fetch("/.netlify/functions/logout", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch {}
+  };
+
+  const clearWidgetSession = async () => {
+    try {
+      if (identity?.currentUser()) await identity.logout();
+    } catch {}
+  };
+
+  const verifyAndEnter = async () => {
+    try {
+      const user = await getServerUser();
+      if (user?.roles?.includes("member")) {
+        goToCatalog();
+        return true;
+      }
+    } catch {}
+    return false;
+  };
 
   tabs.forEach(tab => tab.addEventListener("click", () => setTab(tab.dataset.authTab)));
 
-  if (params.get("reason") === "auth") {
-    showStatus(loginStatus, "這個專區需要先登入會員帳號。", true);
+  if (wasRejected) {
+    showStatus(loginStatus, "登入狀態已過期，正在為你重新整理…", true);
   }
   if (params.get("request") === "sent") {
     setTab("request");
     showStatus(requestStatus, "申請已送出。我們確認身分後，會寄送會員邀請信。", false);
   }
 
-  fetch("/.netlify/functions/me", { credentials: "same-origin" })
-    .then(response => response.ok ? response.json() : null)
-    .then(user => { if (user?.roles?.includes("member")) goToCatalog(); })
-    .catch(() => {});
+  const prepareSession = async () => {
+    if (wasRejected) {
+      // A stale Identity widget user can disagree with Netlify's secure session
+      // cookie. Clear both sides once so the page cannot enter a redirect loop.
+      await Promise.all([clearServerSession(), clearWidgetSession()]);
+      window.history.replaceState({}, "", window.location.pathname);
+      showStatus(loginStatus, "登入狀態已更新，請重新登入。", false);
+      return;
+    }
+    await verifyAndEnter();
+  };
+
+  prepareSession();
 
   if (identity) {
-    identity.on("init", user => { if (hasAccess(user)) goToCatalog(); });
-    identity.on("login", user => {
+    // Do not redirect from the widget's local user record. Chrome may retain an
+    // expired record in localStorage; protected pages trust the server session.
+    identity.on("login", async () => {
       identity.close();
-      if (hasAccess(user)) goToCatalog();
-      else showStatus(loginStatus, "帳號已登入，但尚未取得使用權，請聯絡管理者。", true);
+      if (!(await verifyAndEnter())) {
+        await clearWidgetSession();
+        showStatus(loginStatus, "請使用下方表單重新登入，以更新安全憑證。", true);
+      }
     });
     identity.on("error", error => showStatus(loginStatus, error?.message || "驗證發生問題，請稍後再試。", true));
   }
@@ -91,6 +135,12 @@
       });
 
       if (!response.ok) throw new Error(response.status === 401 ? "信箱或密碼不正確。" : "目前無法登入，請稍後再試。");
+      const user = await getServerUser();
+      if (!user) throw new Error("登入憑證未能建立，請重新整理後再試。");
+      if (!user.roles?.includes("member")) {
+        await clearServerSession();
+        throw new Error("帳號已登入，但尚未取得使用權，請聯絡管理者。");
+      }
       showStatus(loginStatus, "登入成功，正在進入專屬工具庫…");
       window.setTimeout(goToCatalog, 250);
     } catch (error) {

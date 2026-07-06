@@ -1,0 +1,44 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# 已具有 member 角色的 Identity 使用者，才可讀取整個 Catalog 目錄。
+[[redirects]]
+  from = "/catalog"
+  to = "/catalog/index.html"
+  status = 200
+  force = true
+  conditions = {Role = ["member"]}
+
+[[redirects]]
+  from = "/catalog"
+  to = "/?reason=auth"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/catalog/*"
+  to = "/catalog/:splat"
+  status = 200
+  force = true
+  conditions = {Role = ["member"]}
+
+# 其他訪客即使知道完整網址，也會回到登入入口。
+[[redirects]]
+  from = "/catalog/*"
+  to = "/?reason=auth"
+  status = 302
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+[[headers]]
+  for = "/catalog/*"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, nofollow, noarchive"

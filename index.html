@@ -1,1 +1,130 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07111d">
+  <meta name="robots" content="noindex, nofollow">
+  <title>GodzillaPaul｜會員登入</title>
+  <link rel="icon" href="login-assets/favicon.ico">
+  <link rel="apple-touch-icon" href="login-assets/icon-512x512.png">
+  <link rel="stylesheet" href="login.css?v=2">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-two"></div>
 
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="GodzillaPaul 會員入口">
+        <span class="brand-icon"><img src="login-assets/icon-512x512.png" alt="" width="54" height="54"></span>
+        <span class="brand-copy"><small>GODZILLAPAUL</small><strong>財務人生導航</strong></span>
+      </a>
+      <span class="private-pill"><i></i>PRIVATE ACCESS</span>
+    </header>
+
+    <main class="login-layout">
+      <section class="intro" aria-labelledby="intro-title">
+        <div class="eyebrow"><span></span>ADVISOR TOOLKIT</div>
+        <h1 id="intro-title"><span>你的專屬財務工具，</span><em>從這裡開始。</em></h1>
+        <p class="lead">整合人生缺口、退休規劃、現金流、商品試算與理賠案例，讓每一次溝通都有清楚的下一步。</p>
+
+        <div class="feature-row" aria-label="平台特色">
+          <div><b>01</b><span><strong>集中管理</strong><small>工具與資料一次到位</small></span></div>
+          <div><b>02</b><span><strong>專屬權限</strong><small>僅限受邀帳號使用</small></span></div>
+          <div><b>03</b><span><strong>安全連線</strong><small>登入後才開放內容</small></span></div>
+        </div>
+      </section>
+
+      <section class="login-card" aria-label="會員登入與使用權申請">
+        <div class="card-shine"></div>
+        <div class="logo-stage">
+          <div class="logo-ring"><img src="login-assets/logo-hero.jpg" alt="GodzillaPaul" width="600" height="600"></div>
+          <span class="lock-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+          </span>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="會員功能">
+          <button class="auth-tab active" id="loginTab" type="button" role="tab" aria-selected="true" aria-controls="loginPanel" data-auth-tab="login">會員登入</button>
+          <button class="auth-tab" id="requestTab" type="button" role="tab" aria-selected="false" aria-controls="requestPanel" data-auth-tab="request">申請使用權</button>
+        </div>
+
+        <div class="auth-panel" id="loginPanel" role="tabpanel" aria-labelledby="loginTab">
+          <div class="card-copy compact-copy">
+            <span class="card-kicker">MEMBER SIGN IN</span>
+            <h2 id="login-title">歡迎回來</h2>
+            <p>請使用受邀信箱與密碼登入。</p>
+          </div>
+
+          <form id="loginForm" class="auth-form">
+            <label class="field">
+              <span>電子信箱</span>
+              <span class="input-wrap">
+                <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+                <input id="loginEmail" name="email" type="email" autocomplete="username" inputmode="email" placeholder="name@example.com" required>
+              </span>
+            </label>
+            <label class="field">
+              <span>密碼</span>
+              <span class="input-wrap">
+                <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+                <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" required>
+                <button class="password-toggle" id="passwordToggle" type="button" aria-label="顯示密碼">顯示</button>
+              </span>
+            </label>
+
+            <div class="form-help"><span>帳號即為受邀的 Email</span><button id="recoveryButton" type="button">忘記密碼？</button></div>
+            <div id="loginStatus" class="status" role="status" aria-live="polite" hidden></div>
+
+            <button id="loginButton" class="login-button" type="submit">
+              <span class="button-lock"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
+              <span id="loginButtonText">登入專屬工具庫</span>
+              <span class="button-arrow">→</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="auth-panel" id="requestPanel" role="tabpanel" aria-labelledby="requestTab" hidden>
+          <div class="card-copy compact-copy">
+            <span class="card-kicker">REQUEST ACCESS</span>
+            <h2>申請使用權</h2>
+            <p>送出資料後，由管理者確認並寄發邀請。</p>
+          </div>
+
+          <form id="requestForm" class="auth-form" name="access-request" method="POST" action="/?request=sent" data-netlify="true" netlify-honeypot="website">
+            <input type="hidden" name="form-name" value="access-request">
+            <p class="honeypot"><label>請勿填寫：<input name="website" tabindex="-1" autocomplete="off"></label></p>
+            <div class="field-grid">
+              <label class="field"><span>使用者本名</span><span class="input-wrap"><input name="full_name" autocomplete="name" placeholder="例如：王小明" required></span></label>
+              <label class="field"><span>顯示帳號</span><span class="input-wrap"><input name="display_account" autocomplete="nickname" placeholder="例如：ming.wang" minlength="3" maxlength="30" pattern="[A-Za-z0-9._-]+" title="請使用英文、數字、句點、底線或連字號" required></span></label>
+            </div>
+            <label class="field"><span>電子信箱</span><span class="input-wrap"><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="用來接收邀請信" required></span></label>
+            <label class="agree"><input name="confirmed" type="checkbox" value="yes" required><span>我確認以上資料正確，並同意管理者透過此信箱聯絡及寄送會員邀請。</span></label>
+
+            <div id="requestStatus" class="status" role="status" aria-live="polite" hidden></div>
+            <button id="requestButton" class="login-button request-button" type="submit">
+              <span class="button-lock"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span>
+              <span>送出使用權申請</span>
+              <span class="button-arrow">→</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="login-note">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+          <span>帳號採邀請制；登入驗證由 Netlify Identity 安全處理。</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>GodzillaPaul｜財務人生導航</span>
+      <span>AUTHORIZED MEMBERS ONLY</span>
+    </footer>
+  </div>
+
+  <script src="login.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#062f35">
+<title>GodzillaPaul｜理賠案例庫</title>
+<link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon/favicon-48x48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon/icon-512x512.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/claims.css">
+<link rel="stylesheet" href="css/auth.css?v=1">
+</head>
+<body>
+<div class="member-bar" aria-label="會員狀態"><span class="member-email" data-member-email>確認會員身分中…</span><button class="member-logout" data-member-logout type="button">登出</button></div>
+<div class="app">
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <header class="shell topbar" aria-label="頁首">
+    <a class="brand" href="#claims" aria-label="回到理賠案例庫">
+      <div class="brand-badge"><img src="favicon/icon-512x512.png" alt="GodzillaPaul Logo" width="52" height="52"></div>
+      <div><small>GODZILLAPAUL</small><strong>理賠案例庫</strong></div>
+    </a>
+    <div class="top-actions">
+      <a class="back-btn" href="./index.html" aria-label="返回主頁">← 返回</a>
+      <span class="pill"><span class="pulse"></span><span id="caseCount">15 個案例專區</span></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell hero">
+      <div class="hero-copy">
+        <div class="hero-label">CLAIM CASE LIBRARY</div>
+        <h1><span>理賠案例庫</span><span>查病名，看保障。</span></h1>
+        <p>從疾病、意外到身故情境，快速找到接近的案例，讓客戶看懂保險真正派上用場的時刻。</p>
+      </div>
+      <aside class="hero-panel compact-panel story-panel" aria-label="理賠案例庫說明">
+        <div class="story-eyebrow">CLIENT VIEW</div>
+        <div class="story-quote">不是等到出事才懂保險，<br>而是先看懂：保障會在哪一刻派上用場。</div>
+        <p class="story-copy">用病名與情境快速找到相近案例，讓客戶不用讀厚厚條款，也能理解哪些保障可能幫忙分擔醫療費、照護費與家庭現金流壓力。</p>
+        <div class="story-points" aria-label="理賠案例庫重點">
+          <span>病名搜尋</span>
+          <span>情境分類</span>
+          <span>保障對照</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="shell section" id="claims">
+      <div class="section-head claim-head">
+        <div>
+          <div class="section-kicker">CLAIM SECTIONS</div>
+          <h2>選擇理賠專區</h2>
+        </div>
+      </div>
+
+      <div class="filter-panel" aria-label="理賠案例篩選">
+        <label class="search" aria-label="搜尋病名">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input id="searchInput" autocomplete="off" placeholder="搜尋病名，例如：剖腹產、息肉、鼻中隔、椎間盤">
+        </label>
+
+        <div class="filter-label">案例專區</div>
+        <div class="seg folder-seg" role="tablist" aria-label="案例專區分類">
+          <button class="active" data-folder="all" type="button">全部專區</button>
+          <button data-folder="common" type="button">常見理賠區</button>
+          <button data-folder="children" type="button">兒童相關</button>
+          <button data-folder="outpatient" type="button">門診手術</button>
+          <button data-folder="women" type="button">婦女相關</button>
+          <button data-folder="accident" type="button">意外相關</button>
+          <button data-folder="cancer" type="button">癌症相關</button>
+          <button data-folder="heart" type="button">心臟相關</button>
+          <button data-folder="joint" type="button">關節相關</button>
+          <button data-folder="reproductive" type="button">生殖器相關</button>
+          <button data-folder="death" type="button">身故理賠</button>
+          <button data-folder="organ" type="button">胸腹部臟器</button>
+          <button data-folder="overseas" type="button">國外收據</button>
+          <button data-folder="back" type="button">腰背部</button>
+          <button data-folder="property" type="button">產險</button>
+          <button data-folder="other" type="button">其他</button>
+        </div>
+
+        <div class="filter-label">保障類型</div>
+        <div class="seg protection-seg" role="tablist" aria-label="保障分類">
+          <button class="active" data-filter="all" type="button">全部保障</button>
+          <button data-filter="medical" type="button">醫療實支實付</button>
+          <button data-filter="accident-medical" type="button">意外實支實付</button>
+          <button data-filter="hospital" type="button">住院定額</button>
+          <button data-filter="surgery" type="button">手術定額</button>
+          <button data-filter="accident-hospital" type="button">意外住院</button>
+          <button data-filter="fracture" type="button">意外骨折</button>
+          <button data-filter="major" type="button">重大傷病</button>
+          <button data-filter="cancer" type="button">癌症</button>
+          <button data-filter="ltc" type="button">長照／失能</button>
+          <button data-filter="life" type="button">壽險／身故</button>
+        </div>
+      </div>
+
+      <div class="claim-grid" id="claimGrid" aria-live="polite"></div>
+      <div class="empty" id="emptyState">找不到符合條件的案例。換個病名、專區或保障分類試試看。</div>
+    </section>
+
+    <footer class="shell footer-card">
+      <span>理賠案例僅供情境說明，實際理賠仍以保單條款、診斷證明、收據明細與保險公司審核結果為準。</span>
+      <span>GodzillaPaul｜理賠案例庫</span>
+    </footer>
+  </main>
+</div>
+<script src="js/claims.js"></script>
+<script src="js/auth.js?v=2"></script>
+</body>
+</html>

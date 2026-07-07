@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>房產現金流引擎｜現金流試算版</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="portrait-hint" id="portraitHint">
+  <div><h2>建議橫式面板觀看</h2><p>橫向畫面更清楚。直向仍可操作，導覽已移至底部。</p></div>
+  <button class="portrait-close" id="portraitClose" type="button">繼續</button>
+</div>
+
+<div class="app-shell">
+  <aside class="rail">
+    <!-- ▼ GP 品牌角落 ▼ -->
+    <div class="gp-corner-rail">
+      <a class="gp-corner-brand"
+         href="https://godzillapaul-entrance.netlify.app/catalog/"
+         aria-label="回到商品解方庫目錄">
+        <div class="gp-corner-badge">
+          <img src="https://godzillapaul-entrance.netlify.app/login-assets/icon-512x512.png"
+               alt="GodzillaPaul Logo" width="36" height="36">
+        </div>
+        <div class="gp-corner-text">
+          <small>GODZILLAPAUL</small>
+          <strong>房產現金流</strong>
+        </div>
+      </a>
+      <a class="gp-corner-back"
+         href="https://godzillapaul-entrance.netlify.app/catalog/"
+         aria-label="返回商品解方庫">← <span>返回</span></a>
+    </div>
+    <!-- ▲ GP 品牌角落 ▲ -->
+    <div class="brand">
+      <div class="brand-kicker">PROPERTY CASHFLOW OS</div>
+      <div class="brand-title">房產<span>月收引擎</span></div>
+      <p class="brand-copy">把房子、貸款與現金流，轉成你看得懂的月付結果。</p>
+    </div>
+    <nav class="rail-nav">
+      <button class="rail-item" data-go="toolA"><span class="rail-num">01</span><span class="rail-label"><b>房貸減壓</b><small>比較方案一與方案二</small></span></button>
+      <button class="rail-item" data-go="toolB"><span class="rail-num">02</span><span class="rail-label"><b>以房養老</b><small>規劃退休現金流</small></span></button>
+      <button class="rail-item" data-go="toolD"><span class="rail-num">03</span><span class="rail-label"><b>傳承安家</b><small>先沿用以房養老流程</small></span></button>
+      <button class="rail-item" data-go="calculator"><span class="rail-num">04</span><span class="rail-label"><b>房貸計算機</b><small>快速試算月付</small></span></button>
+    </nav>
+    <div class="rail-foot">本試算非正式核貸承諾。配息率、保障與借款利率需依各金融機構最終核定為準。</div>
+  </aside>
+
+  <main class="stage">
+    <!-- HOME -->
+    <section id="home" class="slide active"><div class="slide-inner home-story-page">
+      <div class="home-story-hero">
+        <div class="home-story-copy">
+          <div class="kicker">PROPERTY CASHFLOW OS</div>
+          <h1>房子不是只能等增值，<br><span>也能開始替你<br>創造月現金流。</span></h1>
+          <p class="home-story-lead">把房貸壓力、閒置資產與退休收入，放在同一張表裡看清楚。</p>
+          <div class="home-story-line"></div>
+          <p class="home-story-body">不是叫你賣房，也不是叫你再扛壓力。<br>而是用數字看懂：房子能不能從「每月支出」變成「每月收入」。</p>
+        </div>
+        <div class="home-story-visual" aria-hidden="true">
+          <div class="home-orbit"></div>
+          <div class="cash-stream stream-a"><i></i><i></i><i></i></div>
+          <div class="cash-stream stream-b"><i></i><i></i><i></i></div>
+          <div class="cash-stream stream-c"><i></i><i></i><i></i></div>
+          <div class="home-house-mark">
+            <div class="home-roof"></div>
+            <div class="home-house-body"></div>
+          </div>
+          <div class="home-flow-pill pill-a">減壓</div>
+          <div class="home-flow-pill pill-b">現金流</div>
+          <div class="home-flow-pill pill-c">安全</div>
+        </div>
+      </div>
+
+      <div class="home-choice-panel">
+        <button class="home-choice-card" data-go="toolA">
+          <span>我想先降低壓力</span>
+          <b>房貸減壓方案</b>
+          <i>看月付能不能降下來</i>
+        </button>
+        <button class="home-choice-card gold" data-go="toolB">
+          <span>我想放大退休收入</span>
+          <b>房產月收規劃</b>
+          <i>看房子能創造多少月現金流</i>
+        </button>
+        <button class="home-choice-card gold" data-go="toolD">
+          <span>我想規劃傳承安家</span>
+          <b>傳承安家方案</b>
+          <i>先沿用以房養老流程，稍後調整內容</i>
+        </button>
+        <button class="home-choice-card blue" data-go="calculator">
+          <span>我想先快速試算</span>
+          <b>房貸成本計算機</b>
+          <i>先掌握每月還款壓力</i>
+        </button>
+      </div>
+      <span id="home-relief" class="system-hidden" data-raw="12099">$12,099</span>
+      <span id="home-retire-flow" class="system-hidden" data-raw="35369">$35,369</span>
+    </div></section>
+
+    <!-- CONCEPT A -->
+    <section id="conceptA" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">A · STRATEGY</div><button class="ghost" data-go="home">返回總覽</button></div>
+      <div class="concept-shell">
+        <div class="concept-hero">
+          <div><div class="kicker">方案說明</div><h2>重點很簡單：<br>每月負擔有沒有下降。</h2><p>比較原本月付與活化後月付，差額就是減壓效果。</p></div>
+          <div class="formula-card"><div class="formula"><span>現在月付</span><em>→</em><span>活化後月付</span><em>→</em><span>每月差額</span></div></div>
+        </div>
+        <div class="concept-modules">
+          <div class="module"><div class="module-tag">01 現況</div><h3>現在月付</h3><p>先確認目前每月負擔。</p></div>
+          <div class="module"><div class="module-tag">02 活化</div><h3>活化金額</h3><p>確認活化資金是否能產生月現金流。</p></div>
+          <div class="module"><div class="module-tag">03 安全</div><h3>安全防線</h3><p>用保障金額處理家庭風險。</p></div>
+          <div class="module"><div class="module-tag">04 比較</div><h3>方案比較</h3><p>比較保守版與效率版的月付差異。</p></div>
+          <div class="module wide">
+            <div class="module-tag">TARGET</div><h3>適合對象</h3>
+            <div class="module-list">
+              <div><span class="bullet"></span>仍有房貸，想房貸減壓方案。</div>
+              <div><span class="bullet"></span>房屋仍有可活化空間。</div>
+            </div>
+            <div class="hero-actions"><button class="btn btn-primary" data-go="toolA">開始試算</button></div>
+          </div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- TOOL A -->
+    <section id="toolA" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">A · CALCULATOR</div><button class="ghost" data-go="conceptA">返回觀念</button></div>
+      <div class="tool-title"><div><h2>房貸減壓試算</h2><p><span class="mortgage-copy">先填房貸資料，右側同步看目前月付與新增成本。</span><span class="safety-copy">接著設定月配息、壽險與保留現金。</span><span class="result-copy">結果頁呈現方案比較與建議。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-stepper" aria-label="房貸減壓流程">
+        <button class="step-mortgage" id="a-step-mortgage" type="button">1 房貸資料</button>
+        <button class="step-safety" id="a-step-safety" type="button">2 配息與壽險</button>
+        <button class="step-result" id="a-step-result" type="button">3 結果比較</button>
+      </div>
+      <div class="client-lens">
+        <div>
+          <small>月付結果</small>
+          <b id="a-client-headline">活化後月付約 $25,365。</b>
+          <p id="a-client-sub">現在月付約 $37,464，每月約可減少 $12,099。</p>
+        </div>
+        <div class="lens-flow">
+          <span>現在月付 <b id="a-lens-now" data-raw="37464">$37,464</b></span>
+          <i></i>
+          <span>活化後 <b id="a-lens-after" data-raw="25365">$25,365</b></span>
+          <i></i>
+          <span>每月減壓 <b id="a-lens-save" data-raw="12099">$12,099</b></span>
+        </div>
+      </div>
+      <div class="tool-layout">
+        <div class="input-panel">
+          <div class="a-input-page a-mortgage-page">
+            <div class="a-mortgage-grid">
+              <div>
+                <div class="panel-title"><h3>你現在的房貸</h3></div>
+                <div class="field"><label>目前房貸金額</label><div class="input-wrap"><input id="a-current-loan" type="number" value="1000"><span class="unit">萬元</span></div></div>
+                <div class="grid2">
+                  <div class="field"><label>現行利率</label><div class="input-wrap"><input id="a-current-rate" type="number" step="0.01" value="2.1"><span class="unit">%</span></div></div>
+                  <div class="field"><label>剩餘年期</label><div class="input-wrap"><input id="a-current-years" type="number" value="30"><span class="unit">年</span></div></div>
+                </div>
+                <div class="field"><label>想從房子裡活化多少資金</label><div class="input-wrap"><input id="a-extra" type="number" value="500"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="a-extra" data-val="300">300萬</button><button class="chip" data-set="a-extra" data-val="500">500萬</button><button class="chip" data-set="a-extra" data-val="800">800萬</button></div></div>
+                
+                <div class="panel-title" style="margin-top:12px"><h3>新增資金的月成本</h3><span class="pill-label">成本</span></div>
+                <div class="seg"><button id="a-method-equal" data-a-method="equal">一般本息平均</button><button id="a-method-wealth" class="active" data-a-method="wealth">理財型循環息</button></div>
+                <div class="grid2">
+                  <div class="field"><label>新增資金利率</label><div class="input-wrap"><input id="a-extra-rate" type="number" step="0.01" value="3"><span class="unit">%</span></div></div>
+                  <div class="field a-equal-only hidden"><label>本息攤還年期</label><div class="input-wrap"><input id="a-extra-years" type="number" value="20"><span class="unit">年</span></div></div>
+                </div>
+                <div class="step-actions">
+                  <button class="btn btn-primary" id="a-next-safety" type="button">下一步：配息與壽險</button>
+                </div>
+              </div>
+              <aside class="a-live-card">
+                <small>即時房貸試算</small>
+                <h3>先確認房貸成本，再進安全設計。</h3>
+                <div class="live-metrics">
+                  <div><span>目前房貸月付</span><b id="a-mortgage-current" data-raw="37464">$37,464</b></div>
+                  <div><span>新增資金月成本</span><b id="a-mortgage-extra" data-raw="12500">$12,500</b></div>
+                  <div><span>房貸月付合計</span><b id="a-mortgage-total" data-raw="49964">$49,964</b></div>
+                </div>
+                <p class="live-note" id="a-mortgage-note">目前採理財型循環息估算新增資金成本。</p>
+              </aside>
+            </div>
+          </div>
+
+          <div class="a-input-page a-safety-page">
+            <div class="a-safety-grid">
+              <div>
+                <div class="panel-title"><h3>配息與安全設計</h3><span class="pill-label">安全</span></div>
+                <div class="field"><label>月配息標的<span class="tooltip-dot" tabindex="0" data-tip="使用月配息計算機公式：投入金額扣除費用後，依標的幣別、淨值、每單位配息與匯率估算月現金流。">?</span></label><div class="input-wrap"><select id="a-fund"><option value="DSP5（安聯收益成長 AM 美元）">DSP5｜USD｜淨值 8.5978</option><option value="NGB1（高盛環球高收益 X 美元）">NGB1｜USD｜淨值 39.65</option><option value="ACE17（聯博 美國成長 AP 美元）">ACE17｜USD｜淨值 74.48</option></select></div><div class="quick"><button class="chip" id="market-refresh-a" type="button">更新淨值/匯率</button><span class="pill-label" id="a-market-status">DSP5 年化約 7.29%</span></div></div>
+                <div class="grid2">
+                  <div class="field"><label>壽險保障金額</label><div class="input-wrap"><input id="a-cover" type="number" value="500"><span class="unit">萬元</span></div></div>
+                  <div class="field"><label>保留現金 <small>不投入、不買壽險</small><span class="tooltip-dot" tabindex="0" data-tip="從增貸資金中先留在身邊，不參與月配息，也不拿去支付壽險成本，作為市場波動或房貸壓力的安全墊。">?</span></label><div class="input-wrap"><input id="a-reserve" type="number" value="30"><span class="unit">萬元</span></div></div>
+                </div>
+                <div class="grid2">
+                  <div class="field"><label>被保人年齡</label><div class="input-wrap"><input id="a-ins-age" type="number" value="40"><span class="unit">歲</span></div></div>
+                  <div class="field"><label>被保人性別</label><div class="input-wrap"><select id="a-ins-sex"><option value="1">男性</option><option value="2">女性</option></select></div></div>
+                </div>
+                <div class="field"><label>美元匯率 <small id="a-fx-date">USD/TWD 31.423｜2026-04-25｜AUD/TWD 22.425</small><span class="tooltip-dot" tabindex="0" data-tip="系統會優先嘗試從月配息計算機的 Google Sheet 更新 USD/TWD；若讀取失敗，仍可手動調整。">?</span></label><div class="input-wrap"><input id="a-fx" type="number" step="0.001" value="31.423"><span class="unit">TWD/USD</span></div></div>
+                <div class="step-actions">
+                  <button class="btn btn-outline" id="a-back-mortgage" type="button">返回房貸資料</button>
+                  <button class="btn btn-primary" id="a-show-result" type="button">查看方案結果</button>
+                </div>
+              </div>
+              <aside class="a-live-card safety-preview">
+                <small>即時安全試算</small>
+                <h3>先配置現金流，再讓保障成本清楚入帳。</h3>
+                <div class="live-metrics">
+                  <div><span>可投入配息本金</span><b id="a-safety-invest">470萬</b></div>
+                  <div><span>預估月配息</span><b id="a-safety-income" data-raw="28863">$28,863</b></div>
+                  <div><span>兩年壽險成本</span><b id="a-safety-premium">127.9萬</b></div>
+                  <div><span>第二年保費借款月息</span><b id="a-safety-policy" data-raw="2132">$2,132</b></div>
+                </div>
+                <p class="live-note">企業化邏輯：先取得可運用資金，配置到會產生現金流的位置，再用收入覆蓋成本。</p>
+              </aside>
+            </div>
+          </div>
+          <input id="a-premium" class="system-hidden" type="hidden" value="127.91674839999999">
+          <input id="a-policy-rate" class="system-hidden" type="hidden" value="4">
+        </div>
+
+        <div class="output-panel advisor-output">
+          <div class="advisor-result">
+            <div class="advisor-title-row">
+              <div>
+                <div class="result-kicker">結果</div>
+                <h3>房貸活化試算</h3>
+              </div>
+              <div class="best-badge" id="a-best-plan">方案B</div>
+            </div>
+
+            <div class="result-summary-card">
+              <div class="summary-row muted">
+                <span>目前房貸月付 <small>目前房貸</small></span>
+                <b id="a-current-pay" data-raw="37464">$37,464</b>
+              </div>
+              <div class="summary-row muted">
+                <span>新增資金月付 <small>新增成本</small></span>
+                <b id="a-extra-pay" data-raw="12500">$12,500</b>
+              </div>
+              <div class="summary-row total">
+                <span>月還款合計</span>
+                <b id="a-total-month-pay" data-raw="49964">$49,964</b>
+              </div>
+            </div>
+
+            <div class="result-summary-card insurance-card">
+              <div class="result-kicker">保障與現金保留</div>
+              <div class="summary-row">
+                <span>目標壽險保障</span>
+                <b id="a-cover-show">500萬</b>
+              </div>
+              <div class="summary-row">
+                <span>壽險額度 <small>PFK保額</small></span>
+                <b id="a-policy-sum">13.6萬美元</b>
+              </div>
+              <div class="summary-row">
+                <span>兩年保費 <small>PFK 兩年期估算</small></span>
+                <b id="a-premium-show">127.9萬</b>
+              </div>
+              <div class="summary-row">
+                <span>第六年身故金 <small>最接近目標保額</small></span>
+                <b id="a-ins-match">501.1萬</b>
+              </div>
+              <div class="summary-row">
+                <span>保留現金 <small>不參與投入</small></span>
+                <b id="a-reserve-show">30萬</b>
+              </div>
+            </div>
+
+            <div class="baseline-strip">
+              <div>
+                <span>現有房貸月付</span>
+                <b id="a-baseline-current" data-raw="37464">$37,464</b>
+              </div>
+              <div>
+                <span>活化後房貸合計</span>
+                <b id="a-baseline-total" data-raw="49964">$49,964</b>
+              </div>
+              <div class="is-best">
+                <span>現金流抵減後</span>
+                <b id="a-baseline-best" data-raw="25365">$25,365</b>
+              </div>
+            </div>
+
+            <div class="plans-compare">
+              <div class="plan-card plan-a">
+                <div class="plan-head">
+                  <div>
+                    <h4>方案一</h4>
+                    <small>扣壽險成本後投入配息</small>
+                  </div>
+                </div>
+                <div class="plan-lines">
+                  <div><span>可投入金額</span><b id="a-p1-invest">342萬</b></div>
+                  <div><span>壽險成本</span><b class="red" id="a-p1-life-cost">127.9萬</b></div>
+                  <div><span>月配息</span><b class="green" id="a-income-p1" data-raw="21008">$21,008</b></div>
+                  <div><span>保單增貸月息</span><b>不使用</b></div>
+                  <div><span>活化後月付</span><b id="a-p1-d" data-raw="28956">$28,956</b></div>
+                </div>
+                <div class="plan-net">
+                  <div class="plan-net-labels">
+                    <small>每月房貸</small>
+                    <span class="plan-relief-note">每月減壓 <b id="a-p1-relief" data-raw="8508">$8,508</b></span>
+                  </div>
+                  <strong id="a-p1-final-mortgage" data-raw="28956">$28,956</strong>
+                </div>
+              </div>
+
+              <div class="plan-card plan-b">
+                <div class="plan-head">
+                  <div>
+                    <h4>方案二</h4>
+                    <small>扣PFK首年保費後投入，第二年保費用保單借款</small>
+                  </div>
+                </div>
+                <div class="plan-lines">
+                  <div><span>可投入金額</span><b id="a-p2-invest">470萬</b></div>
+                  <div><span>PFK首年保費</span><b class="red" id="a-p2-life-cost">64.0萬</b></div>
+                  <div><span>月配息</span><b class="green" id="a-income-p2" data-raw="28863">$28,863</b></div>
+                  <div><span>第二年保費借款月息</span><b class="red" id="a-policy-cost" data-raw="2132">$2,132</b></div>
+                  <div><span>活化後月付</span><b id="a-p2-d" data-raw="25365">$25,365</b></div>
+                </div>
+                <div class="plan-net">
+                  <div class="plan-net-labels">
+                    <small>每月房貸</small>
+                    <span class="plan-relief-note">每月減壓 <b id="a-p2-relief" data-raw="12099">$12,099</b></span>
+                  </div>
+                  <strong id="a-p2-final-mortgage" data-raw="25365">$25,365</strong>
+                </div>
+              </div>
+            </div>
+
+            <p id="a-judge" class="soft-note">建議看方案B：貸款金額扣預留金額與PFK首年保費後投入V月配息，第二年保費由保單借款支應。</p>
+
+            <div class="proposal-actions compact-actions">
+              <button class="btn btn-primary" id="a-copy-summary" type="button">複製結果</button>
+              <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('toolA')">產出 PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- CONCEPT B -->
+    <section id="conceptB" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">B · STRATEGY</div><button class="ghost" data-go="home">返回總覽</button></div>
+      <div class="concept-shell">
+        <div class="concept-hero">
+          <div><div class="kicker">方案說明</div><h2>房子有價值，<br>也可以轉成月現金流。</h2><p>不賣房的前提下，試算可活化金額與每月退休現金流。</p></div>
+          <div class="formula-card"><div class="formula"><span>房屋市值</span><em>→</em><span>安全活化比例</span><em>→</em><span>退休月現金流</span></div></div>
+        </div>
+        <div class="concept-modules">
+          <div class="module"><div class="module-tag">01 VALUATION</div><h3>房屋市值</h3><p>先確認房屋價值與可活化範圍。</p></div>
+          <div class="module"><div class="module-tag">02 OPTIMIZATION</div><h3>保留安全空間</h3><p>不必賣房，先設定安全活化比例。</p></div>
+          <div class="module"><div class="module-tag">03 COMPARE</div><h3>方案比較</h3><p>比較本息攤還與理財型房貸。</p></div>
+          <div class="module"><div class="module-tag">04 SUSTAINABILITY</div><h3>壓力測試</h3><p>查看配息下降與利率上升後是否仍安全。</p></div>
+          <div class="module wide">
+            <div class="module-tag">TARGET</div><h3>適合對象</h3>
+            <div class="module-list">
+              <div><span class="bullet"></span>房產占資產比重高，現金流不足。</div>
+              <div><span class="bullet"></span>不想賣房，但希望增加退休月收入。</div>
+            </div>
+            <div class="hero-actions"><button class="btn btn-gold" data-go="toolB">開始試算</button></div>
+          </div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- TOOL B -->
+    <section id="toolB" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">B · CALCULATOR</div><button class="ghost" data-go="conceptB">返回觀念</button></div>
+      <div class="tool-title"><div><h2>以房養老試算</h2><p><span class="property-copy">先確認房屋價值與想活化的資金。</span><span class="safety-copy">接著設定月配息、壽險與保留現金。</span><span class="result-copy">最後比較兩種退休現金流規劃。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-stepper" aria-label="以房養老流程">
+        <button class="step-property" id="b-step-property" type="button">1 房屋資料</button>
+        <button class="step-safety" id="b-step-safety" type="button">2 配息與壽險</button>
+        <button class="step-result" id="b-step-result" type="button">3 結果比較</button>
+      </div>
+      <div class="client-lens retire-lens">
+        <div>
+          <small>退休視角</small>
+          <b id="b-client-headline">目前每月仍是負現金流，先把成本壓下來。</b>
+          <p id="b-client-sub">可先降低活化比例、改用理財型計息，或調整月配息標的再比較。</p>
+        </div>
+        <div class="lens-flow">
+          <span>月配息 <b id="b-lens-income" data-raw="35369">$35,369</b></span>
+          <i></i>
+          <span>月成本 <b id="b-lens-cost" data-raw="86575">$86,575</b></span>
+          <i></i>
+          <span>淨現金流 <b id="b-lens-net" data-raw="-51206">-$51,206</b></span>
+        </div>
+      </div>
+      <div class="tool-layout">
+        <div class="input-panel">
+          <div class="b-input-page b-property-page">
+            <div class="a-mortgage-grid">
+              <div>
+                <div class="panel-title"><h3>房屋與活化金額</h3></div>
+                <div class="field"><label>房屋目前預估市值</label><div class="input-wrap"><input id="b-home-value" type="number" value="3000"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="b-home-value" data-val="2000">2000萬</button><button class="chip" data-set="b-home-value" data-val="3000">3000萬</button><button class="chip" data-set="b-home-value" data-val="5000">5000萬</button></div></div>
+                <div class="field"><label>想從房子裡活化多少資金</label><div class="input-wrap"><input id="b-active-amount" type="number" value="600"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="b-active-amount" data-val="300">300萬</button><button class="chip" data-set="b-active-amount" data-val="600">600萬</button><button class="chip" data-set="b-active-amount" data-val="1000">1000萬</button></div></div>
+                <div class="panel-title" style="margin-top:12px"><h3>融資月成本</h3><span class="pill-label">成本</span></div>
+                <div class="seg"><button id="b-method-equal" class="active" data-b-method="equal">一般本息平均</button><button id="b-method-wealth" data-b-method="wealth">理財型循環息</button></div>
+                <div class="grid2">
+                  <div class="field"><label>融資年利率</label><div class="input-wrap"><input id="b-rate" type="number" step="0.01" value="3"><span class="unit">%</span></div></div>
+                  <div class="field b-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="b-years" type="number" value="20"><span class="unit">年</span></div></div>
+                </div>
+                <input id="b-drawn" class="system-hidden" type="hidden" value="600">
+                <input id="b-ltv" class="system-hidden" type="hidden" value="60">
+                <input id="b-active-pct" class="system-hidden" type="hidden" value="20">
+                <input id="b-current-loan" class="system-hidden" type="hidden" value="0">
+                <div class="step-actions"><button class="btn btn-primary" id="b-next-safety" type="button">下一步：配息與壽險</button></div>
+              </div>
+              <aside class="a-live-card">
+                <small>即時房屋試算</small>
+                <h3>先決定可活化本金，再配置退休現金流。</h3>
+                <div class="live-metrics">
+                  <div><span>房屋市值</span><b id="b-live-home">3,000萬</b></div>
+                  <div><span>活化資金</span><b id="b-live-active">600萬</b></div>
+                  <div><span>融資月成本</span><b id="b-live-cost" data-raw="33276">$33,276</b></div>
+                </div>
+                <p class="live-note">這裡先看月成本，下一步再把配息與壽險放進來。</p>
+              </aside>
+            </div>
+          </div>
+
+          <div class="b-input-page b-safety-page">
+            <div class="a-safety-grid">
+              <div>
+                <div class="panel-title"><h3>配息與壽險</h3><span class="pill-label">安全</span></div>
+                <div class="field"><label>月配息標的</label><div class="input-wrap"><select id="b-fund"><option value="DSP5（安聯收益成長 AM 美元）">DSP5｜USD｜淨值 8.5978</option><option value="NGB1（高盛環球高收益 X 美元）">NGB1｜USD｜淨值 39.65</option><option value="ACE17（聯博 美國成長 AP 美元）">ACE17｜USD｜淨值 74.48</option></select></div><div class="quick"><button class="chip" id="market-refresh-b" type="button">更新淨值/匯率</button><span class="pill-label" id="b-market-status">DSP5 年化約 7.29%</span></div></div>
+                <div class="grid2">
+                  <div class="field"><label>配置防護壽險額度</label><div class="input-wrap"><input id="b-cover" type="number" value="500"><span class="unit">萬元</span></div></div>
+                  <div class="field"><label>保留現金 <small>不投入配置</small></label><div class="input-wrap"><input id="b-reserve" type="number" value="30"><span class="unit">萬元</span></div></div>
+                </div>
+                <div class="grid2">
+                  <div class="field"><label>被保人年齡</label><div class="input-wrap"><input id="b-ins-age" type="number" value="40"><span class="unit">歲</span></div></div>
+                  <div class="field"><label>被保人性別</label><div class="input-wrap"><select id="b-ins-sex"><option value="1">男性</option><option value="2">女性</option></select></div></div>
+                </div>
+                <div class="field"><label>美元匯率 <small id="b-fx-date">USD/TWD 31.423｜2026-04-25｜AUD/TWD 22.425</small></label><div class="input-wrap"><input id="b-fx" type="number" step="0.001" value="31.423"><span class="unit">TWD/USD</span></div></div>
+                <div class="step-actions"><button class="btn btn-outline" id="b-back-property" type="button">返回房屋資料</button><button class="btn btn-primary" id="b-show-result" type="button">查看結果</button></div>
+              </div>
+              <aside class="a-live-card safety-preview">
+                <small>即時退休試算</small>
+                <h3>讓配息收入、融資成本與保單增貸月息同時入帳。</h3>
+                <div class="live-metrics">
+                  <div><span>可投入配息本金</span><b id="b-live-invest">570萬</b></div>
+                  <div><span>預估月配息</span><b id="b-live-income" data-raw="35369">$35,369</b></div>
+                  <div><span>第二年保費借款月息</span><b id="b-live-life" data-raw="2132">$2,132</b></div>
+                  <div><span>PFK兩年總保費</span><b id="b-live-premium">127.9萬</b></div>
+                </div>
+                <p class="live-note">企業化邏輯：讓資產先產生收入，再檢查收入是否足以覆蓋成本。</p>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <div class="output-panel advisor-output"><div class="output-grid">
+          <div class="baseline-strip b-result-strip">
+            <div>
+              <span>方案一月收</span>
+              <b id="b-baseline-p1" data-raw="0">$0</b>
+            </div>
+            <div>
+              <span>方案二月收</span>
+              <b id="b-baseline-p2" data-raw="-2171">-$2,171</b>
+            </div>
+            <div class="is-best">
+              <span>方案二多出</span>
+              <b id="b-baseline-delta" data-raw="-2171">-$2,171</b>
+            </div>
+          </div>
+          <div class="b-compare-grid">
+            <div class="b-compare-card no-plan">
+              <div class="compare-kicker">方案一</div>
+              <h3>扣壽險成本後投入配息</h3>
+              <strong id="b-p1-net" data-raw="0">$0</strong>
+              <div class="compare-lines">
+                <div><span>貸款金額</span><b id="b-p1-loan-amount">600萬</b></div>
+                <div><span>壽險保障</span><b id="b-p1-cover">500萬</b></div>
+                <div><span>兩年壽險成本</span><b class="red" id="b-p1-premium">127.9萬</b></div>
+                <div><span>月配息流入</span><b class="green" id="b-p1-income" data-raw="27431">$27,431</b></div>
+                <div><span>融資月成本</span><b class="red" id="b-p1-loan" data-raw="33276">$33,276</b></div>
+                <div><span>保單增貸月息</span><b>不使用</b></div>
+              </div>
+            </div>
+            <div class="b-compare-card with-plan">
+              <div class="compare-kicker">方案二</div>
+              <h3>扣PFK首年保費後投入，第二年保費用保單借款</h3>
+              <strong id="b-planned-net" data-raw="-2171">-$2,171</strong>
+              <div class="compare-lines">
+                <div><span>貸款金額</span><b id="b-planned-loan-amount">600萬</b></div>
+                <div><span>壽險保障</span><b id="b-planned-cover">500萬</b></div>
+                <div><span>PFK首年保費</span><b class="red" id="b-planned-premium">64.0萬</b></div>
+                <div><span>月配息流入</span><b class="green" id="b-planned-income" data-raw="35369">$35,369</b></div>
+                <div><span>融資月成本</span><b class="red" id="b-planned-loan" data-raw="33276">$33,276</b></div>
+                <div><span>第二年保費借款月息</span><b class="red" id="b-planned-life" data-raw="2132">$2,132</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-result"><small>預估建構之每月總配息流</small><strong id="b-cover-cashflow" data-raw="35369">$35,369</strong><p id="b-judge">本息平均攤還提供高度確定性，適合追求剛性、長期、不變動財務體系之保守規劃。</p></div>
+          <div class="stat"><small>依比例設定之融資額度</small><b id="b-required">600萬</b></div>
+          <div class="stat blue"><small>理論安全最大活化空間</small><b id="b-available">1,800萬</b></div>
+          <div class="stat good"><small>保留現金後月配息毛流入</small><b id="b-income" data-raw="35369">$35,369</b></div>
+          <div class="stat bad"><small>融資月實質利息/本息</small><b id="b-loan-pay" data-raw="33276">$33,276</b></div>
+          <div class="stat bad"><small>第二年保費借款月息</small><b id="b-life-cost" data-raw="2132">$2,132</b></div>
+
+          <div class="bar-card">
+            <div class="bar-row"><span>已用活化比例</span><div class="bar-track"><div id="b-cash-bar" class="bar-fill green" style="width: 20%;"></div></div><b id="b-cash-pct" data-raw="20">20%</b></div>
+            <div class="bar-row"><span>佔總安全空間比</span><div class="bar-track"><div id="b-space-bar" class="bar-fill blue" style="width: 33.3333%;"></div></div><b id="b-space-pct" data-raw="33">33%</b></div>
+            <div class="bar-row"><span>保留現金安全月數</span><div class="bar-track"><div id="b-reserve-bar" class="bar-fill" style="width: 28.8769%;"></div></div><b id="b-reserve-months">3.5月</b></div>
+          </div>
+
+          <div class="decision-card">
+            <h3 id="b-decision">系統提示：安全淨收益流呈現負值</h3><p id="b-decision-copy">方案一先預留 6 年 PFJ 預算，方案二先預留首年預算，後 5 年用保單借款支付保費；系統會比較第 1 年與第 6 年扣除借款月息後的套利金額。PFJ 以被保人年齡、性別與美元匯率估算年繳預算、保額、第 6 年身故金與解約金。</p>
+            <div class="stress-grid">
+              <div class="stress"><small>安全純月淨現金流</small><b id="b-net" data-raw="-51206">-$51,206</b></div>
+              <div class="stress"><small>利率上升1%後月壓力</small><b id="b-stress-rate" data-raw="-54289">-$54,289</b></div>
+              <div class="stress"><small>壽險防護覆蓋率</small><b id="b-cover-rate" data-raw="83">83%</b></div>
+            </div>
+          </div>
+
+          <div class="viz-grid" id="b-viz">
+            <div class="viz-card">
+              <h4>現金流結構視覺化</h4>
+              <div class="stack-row"><small>月配息流入</small><div class="stack-track"><div class="stack-fill green" id="b-viz-income" style="width: 66.3599%;"></div></div><b id="b-viz-income-val" data-raw="35369">$35,369</b></div>
+              <div class="stack-row"><small>融資月利耗</small><div class="stack-track"><div class="stack-fill red" id="b-viz-cost" style="width: 62.4328%;"></div></div><b id="b-viz-cost-val" data-raw="33276">$33,276</b></div>
+              <div class="stack-row"><small>第二年保費借款月息</small><div class="stack-track"><div class="stack-fill blue" id="b-viz-life" style="width: 100%;"></div></div><b id="b-viz-life-val" data-raw="2132">$2,132</b></div>
+            </div>
+            <div class="viz-card"><h4>結果說明</h4><p class="viz-copy" id="b-viz-copy">目前現金流仍不足。建議降低活化金額、改用理財型計息，或重新調整月配息標的。</p></div>
+          </div>
+          <div class="proposal-actions">
+            <button class="btn btn-primary" id="b-copy-summary" type="button">複製結果</button>
+            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('toolB')">產出 PDF</button>
+          </div>
+        </div></div>
+      </div>
+    </div></section>
+
+
+    <!-- ROUTE D: Legacy copied from Route B -->
+    <section id="conceptD" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">C · STRATEGY</div><button class="ghost" data-go="home">返回總覽</button></div>
+      <div class="concept-shell">
+        <div class="concept-hero">
+          <div><div class="kicker">方案說明</div><h2>房子有價值，<br>也可以轉成月現金流。</h2><p>不賣房的前提下，試算可活化金額與每月退休現金流。</p></div>
+          <div class="formula-card"><div class="formula"><span>房屋市值</span><em>→</em><span>安全活化比例</span><em>→</em><span>退休月現金流</span></div></div>
+        </div>
+        <div class="concept-modules">
+          <div class="module"><div class="module-tag">01 VALUATION</div><h3>房屋市值</h3><p>先確認房屋價值與可活化範圍。</p></div>
+          <div class="module"><div class="module-tag">02 OPTIMIZATION</div><h3>保留安全空間</h3><p>不必賣房，先設定安全活化比例。</p></div>
+          <div class="module"><div class="module-tag">03 COMPARE</div><h3>方案比較</h3><p>比較本息攤還與理財型房貸。</p></div>
+          <div class="module"><div class="module-tag">04 SUSTAINABILITY</div><h3>壓力測試</h3><p>查看配息下降與利率上升後是否仍安全。</p></div>
+          <div class="module wide">
+            <div class="module-tag">TARGET</div><h3>適合對象</h3>
+            <div class="module-list">
+              <div><span class="bullet"></span>房產占資產比重高，現金流不足。</div>
+              <div><span class="bullet"></span>不想賣房，但希望增加退休月收入。</div>
+            </div>
+            <div class="hero-actions"><button class="btn btn-gold" data-go="toolD">開始試算</button></div>
+          </div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- TOOL D -->
+    <section id="toolD" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">C · CALCULATOR</div><button class="ghost" data-go="conceptD">返回觀念</button></div>
+      <div class="tool-title"><div><h2>傳承安家試算</h2><p><span class="property-copy">先確認房屋價值與想活化的資金。</span><span class="safety-copy">接著設定月配息、壽險與保留現金。</span><span class="result-copy">最後比較兩種退休現金流規劃。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-stepper" aria-label="傳承安家流程">
+        <button class="step-property" id="d-step-property" type="button">1 房屋資料</button>
+        <button class="step-safety" id="d-step-safety" type="button">2 配息與壽險</button>
+        <button class="step-result" id="d-step-result" type="button">3 結果比較</button>
+      </div>
+      <div class="client-lens retire-lens">
+        <div>
+          <small>退休視角</small>
+          <b id="d-client-headline">目前每月仍是負現金流，先把成本壓下來。</b>
+          <p id="d-client-sub">可先降低活化比例、改用理財型計息，或調整月配息標的再比較。</p>
+        </div>
+        <div class="lens-flow">
+          <span>月配息 <b id="d-lens-income" data-raw="35369">$35,369</b></span>
+          <i></i>
+          <span>月成本 <b id="d-lens-cost" data-raw="86575">$86,575</b></span>
+          <i></i>
+          <span>淨現金流 <b id="d-lens-net" data-raw="-51206">-$51,206</b></span>
+        </div>
+      </div>
+      <div class="tool-layout">
+        <div class="input-panel">
+          <div class="b-input-page d-input-page b-property-page d-property-page">
+            <div class="a-mortgage-grid">
+              <div>
+                <div class="panel-title"><h3>房屋與活化金額</h3></div>
+                <div class="field"><label>房屋目前預估市值</label><div class="input-wrap"><input id="d-home-value" type="number" value="3000"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="d-home-value" data-val="2000">2000萬</button><button class="chip" data-set="d-home-value" data-val="3000">3000萬</button><button class="chip" data-set="d-home-value" data-val="5000">5000萬</button></div></div>
+                <div class="field"><label>想從房子裡活化多少資金</label><div class="input-wrap"><input id="d-active-amount" type="number" value="600"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="d-active-amount" data-val="300">300萬</button><button class="chip" data-set="d-active-amount" data-val="600">600萬</button><button class="chip" data-set="d-active-amount" data-val="1000">1000萬</button></div></div>
+                <div class="panel-title" style="margin-top:12px"><h3>融資月成本</h3><span class="pill-label">成本</span></div>
+                <div class="seg"><button id="d-method-equal" class="active" data-d-method="equal">一般本息平均</button><button id="d-method-wealth" data-d-method="wealth">理財型循環息</button></div>
+                <div class="grid2">
+                  <div class="field"><label>融資年利率</label><div class="input-wrap"><input id="d-rate" type="number" step="0.01" value="3"><span class="unit">%</span></div></div>
+                  <div class="field d-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="d-years" type="number" value="20"><span class="unit">年</span></div></div>
+                </div>
+                <input id="d-drawn" class="system-hidden" type="hidden" value="600">
+                <input id="d-ltv" class="system-hidden" type="hidden" value="60">
+                <input id="d-active-pct" class="system-hidden" type="hidden" value="20">
+                <input id="d-current-loan" class="system-hidden" type="hidden" value="0">
+                <div class="step-actions"><button class="btn btn-primary" id="d-next-safety" type="button">下一步：配息與壽險</button></div>
+              </div>
+              <aside class="a-live-card">
+                <small>即時房屋試算</small>
+                <h3>先決定可活化本金，再配置退休現金流。</h3>
+                <div class="live-metrics">
+                  <div><span>房屋市值</span><b id="d-live-home">3,000萬</b></div>
+                  <div><span>活化資金</span><b id="d-live-active">600萬</b></div>
+                  <div><span>融資月成本</span><b id="d-live-cost" data-raw="33276">$33,276</b></div>
+                </div>
+                <p class="live-note">這裡先看月成本，下一步再把配息與壽險放進來。</p>
+              </aside>
+            </div>
+          </div>
+
+          <div class="b-input-page d-input-page b-safety-page d-safety-page">
+            <div class="a-safety-grid">
+              <div>
+                <div class="panel-title"><h3>配息與壽險</h3><span class="pill-label">安全</span></div>
+                <div class="field"><label>月配息標的</label><div class="input-wrap"><select id="d-fund"><option value="DSP5（安聯收益成長 AM 美元）">DSP5｜USD｜淨值 8.5978</option><option value="NGB1（高盛環球高收益 X 美元）">NGB1｜USD｜淨值 39.65</option><option value="ACE17（聯博 美國成長 AP 美元）">ACE17｜USD｜淨值 74.48</option></select></div><div class="quick"><button class="chip" id="market-refresh-d" type="button">更新淨值/匯率</button><span class="pill-label" id="d-market-status">DSP5 年化約 7.29%</span></div></div>
+                <div class="grid2">
+                  <div class="field"><label>壽險年預算 <small>建議貸款 4% 起・實際 6 年</small></label><div class="input-wrap"><input id="d-life-budget" type="number" step="0.1" value="24"><span class="unit">萬元/年</span></div><div class="quick"><button class="chip" data-set="d-life-budget-pct" data-val="4">4% 起</button><button class="chip" data-set="d-life-budget-pct" data-val="5">5%</button><button class="chip" data-set="d-life-budget-pct" data-val="8">8%</button><button class="chip" data-set="d-life-budget-pct" data-val="10">10%</button></div></div>
+                  <div class="field"><label>年預算比例 <small>佔貸款金額</small></label><div class="input-wrap"><input id="d-life-budget-pct" type="number" step="0.1" value="4"><span class="unit">%</span></div><div class="ins-hint" id="d-life-budget-hint">以活化貸款 600 萬計算，每年 24 萬；6 年總預算 144 萬。</div></div>
+                </div>
+                <div class="field"><label>保留現金 <small>不投入配置</small></label><div class="input-wrap"><input id="d-reserve" type="number" value="30"><span class="unit">萬元</span></div></div>
+                <div class="grid2">
+                  <div class="field"><label>被保人年齡</label><div class="input-wrap"><input id="d-ins-age" type="number" value="40"><span class="unit">歲</span></div></div>
+                  <div class="field"><label>被保人性別</label><div class="input-wrap"><select id="d-ins-sex"><option value="1">男性</option><option value="2">女性</option></select></div></div>
+                </div>
+                <div class="field"><label>美元匯率 <small id="d-fx-date">USD/TWD 31.423｜2026-04-25｜AUD/TWD 22.425</small></label><div class="input-wrap"><input id="d-fx" type="number" step="0.001" value="31.423"><span class="unit">TWD/USD</span></div></div>
+                <div class="step-actions"><button class="btn btn-outline" id="d-back-property" type="button">返回房屋資料</button><button class="btn btn-primary" id="d-show-result" type="button">查看結果</button></div>
+              </div>
+              <aside class="a-live-card safety-preview">
+                <small>即時退休試算</small>
+                <h3>以年預算規劃壽險，換算 6 年總預算與預估保障。</h3>
+                <div class="live-metrics">
+                  <div><span>可投入配息本金</span><b id="d-live-invest">570萬</b></div>
+                  <div><span>預估月配息</span><b id="d-live-income" data-raw="35369">$35,369</b></div>
+                  <div><span>保單增貸月息</span><b id="d-live-life" data-raw="4264">$4,264</b></div>
+                  <div><span>6年壽險總預算</span><b id="d-live-premium">144萬</b></div>
+                </div>
+                <p class="live-note">年預算可直接輸入金額，也可以用貸款比例快速抓 4% 起。</p>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <div class="output-panel advisor-output"><div class="output-grid">
+          <div class="baseline-strip b-result-strip d-result-strip">
+            <div>
+              <span>方案一月套利</span>
+              <b id="d-baseline-p1" data-raw="0">$0</b>
+            </div>
+            <div>
+              <span>方案二首年月套利</span>
+              <b id="d-baseline-p2" data-raw="-2171">-$2,171</b>
+            </div>
+            <div class="is-best">
+              <span>方案二第6年月套利</span>
+              <b id="d-baseline-delta" data-raw="-2171">-$2,171</b>
+            </div>
+          </div>
+          <div class="b-compare-grid d-compare-grid">
+            <div class="b-compare-card d-compare-card no-plan">
+              <div class="compare-kicker">方案一</div>
+              <h3>6 年預算先預留</h3>
+              <strong id="d-p1-net" data-raw="0">$0</strong>
+              <div class="compare-lines">
+                <div><span>投入月配息本金</span><b id="d-p1-invest">426萬</b></div>
+                <div><span>壽險年預算</span><b id="d-p1-annual">24萬</b></div>
+                <div><span>6年總預算</span><b class="red" id="d-p1-premium">144萬</b></div>
+                <div><span>壽險額度</span><b id="d-p1-sum">7.3萬美元</b></div>
+                <div><span>第6年預估身故金</span><b id="d-p1-cover">500萬</b></div>
+                <div><span>月配息流入</span><b class="green" id="d-p1-income" data-raw="27431">$27,431</b></div>
+                <div><span>房貸成本</span><b class="red" id="d-p1-loan" data-raw="33276">$33,276</b></div>
+              </div>
+            </div>
+            <div class="b-compare-card d-compare-card with-plan">
+              <div class="compare-kicker">方案二</div>
+              <h3>首年預算先預留，後 5 年保單借款</h3>
+              <strong id="d-planned-net" data-raw="0">$0</strong>
+              <div class="compare-lines">
+                <div><span>投入月配息本金</span><b id="d-p2-invest">546萬</b></div>
+                <div><span>壽險年預算</span><b id="d-planned-annual">24萬</b></div>
+                <div><span>壽險額度</span><b id="d-planned-sum">7.3萬美元</b></div>
+                <div><span>第6年預估身故金</span><b id="d-planned-cover">500萬</b></div>
+                <div><span>月配息流入</span><b class="green" id="d-planned-income" data-raw="35369">$35,369</b></div>
+                <div><span>第6年保單借款月息</span><b class="red" id="d-planned-life" data-raw="4000">$4,000</b></div>
+                <div><span>房貸成本</span><b class="red" id="d-planned-loan" data-raw="33276">$33,276</b></div>
+              </div>
+            </div>
+          </div>
+          <details class="d-result-subcard d-flow-card d-flow-wide">
+            <summary class="d-flow-toggle"><span>6 年逐年套利表</span><b>展開明細</b></summary>
+            <div class="table-wrap pfj-flow-table-wrap">
+              <table class="pfj-flow-table"><thead><tr><th>年度</th><th>月配息總額</th><th>借款金額</th><th>房貸成本</th><th>借款月息</th><th>套利</th></tr></thead><tbody id="d-pfj-flow-body"></tbody></table>
+            </div>
+          </details>
+
+          <div class="proposal-actions">
+            <button class="btn btn-primary" id="d-copy-summary" type="button">複製結果</button>
+            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('toolD')">產出 PDF</button>
+          </div>
+        </div></div>
+      </div>
+    </div></section>
+
+
+    <!-- CALCULATOR -->
+    <section id="calculator" class="slide"><div class="slide-inner">
+      <div class="topline"><div class="kicker">D · CALCULATOR</div><button class="ghost" data-go="home">返回總覽</button></div>
+      <div class="tool-title"><h2>精確房貸成本計算機</h2><p>純粹成本精確對標工具。深度兼容本息平均、寬限期前置計息、以及理財型循環複利明細。</p></div>
+      <div class="calc-layout">
+        <div class="input-panel">
+          <div class="panel-title"><h3>貸款條件設定</h3><span class="pill-label">LOAN PARAMETERS</span></div>
+          <div class="seg"><button id="c-method-equal" class="active" data-c-method="equal">本息平均攤還</button><button id="c-method-wealth" data-c-method="wealth">理財型動用息</button></div>
+          <div class="field"><label>貸款總額度</label><div class="input-wrap"><input id="c-amount" type="number" value="1000"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="c-amount" data-val="500">500萬</button><button class="chip" data-set="c-amount" data-val="1000">1000萬</button><button class="chip" data-set="c-amount" data-val="2000">2000萬</button></div></div>
+          <div class="field c-wealth-only hidden"><label>實質動用額度</label><div class="input-wrap"><input id="c-drawn" type="number" value="1000"><span class="unit">萬元</span></div></div>
+          <div class="grid2">
+            <div class="field"><label>核定年利率</label><div class="input-wrap"><input id="c-rate" type="number" step="0.001" value="2.1"><span class="unit">%</span></div></div>
+            <div class="field c-equal-only"><label>貸款總年期</label><div class="input-wrap"><input id="c-years" type="number" value="30"><span class="unit">年</span></div></div>
+          </div>
+          <div class="field c-equal-only"><label>寬限期設定<span class="tooltip-dot" tabindex="0" data-tip="寬限期內僅支付利息不歸還本金，前期支出極低，但期滿後本金攤還壓力會階梯式上升。">?</span></label><div class="input-wrap"><input id="c-grace" type="number" value="0"><span class="unit">年</span></div></div>
+          <div class="quick"><button class="chip" data-set="c-rate" data-val="2.1">2.1%</button><button class="chip" data-set="c-rate" data-val="2.65">2.65%</button><button class="chip" data-set="c-rate" data-val="3">3%</button><button class="chip" data-set="c-years" data-val="20">20年</button><button class="chip" data-set="c-years" data-val="30">30年</button></div>
+        </div>
+        <div class="output-panel"><div class="output-grid">
+          <div class="hero-result"><small id="c-primary-label">每月固定攤還本息和</small><strong id="c-primary" data-raw="37464">$37,464</strong><p id="c-caption">本息平均攤還：每月支付固定金額。前期因本金基數大，名目利息佔比相對較高，後續逐月遞減。</p></div>
+          <div class="stat"><small>總累計利息支出</small><b id="c-interest" data-raw="3487047">$3,487,047</b></div>
+          <div class="stat"><small>總支付款 / 到期償本</small><b id="c-total" data-raw="13487047">$13,487,047</b></div>
+          <div class="stat"><small>首月實質還本金額</small><b id="c-first-principal" data-raw="19964">$19,964</b></div>
+          <div class="stat"><small>寬限期月利息支出</small><b id="c-grace-pay" data-raw="17500">$17,500</b></div>
+          <div class="decision-card">
+            <h3>依面談任務切換延伸</h3><p>完成試算後，可切換到減壓或退休現金流方案。</p>
+            <div class="hero-actions" style="margin-top:12px">
+              <button class="btn btn-primary" data-go="conceptA">切換 ROUTE A (現行減壓)</button>
+              <button class="btn btn-gold" data-go="conceptB">切換 ROUTE B (退休活化)</button>
+              <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('calculator')">產出 PDF</button>
+            </div>
+          </div>
+        </div></div>
+      </div>
+      <div class="report-panel" style="margin-top:24px">
+        <div class="panel-title"><h3>年度動態攤還動態明細表</h3><span class="pill-label">ANNUAL AMORTIZATION SCHEDULE</span></div>
+        <div class="table-wrap"><table><thead><tr><th>年度序列</th><th>償還本金</th><th>支付利息</th><th>年度累計支出</th><th>剩餘本金水位</th></tr></thead><tbody id="c-schedule"><tr><td>第 1 年度</td><td>$241,888</td><td>$207,681</td><td>$449,568</td><td>$9,758,112</td></tr><tr><td>第 2 年度</td><td>$247,016</td><td>$202,552</td><td>$449,568</td><td>$9,511,096</td></tr><tr><td>第 3 年度</td><td>$252,254</td><td>$197,314</td><td>$449,568</td><td>$9,258,842</td></tr><tr><td>第 4 年度</td><td>$257,603</td><td>$191,966</td><td>$449,568</td><td>$9,001,240</td></tr><tr><td>第 5 年度</td><td>$263,065</td><td>$186,504</td><td>$449,568</td><td>$8,738,175</td></tr><tr><td>第 6 年度</td><td>$268,642</td><td>$180,926</td><td>$449,568</td><td>$8,469,533</td></tr><tr><td>第 7 年度</td><td>$274,339</td><td>$175,230</td><td>$449,568</td><td>$8,195,194</td></tr><tr><td>第 8 年度</td><td>$280,155</td><td>$169,413</td><td>$449,568</td><td>$7,915,039</td></tr><tr><td>第 9 年度</td><td>$286,096</td><td>$163,473</td><td>$449,568</td><td>$7,628,943</td></tr><tr><td>第 10 年度</td><td>$292,162</td><td>$157,406</td><td>$449,568</td><td>$7,336,781</td></tr><tr><td>第 11 年度</td><td>$298,357</td><td>$151,212</td><td>$449,568</td><td>$7,038,424</td></tr><tr><td>第 12 年度</td><td>$304,683</td><td>$144,885</td><td>$449,568</td><td>$6,733,742</td></tr><tr><td>第 13 年度</td><td>$311,143</td><td>$138,425</td><td>$449,568</td><td>$6,422,599</td></tr><tr><td>第 14 年度</td><td>$317,740</td><td>$131,828</td><td>$449,568</td><td>$6,104,858</td></tr><tr><td>第 15 年度</td><td>$324,477</td><td>$125,091</td><td>$449,568</td><td>$5,780,381</td></tr><tr><td>第 16 年度</td><td>$331,357</td><td>$118,211</td><td>$449,568</td><td>$5,449,023</td></tr><tr><td>第 17 年度</td><td>$338,383</td><td>$111,185</td><td>$449,568</td><td>$5,110,640</td></tr><tr><td>第 18 年度</td><td>$345,558</td><td>$104,010</td><td>$449,568</td><td>$4,765,082</td></tr><tr><td>第 19 年度</td><td>$352,885</td><td>$96,683</td><td>$449,568</td><td>$4,412,197</td></tr><tr><td>第 20 年度</td><td>$360,367</td><td>$89,201</td><td>$449,568</td><td>$4,051,829</td></tr><tr><td>第 21 年度</td><td>$368,008</td><td>$81,560</td><td>$449,568</td><td>$3,683,821</td></tr><tr><td>第 22 年度</td><td>$375,811</td><td>$73,757</td><td>$449,568</td><td>$3,308,009</td></tr><tr><td>第 23 年度</td><td>$383,780</td><td>$65,788</td><td>$449,568</td><td>$2,924,229</td></tr><tr><td>第 24 年度</td><td>$391,917</td><td>$57,651</td><td>$449,568</td><td>$2,532,312</td></tr><tr><td>第 25 年度</td><td>$400,227</td><td>$49,341</td><td>$449,568</td><td>$2,132,085</td></tr><tr><td>第 26 年度</td><td>$408,713</td><td>$40,855</td><td>$449,568</td><td>$1,723,371</td></tr><tr><td>第 27 年度</td><td>$417,379</td><td>$32,189</td><td>$449,568</td><td>$1,305,992</td></tr><tr><td>第 28 年度</td><td>$426,229</td><td>$23,339</td><td>$449,568</td><td>$879,763</td></tr><tr><td>第 29 年度</td><td>$435,267</td><td>$14,301</td><td>$449,568</td><td>$444,496</td></tr><tr><td>第 30 年度</td><td>$444,496</td><td>$5,072</td><td>$449,568</td><td>$0</td></tr></tbody></table></div>
+      </div>
+    </div></section>
+  </main>
+</div>
+
+<div class="disclaimer">本引擎產出數據均為初期架構模擬情境；實際核貸成數、融資利率、保費費金與基金配息等確切參數，均須對標金融機構最終正式審查結果。資產配息並非永續固定保證。</div>
+
+<script src="js/pfj-data.js"></script>
+<script src="js/app.js"></script><div id="copyToast" class="copy-toast">已成功複製規劃結論至剪貼簿</div>
+
+
+</body></html>

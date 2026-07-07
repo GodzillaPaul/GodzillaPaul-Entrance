@@ -8,6 +8,7 @@ login.css / login.js    登入頁樣式與 Identity 流程
 login-assets/           登入頁公開品牌素材
 catalog/                受 member 角色保護的會員區
 catalog/apps/           已整合的五個工具頁
+catalog/products/       已整合的商品試算與商品內容頁
 netlify.toml            Netlify CDN 權限、標頭與 Functions 設定
 netlify/functions/      新使用者自動加入 member 角色
 package.json            Netlify Identity 伺服器驗證套件
@@ -32,7 +33,9 @@ package.json            Netlify Identity 伺服器驗證套件
 - `/catalog/*`：只有 JWT 包含 `member` 角色的使用者可讀取。
 - 未登入者直接輸入 `/catalog/`、子頁、CSS、JS、JSON 或圖片網址，均會回到登入入口。
 - 五個工具已搬入 `/catalog/apps/`，包含現實人生、退休規劃、月配息、資產加速器、房產現金流。
-- 商品解方庫與理賠案例庫目前仍有部分連到 `godzillapaul.github.io` 的外部頁面；若也要完整保護，後續需再分批搬進 `/catalog/products/` 與 `/catalog/claims/`。
+- 商品解方庫已搬入 `/catalog/products/`，包含 PFW、PF566、PFA、PFJ、PFK、UND、CLZ、CLX、PFN。
+- 馬上幸福與富邦錢包活動回饋已下架，相關回饋列已在商品頁隱藏。
+- 理賠案例庫目前仍有部分連到 `godzillapaul.github.io` 的外部頁面；若也要完整保護，後續需再分批搬進 `/catalog/claims/`。
 
 ## 測試提醒
 

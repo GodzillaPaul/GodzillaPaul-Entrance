@@ -34,6 +34,7 @@ package.json            Netlify Identity 伺服器驗證套件
 - 未登入者直接輸入 `/catalog/`、子頁、CSS、JS、JSON 或圖片網址，均會回到登入入口。
 - 五個工具已搬入 `/catalog/apps/`，包含現實人生、退休規劃、月配息、資產加速器、房產現金流。
 - 商品解方庫已搬入 `/catalog/products/`，包含 PFW、PF566、PFA、PFJ、PFK、UND、CLZ、CLX、PFN。
+- PFW、PF566、PFA、PFJ、PFK、PFN 商品試算支援 A4 單頁 PDF 匯出；PDF 套件使用本地檔案，不依賴 CDN。
 - 馬上幸福與富邦錢包活動回饋已下架，相關回饋列已在商品頁隱藏。
 - 理賠案例庫目前仍有部分連到 `godzillapaul.github.io` 的外部頁面；若也要完整保護，後續需再分批搬進 `/catalog/claims/`。
 

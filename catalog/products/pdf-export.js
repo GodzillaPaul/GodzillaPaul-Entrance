@@ -38,76 +38,181 @@
       }
       .pdf-export-btn:hover { filter: brightness(1.04); transform: translateY(-1px); }
       .pdf-export-btn:disabled { opacity: 0.56; cursor: wait; transform: none; }
+
       .pdf-stage {
         position: fixed;
         left: -99999px;
         top: 0;
         width: 794px;
         min-height: 1123px;
-        padding: 10px 12px;
+        padding: 8px 10px;
         background: #f5f5f7;
         color: #1d1d1f;
         z-index: -1;
         box-sizing: border-box;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Microsoft JhengHei", sans-serif;
+        font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", "Noto Sans TC", system-ui, Arial, sans-serif;
       }
-      .pdf-sheet { width: 100%; min-height: 1103px; box-sizing: border-box; }
-      .pdf-topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
-      .pdf-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-      .pdf-logo {
-        width: 36px; height: 36px; border-radius: 12px; object-fit: cover;
-        box-shadow: 0 4px 14px rgba(0,0,0,.16);
+      .pdf-sheet { width: 100%; min-height: 1107px; box-sizing: border-box; }
+      .pdf-topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+      .pdf-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border-radius: 999px;
+        padding: 6px 18px;
+        background: var(--accent, #2e8b7e);
+        color: white;
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: .02em;
       }
-      .pdf-kicker { font-size: 10px; letter-spacing: .16em; color: #86868b; font-weight: 800; }
-      .pdf-title { margin: 1px 0 0; font-size: 18px; line-height: 1.12; color: #1d1d1f; font-weight: 900; }
-      .pdf-date { color: #6e6e73; border: 1px solid #d9dde3; background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 10.5px; white-space: nowrap; }
-      .pdf-summary-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
+      .pdf-date {
+        color: #76777c;
         border: 1px solid #d9dde3;
-        border-radius: 12px;
+        background: white;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .pdf-summary-section,
+      .pdf-table-section,
+      .pdf-income-compare {
+        background: white;
+        border: 1px solid #d9dde3;
+        border-radius: 9px;
         overflow: hidden;
-        background: #fff;
-        margin-bottom: 8px;
       }
-      .pdf-metric { padding: 8px 10px; border-left: 1px solid #e6e8ec; min-width: 0; }
-      .pdf-metric:first-child { border-left: 0; background: #eaf8f4; }
-      .pdf-metric span { display: block; color: #6e6e73; font-size: 9.8px; line-height: 1.18; }
-      .pdf-metric strong { display: block; color: #1d1d1f; font-size: 12px; line-height: 1.2; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .pdf-metric:first-child strong { color: var(--accent, #0f8b6b); font-size: 14px; }
-      .pdf-focus {
+      .pdf-summary-section { margin-bottom: 8px; }
+      .pdf-summary-head {
+        background: var(--accent, #2e8b7e);
+        color: white;
+        padding: 8px 14px;
+        font-weight: 900;
+        text-align: center;
+        font-size: 15px;
+      }
+      .pdf-summary-body {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 6px;
-        margin-bottom: 8px;
+        grid-template-columns: 1.15fr 1fr 1fr 1fr;
       }
-      .pdf-focus-card {
+      .pdf-metric {
+        padding: 9px 12px;
+        border-left: 1px solid #d9dde3;
+        min-width: 0;
+      }
+      .pdf-metric:first-child { border-left: 0; background: var(--accent-row, #d8f2eb); }
+      .pdf-metric span { display: block; color: #76777c; font-size: 10.5px; line-height: 1.2; }
+      .pdf-metric strong {
+        display: block;
+        color: #1d1d1f;
+        font-size: 13px;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .pdf-metric:first-child strong { color: var(--accent, #2e8b7e); font-size: 18px; }
+
+      .pdf-income-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 10px;
+      }
+      .pdf-income-card { min-height: 174px; }
+      .pdf-income-card:first-child { background: var(--accent-row, #dff3ee); }
+      .pdf-income-title {
+        background: var(--accent, #2e8b7e);
+        color: white;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 900;
+        padding: 9px 12px;
+      }
+      .pdf-income-body {
+        display: grid;
+        grid-template-columns: 106px 1fr;
+        gap: 12px;
+        padding: 11px 16px 12px;
+      }
+      .pdf-income-card:nth-child(2) .pdf-income-body { grid-template-columns: 1fr 106px; }
+      .pdf-donut-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .pdf-donut {
+        width: 70px;
+        height: 70px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: conic-gradient(var(--accent, #2e8b7e) var(--pdf-age-pct, 38%), #dedede var(--pdf-age-pct, 38%));
+      }
+      .pdf-donut span {
+        display: grid;
+        place-items: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 999px;
         background: #fff;
-        border: 1px solid #d9dde3;
-        border-radius: 12px;
-        padding: 8px 10px;
-        min-height: 46px;
+        color: #1d1d1f;
+        font-weight: 900;
+        font-size: 15px;
       }
-      .pdf-focus-card span { display: block; color: #6e6e73; font-size: 9.8px; line-height: 1.15; }
-      .pdf-focus-card strong { display: block; color: #1d1d1f; font-size: 13px; line-height: 1.2; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .pdf-table-section { background: #fff; border: 1px solid #d9dde3; border-radius: 12px; overflow: hidden; }
-      .pdf-table-head { display:flex; justify-content:space-between; align-items:center; gap:12px; padding: 7px 10px; color: #6e6e73; border-bottom: 1px solid #e6e8ec; font-size: 10.5px; }
-      .pdf-table-head strong { color: var(--accent, #0f8b6b); font-size: 11px; }
+      .pdf-donut-amount { color: var(--accent, #2e8b7e); font-size: 20px; font-weight: 900; }
+      .pdf-donut-amount small { color: #76777c; font-size: 10px; font-weight: 700; }
+      .pdf-donut-muted .pdf-donut { opacity: .95; }
+      .pdf-donut-muted .pdf-donut-amount { color: #76777c; }
+      .pdf-income-main {
+        color: var(--accent, #2e8b7e);
+        font-size: 30px;
+        font-weight: 950;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      .pdf-income-main small { font-size: 14px; }
+      .pdf-income-line { font-size: 12.3px; line-height: 1.58; color: #1d1d1f; }
+      .pdf-income-line strong { color: var(--accent, #2e8b7e); font-weight: 950; }
+      .pdf-income-muted { color: #76777c; margin-top: 7px; border-top: 1px dashed #d8e2df; padding-top: 6px; }
+
+      .pdf-table-section { margin-top: 0; }
+      .pdf-table-note {
+        padding: 6px 12px;
+        color: #76777c;
+        border-bottom: 1px solid #d9dde3;
+        font-size: 10.5px;
+        background: white;
+      }
+      .pdf-table-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 7px 10px;
+        color: #76777c;
+        border-bottom: 1px solid #e6e8ec;
+        font-size: 10.5px;
+      }
+      .pdf-table-head strong { color: var(--accent, #2e8b7e); font-size: 11px; }
       .pdf-table {
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
-        font-size: 9.5px;
+        font-size: 9.7px;
         font-variant-numeric: tabular-nums;
       }
       .pdf-table th {
         padding: 5px 3px;
         border-bottom: 1px solid var(--accent-mint, #8fe3d0);
         background: var(--accent-light, #eaf8f4);
-        color: var(--accent, #0f8b6b);
+        color: var(--accent, #2e8b7e);
         text-align: center;
         white-space: nowrap;
-        font-size: 8.8px;
+        font-size: 9px;
         line-height: 1.12;
         font-weight: 800;
       }
@@ -116,16 +221,38 @@
         border-bottom: 1px solid #ececf0;
         text-align: right;
         white-space: nowrap;
-        line-height: 1.1;
+        line-height: 1.12;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .pdf-table td.txt,
       .pdf-table td:nth-child(1),
-      .pdf-table td:nth-child(2) { text-align: center; color: #6e6e73; }
+      .pdf-table td:nth-child(2) { text-align: center; color: #76777c; }
       .pdf-table tr:nth-child(even) td { background: #fafafa; }
-      .pdf-table tr.pdf-highlight td { background: #fff8df !important; }
-      .pdf-note { margin-top: 7px; color: #86868b; font-size: 9.8px; line-height: 1.45; }
+      .pdf-report.is-life .pdf-table tr.pdf-highlight td { background: var(--milestone, #d8f2eb) !important; }
+      .pdf-report.is-income .pdf-table tr.pdf-highlight td { background: var(--accent-row, #d8f2eb) !important; }
+      .pdf-report.is-life .pdf-table th:nth-child(1),
+      .pdf-report.is-life .pdf-table th:nth-child(2),
+      .pdf-report.is-life .pdf-table td:nth-child(1),
+      .pdf-report.is-life .pdf-table td:nth-child(2) { width: 7.2%; }
+      .pdf-report.is-life .pdf-table th:nth-child(3),
+      .pdf-report.is-life .pdf-table th:nth-child(4),
+      .pdf-report.is-life .pdf-table td:nth-child(3),
+      .pdf-report.is-life .pdf-table td:nth-child(4) { width: 15.2%; }
+      .pdf-report.is-life .pdf-table th:nth-child(5),
+      .pdf-report.is-life .pdf-table th:nth-child(6),
+      .pdf-report.is-life .pdf-table th:nth-child(7),
+      .pdf-report.is-life .pdf-table td:nth-child(5),
+      .pdf-report.is-life .pdf-table td:nth-child(6),
+      .pdf-report.is-life .pdf-table td:nth-child(7) { width: 18.4%; }
+      .pdf-report.is-income .pdf-table { font-size: 9.45px; }
+      .pdf-report.is-income .pdf-table th { font-size: 8.6px; }
+      .pdf-report.is-income .pdf-table td { padding: 3.8px 4px; }
+      .pdf-report.is-income .pdf-table th:nth-child(1),
+      .pdf-report.is-income .pdf-table th:nth-child(2),
+      .pdf-report.is-income .pdf-table td:nth-child(1),
+      .pdf-report.is-income .pdf-table td:nth-child(2) { width: 6.2%; }
+      .pdf-note { margin-top: 6px; color: #86868b; font-size: 9.6px; line-height: 1.35; }
     `;
     document.head.appendChild(style);
   }
@@ -154,9 +281,25 @@
     return String(value || '').replace(/\s+/g, ' ').trim();
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
+  }
+
   function parseNumber(value) {
     const n = Number(String(value || '').replace(/[^\d.-]/g, ''));
     return Number.isFinite(n) ? n : null;
+  }
+
+  function getCssVar(name, fallback) {
+    const value = getComputedStyle(document.body).getPropertyValue(name).trim()
+      || getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return value || fallback;
   }
 
   function getTableParts() {
@@ -215,84 +358,200 @@
     return idx >= 0 ? row.cells[idx] : '—';
   }
 
-  function buildFocusCards(parts) {
-    const { headers, rows } = parts;
-    const kind = options.productKind;
-    const last = rows[rows.length - 1] || { cells: [] };
-    if (kind === 'income') {
-      const firstSurv = rows.find(row => headers.some((h, i) => h.includes('生存') && row.cells[i] && row.cells[i] !== '—'));
-      return [
-        ['首次領回', firstSurv ? `${firstSurv.age || '—'}歲 / 第${firstSurv.year || '—'}年` : '—'],
-        ['年度生存金', firstSurv ? findCell(firstSurv, headers, ['生存金', '領回']) : '—'],
-        ['累積領回', firstSurv ? findCell(firstSurv, headers, ['累積生存', '累積領回']) : '—'],
-        ['滿期解約金', findCell(last, headers, ['解約金', '解約'])],
-      ];
-    }
-    const year6 = rows.find(row => row.year === 6) || rows[5] || rows[0] || { cells: [] };
-    return [
-      ['年繳保費', text('#h-prem')],
-      ['第6年身故金', findCell(year6, headers, ['身故'])],
-      ['第6年解約金', findCell(year6, headers, ['解約金', '解約'])],
-      ['滿期身故金', findCell(last, headers, ['身故'])],
-    ];
-  }
-
-  function getSummaryMetrics() {
+  function getSummary() {
     const s = readGlobal('state', null);
     const cfg = readGlobal('CONFIG', null);
     const genderLabel = s && Number(s.gender) === 2 ? '女' : '男';
     const amount = document.getElementById('amt-display')?.value || (s && s.sumInsured) || '—';
-    const currency = text('#tbl-unit', s && s.currency === 'USD' ? '美元' : '新台幣元');
-    const summary = text('#summary-pill', '');
     const productName = text('#h-title', cfg ? `${cfg.code || ''} ${cfg.name || ''}`.trim() : document.title);
-    const periodMatch = summary.match(/(?:躉繳|[0-9N]+\s*年期|[0-9]+\s*退)/);
+    const summary = text('#summary-pill', '');
+    const periodMatch = summary.match(/(?:躉繳|[0-9N]+\s*年期|[0-9]+\s*退|[0-9]+\s*年)/);
     const discountMatch = summary.match(/折扣率\s*([0-9.]+%)/);
+    const conditionParts = [periodMatch && periodMatch[0], `${amount} 萬`, `${genderLabel}${text('#h-age')}歲`, discountMatch && `折扣率 ${discountMatch[1]}`].filter(Boolean);
+    return {
+      productName,
+      genderLabel,
+      age: text('#h-age'),
+      amount,
+      premium: text('#h-prem'),
+      unit: text('#tbl-unit'),
+      summary,
+      badge: conditionParts.join(' · ') || summary || productName
+    };
+  }
+
+  function getLifeMetrics(parts) {
+    const { headers, rows } = parts;
+    const summary = getSummary();
+    const year6 = rows.find(row => row.year === 6) || rows[5] || rows[0] || { cells: [] };
+    const last = rows[rows.length - 1] || { cells: [] };
     return [
-      ['商品', productName],
-      ['性別 / 年齡', `${genderLabel} / ${text('#h-age')}歲`],
-      ['保額', `${amount} 萬美元`],
-      ['保費', `${text('#h-prem')} ${currency}`],
-      ['條件', [periodMatch && periodMatch[0], discountMatch && `折扣率 ${discountMatch[1]}`].filter(Boolean).join(' · ') || summary || '—'],
+      ['折扣後年繳保費', `${summary.premium} ${summary.unit}`],
+      ['第 6 年身故金', findCell(year6, headers, ['身故'])],
+      ['第 6 年解約金', findCell(year6, headers, ['解約金', '解約'])],
+      ['滿期身故/解約金', findCell(last, headers, ['身故'])],
     ];
+  }
+
+  function getIncomeCompareData(parts) {
+    const s = readGlobal('state', null);
+    const age = text('#ig-age-left', text('#h-age'));
+    const leftAge = Number.isFinite(parseNumber(age)) ? parseNumber(age) : parseNumber(text('#h-age')) || 38;
+    const agePct = Math.max(0, Math.min(leftAge, 99));
+    const firstSurv = parts.rows.find(row => parts.headers.some((h, i) => h.includes('生存') && row.cells[i] && row.cells[i] !== '—'));
+    const firstSurvValue = firstSurv ? findCell(firstSurv, parts.headers, ['生存金', '領回']) : '—';
+    const firstSurvAge = firstSurv ? firstSurv.age : '—';
+    const variantYears = text('#ig-retire-years-l', '20');
+    const retireAge = text('#ig-X-l', firstSurvAge);
+    const highlight = id => text(id, '—');
+    const hasInfographic = document.getElementById('info-section') && text('#ig-C', '') !== '';
+    const left = {
+      title: '富邦幫你存',
+      age,
+      amount: highlight('#ig-H') || '—',
+      years: '6',
+      lines: hasInfographic ? [
+        ['一年存', `${highlight('#ig-C')} 萬，只要存 6 年`],
+        ['退休時帳戶增值到', `${highlight('#ig-D')} 萬`],
+        ['省下', `${highlight('#ig-E')} 萬`],
+      ] : [
+        ['首次領回', `${firstSurvAge}歲 / 第${firstSurv?.year || '—'}年`],
+        ['年度生存金', firstSurvValue],
+        ['目前保額', `${s?.sumInsured || text('#amt-display')} 萬美元`],
+      ],
+      retire: hasInfographic ? [
+        [`退休 ${variantYears} 年 ${retireAge}～85歲`, ''],
+        ['退休時每年花', `${highlight('#ig-F')} 萬`],
+        ['花完了', `${highlight('#ig-G')} 萬`],
+      ] : [
+        [`${retireAge}歲開始領回`, ''],
+        ['年度生存金', firstSurvValue],
+        ['累積生存金', firstSurv ? findCell(firstSurv, parts.headers, ['累積生存', '累積領回']) : '—'],
+      ]
+    };
+    const right = {
+      title: '自己慢慢存',
+      age: text('#ig-age-right', age),
+      amount: highlight('#ig-P') || '—',
+      years: highlight('#ig-B') || (Number(retireAge) && Number(age) ? String(Number(retireAge) - Number(age)) : '—'),
+      lines: hasInfographic ? [
+        ['一年存', `${highlight('#ig-I')} 萬，持續存 ${highlight('#ig-J')} 年`],
+        ['退休時存款累積到', `${highlight('#ig-K')} 萬`],
+        ['總存', `${highlight('#ig-L')} 萬`],
+      ] : [
+        ['假設自己存到退休', `${retireAge}歲前持續累積`],
+        ['退休目標', firstSurvValue],
+        ['對照基準', '以頁面試算結果呈現'],
+      ],
+      retire: hasInfographic ? [
+        [`退休 ${text('#ig-retire-years-r', variantYears)} 年 ${text('#ig-X-r', retireAge)}～85歲`, ''],
+        ['退休時每年花', `${highlight('#ig-M')} 萬`],
+        ['花光了', `${highlight('#ig-N')} 萬`],
+      ] : [
+        ['同樣退休節奏', '需自行累積與控管'],
+        ['參考年度領回', firstSurvValue],
+        ['剩餘資產', '依實際存款利率不同'],
+      ]
+    };
+    return { left, right, agePct };
+  }
+
+  function renderTableHtml(parts, shownRows) {
+    const headerHtml = parts.headers.map(h => `<th>${escapeHtml(h)}</th>`).join('');
+    const bodyHtml = shownRows.map(row => {
+      const cls = row.highlight ? ' class="pdf-highlight"' : '';
+      return `<tr${cls}>${row.cells.map((cell, i) => `<td${i < 2 ? ' class="txt"' : ''}>${escapeHtml(cell)}</td>`).join('')}</tr>`;
+    }).join('');
+    return `<table class="pdf-table"><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table>`;
+  }
+
+  function renderLifeReport(parts, shownRows, today) {
+    const summary = getSummary();
+    const metrics = getLifeMetrics(parts);
+    return `
+      <div class="pdf-report is-life">
+        <div class="pdf-topbar">
+          <div class="pdf-badge">${escapeHtml(summary.badge)}</div>
+          <div class="pdf-date">產出日期 ${escapeHtml(today)}</div>
+        </div>
+        <section class="pdf-summary-section">
+          <div class="pdf-summary-head">${escapeHtml(summary.productName)}</div>
+          <div class="pdf-summary-body">
+            ${metrics.map(([label, value]) => `<div class="pdf-metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')}
+          </div>
+        </section>
+        <section class="pdf-table-section">
+          <div class="pdf-table-note">‧ 本保險為分紅保險單,保單紅利為預估值,本公司不保證其給付金額。最可能紅利‧繳清保險金額。</div>
+          ${renderTableHtml(parts, shownRows)}
+        </section>
+      </div>
+    `;
+  }
+
+  function incomeLinesHtml(lines) {
+    return lines.map(([label, value]) => {
+      if (!value) return `<div class="pdf-income-line pdf-income-muted">${escapeHtml(label)}</div>`;
+      return `<div class="pdf-income-line">${escapeHtml(label)} <strong>${escapeHtml(value)}</strong></div>`;
+    }).join('');
+  }
+
+  function renderIncomePanel(data, side) {
+    const donutClass = side === 'right' ? ' pdf-donut-muted' : '';
+    const donut = `
+      <div class="pdf-donut-wrap${donutClass}">
+        <div class="pdf-donut"><span>${escapeHtml(data.age)}歲</span></div>
+        <div class="pdf-donut-amount">${escapeHtml(data.amount)}<small> 萬</small></div>
+      </div>
+    `;
+    const textBlock = `
+      <div>
+        <div class="pdf-income-main">${escapeHtml(data.years)}<small>年</small></div>
+        ${incomeLinesHtml(data.lines)}
+        <div class="pdf-income-muted">${incomeLinesHtml(data.retire)}</div>
+      </div>
+    `;
+    return `
+      <div class="pdf-income-card">
+        <div class="pdf-income-title">${escapeHtml(data.title)}</div>
+        <div class="pdf-income-body">
+          ${side === 'right' ? `${textBlock}${donut}` : `${donut}${textBlock}`}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderIncomeReport(parts, shownRows, today) {
+    const summary = getSummary();
+    const compare = getIncomeCompareData(parts);
+    document.documentElement.style.setProperty('--pdf-age-pct', `${compare.agePct}%`);
+    return `
+      <div class="pdf-report is-income">
+        <div class="pdf-topbar">
+          <div class="pdf-badge">${escapeHtml(summary.badge)}</div>
+          <div class="pdf-date">產出日期 ${escapeHtml(today)}</div>
+        </div>
+        <section class="pdf-income-compare" style="--accent:${escapeHtml(getCssVar('--accent', '#2e8b7e'))};--pdf-age-pct:${compare.agePct}%;">
+          ${renderIncomePanel(compare.left, 'left')}
+          ${renderIncomePanel(compare.right, 'right')}
+        </section>
+        <section class="pdf-table-section">
+          <div class="pdf-table-note">‧ 本保險為分紅保險單,保單紅利為預估值,本公司不保證其給付金額。最可能紅利‧繳清保險金額。</div>
+          ${renderTableHtml(parts, shownRows)}
+        </section>
+      </div>
+    `;
   }
 
   function buildPdfReportElement() {
     const parts = getTableParts();
     if (!parts || !parts.rows.length) throw new Error('No rendered table rows.');
     const shownRows = selectedRowsForPdf(parts.rows);
-    const metrics = getSummaryMetrics();
-    const focus = buildFocusCards(parts);
-    const headerHtml = parts.headers.map(h => `<th>${h}</th>`).join('');
-    const bodyHtml = shownRows.map(row => {
-      const cls = row.highlight ? ' class="pdf-highlight"' : '';
-      return `<tr${cls}>${row.cells.map((cell, i) => `<td${i < 2 ? ' class="txt"' : ''}>${cell}</td>`).join('')}</tr>`;
-    }).join('');
     const stage = document.createElement('div');
     stage.className = 'pdf-stage';
     const today = new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
     stage.innerHTML = `
       <div class="pdf-sheet">
-        <div class="pdf-topbar">
-          <div class="pdf-brand">
-            <img class="pdf-logo" src="${options.logoSrc || '../../login-assets/icon-512x512.png'}" alt="">
-            <div>
-              <div class="pdf-kicker">GODZILLAPAUL PRODUCT REPORT</div>
-              <h1 class="pdf-title">${metrics[0][1]}</h1>
-            </div>
-          </div>
-          <div class="pdf-date">產出日期 ${today}</div>
-        </div>
-        <div class="pdf-summary-grid">
-          ${metrics.map(([label, value]) => `<div class="pdf-metric"><span>${label}</span><strong>${value}</strong></div>`).join('')}
-        </div>
-        <div class="pdf-focus">
-          ${focus.map(([label, value]) => `<div class="pdf-focus-card"><span>${label}</span><strong>${value}</strong></div>`).join('')}
-        </div>
-        <div class="pdf-table-section">
-          <div class="pdf-table-head"><strong>保單年度試算表</strong><span>單位：${text('#tbl-unit')}</span></div>
-          <table class="pdf-table"><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table>
-        </div>
-        <div class="pdf-note">本報表依目前頁面試算條件產生，保單紅利為預估值，本公司不保證其給付金額；實際內容仍以正式保單條款與富邦人壽核保結果為準。</div>
+        ${options.productKind === 'income' ? renderIncomeReport(parts, shownRows, today) : renderLifeReport(parts, shownRows, today)}
       </div>
     `;
     return stage;

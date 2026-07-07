@@ -1,0 +1,52 @@
+/* Premium motion layer — clean, quiet, no gimmicks */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes resultReveal {
+  from { opacity: 0; transform: translateY(18px) scale(.985); filter: blur(8px); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes metricPop {
+  0%   { opacity: 0; transform: translateY(14px) scale(.965); filter: blur(6px); }
+  65%  { opacity: 1; transform: translateY(-2px) scale(1.012); filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes numberCount {
+  from { opacity: 0; transform: translateY(6px); filter: blur(5px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes annualFlip {
+  0%   { opacity: .35; transform: translateY(-8px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes badgePop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+@keyframes barGrow { from { width: 0 !important; } }
+@keyframes thumbAppear {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.55); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes noticeReveal {
+  from { opacity: 0; transform: translateY(12px); filter: blur(5px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.header-badge { animation: fadeUp .48s cubic-bezier(.2,.8,.2,1) .04s both; }
+.header h1 { animation: fadeUp .58s cubic-bezier(.2,.8,.2,1) .1s both; }
+.card[data-card="1"] { animation: fadeUp .56s cubic-bezier(.2,.8,.2,1) .12s both; }
+.card[data-card="2"] { animation: fadeUp .56s cubic-bezier(.2,.8,.2,1) .19s both; }
+.card[data-card="3"] { animation: fadeUp .56s cubic-bezier(.2,.8,.2,1) .26s both; }
+.result-card[data-card="r1"] { animation: resultReveal .54s cubic-bezier(.2,.8,.2,1) both; }
+.result-card[data-card="r2"] { animation: resultReveal .54s cubic-bezier(.2,.8,.2,1) .08s both; }
+.metric.anim-pop { animation: metricPop .48s cubic-bezier(.2,.8,.2,1) both; }
+.metric-val.anim-count { animation: numberCount .34s ease both; }
+.sa-badge.anim-pop { animation: badgePop .28s ease; }
+.annual-value.anim-flip { animation: annualFlip .25s ease both; }
+.sa-range-bar-fill.anim-grow { animation: barGrow .7s cubic-bezier(.2,.8,.2,1) both; }
+.sa-range-bar-thumb.anim-appear { animation: thumbAppear .36s cubic-bezier(.2,.8,.2,1) .26s both; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

@@ -6,7 +6,8 @@
 index.html              公開登入入口
 login.css / login.js    登入頁樣式與 Identity 流程
 login-assets/           登入頁公開品牌素材
-catalog/                受 member 角色保護的完整原網站
+catalog/                受 member 角色保護的會員區
+catalog/apps/           已整合的五個工具頁
 netlify.toml            Netlify CDN 權限、標頭與 Functions 設定
 netlify/functions/      新使用者自動加入 member 角色
 package.json            Netlify Identity 伺服器驗證套件
@@ -30,7 +31,8 @@ package.json            Netlify Identity 伺服器驗證套件
 - 登入使用受邀 Email＋密碼；顯示帳號只供管理辨識，不作為登入憑證。
 - `/catalog/*`：只有 JWT 包含 `member` 角色的使用者可讀取。
 - 未登入者直接輸入 `/catalog/`、子頁、CSS、JS、JSON 或圖片網址，均會回到登入入口。
-- Catalog 內原本連到其他 `godzillapaul.github.io` 網站的卡片仍屬外部網站；如需一併保護，必須另外遷移或替各站加上驗證。
+- 五個工具已搬入 `/catalog/apps/`，包含現實人生、退休規劃、月配息、資產加速器、房產現金流。
+- 商品解方庫與理賠案例庫目前仍有部分連到 `godzillapaul.github.io` 的外部頁面；若也要完整保護，後續需再分批搬進 `/catalog/products/` 與 `/catalog/claims/`。
 
 ## 測試提醒
 

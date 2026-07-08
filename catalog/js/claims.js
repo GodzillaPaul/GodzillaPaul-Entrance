@@ -27,7 +27,8 @@
     { title:'達文西手術', series:'常見理賠案例 08', folder:'common outpatient organ', categories:['medical','surgery','cancer'], tags:['#醫療實支','#手術定額','#癌症'], summary:'高額自費手術最能看出醫療實支額度差異，也是客戶最容易有感的案例。', keywords:'達文西 達文西手術 自費手術 微創 癌症 醫療實支 達文西機械手臂', url:'./claims/da-vinci/' },
     { title:'椎間盤', series:'常見理賠案例 09', folder:'common back', categories:['medical','surgery','accident-medical'], tags:['#醫療實支','#手術定額'], summary:'椎間盤治療可能橫跨復健、手術與自費項目，適合拿來做保障檢查。', keywords:'椎間盤 椎間盤突出 腰椎 脊椎 腰背 手術 醫療實支 退化 破裂 神經壓迫', url:'./claims/intervertebral-disc/' },
     { title:'幼兒常見住院', series:'常見理賠案例 10', folder:'common children', categories:['medical','hospital'], tags:['#醫療實支','#住院定額'], summary:'幼兒常見疾病住院，最能讓父母理解醫療保障不是大人才需要。', keywords:'幼兒常見住院 幼兒 兒童 小孩 腺病毒 腸病毒 抽搐痙攣 熱性痙攣 RSV 支氣管炎 玫瑰疹 流感 發燒 住院 醫療實支', url:'./claims/children-hospitalized/' },
-    { title:'長照／失能', series:'常見理賠案例 11', folder:'common ltc', categories:['ltc','major','medical'], tags:['#長照失能','#重大傷病'], summary:'當照護時間拉長，重點不只是醫療費，而是長期照顧與家庭現金流壓力。', keywords:'長照 失能 失智 巴氏量表 看護 照護 重大傷病', url:'./claims/long-term-care/' }
+    { title:'長照／失能', series:'常見理賠案例 11', folder:'common ltc', categories:['ltc','major','medical'], tags:['#長照失能','#重大傷病'], summary:'當照護時間拉長，重點不只是醫療費，而是長期照顧與家庭現金流壓力。', keywords:'長照 失能 失智 巴氏量表 看護 照護 重大傷病', url:'./claims/long-term-care/' },
+    { title:'重大傷病／疾病', series:'常見理賠案例 12', folder:'common cancer heart organ', categories:['major','medical','hospital','cancer'], tags:['#重大傷病','#疾病一次金','#醫療實支'], summary:'從重大傷病卡、疾病治療到高額自費項目，讓客戶看懂一次金與醫療保障如何接住大風險。', keywords:'重大傷病 重大疾病 疾病 一次金 癌症 心臟 燒燙傷 免疫疾病 標靶治療 質子治療 細胞治療 醫療實支 住院', url:'./claims/major-illness/' }
   ];
 
   const grid = document.getElementById('claimGrid');

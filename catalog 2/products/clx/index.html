@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>女性專屬癌症險・CLX</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
+requestAnimationFrame(triggerActiveChart);
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- ▼ GP 品牌角落（固定於左上角，覆蓋所有投影片）▼ -->
+<style>
+.gp-corner-fixed{
+  position:fixed;top:12px;left:14px;z-index:200;
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:nowrap;
+}
+.gp-corner-fixed .gp-corner-brand{
+  display:flex;align-items:center;gap:9px;
+  text-decoration:none;color:inherit;
+}
+.gp-corner-fixed .gp-corner-badge{
+  width:38px;height:38px;border-radius:11px;padding:3px;
+  background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.45);
+  box-shadow:0 6px 18px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.22);
+  overflow:hidden;position:relative;flex-shrink:0;
+}
+.gp-corner-fixed .gp-corner-badge::before{
+  content:"";position:absolute;inset:4px;border-radius:7px;
+  background:rgba(255,255,255,.96);z-index:0;
+}
+.gp-corner-fixed .gp-corner-badge::after{
+  content:"";position:absolute;top:-70%;left:-120%;
+  width:70%;height:240%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.48),transparent);
+  transform:rotate(24deg);transition:left .7s ease;z-index:2;pointer-events:none;
+}
+.gp-corner-fixed .gp-corner-brand:hover .gp-corner-badge::after{left:135%;}
+.gp-corner-fixed .gp-corner-badge img{
+  position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;
+}
+.gp-corner-fixed .gp-corner-text small{
+  display:block;color:rgba(255,255,255,.78);font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;font-weight:800;
+}
+.gp-corner-fixed .gp-corner-text strong{
+  display:block;margin-top:1px;color:#fff;font-size:13px;font-weight:800;
+  letter-spacing:.01em;text-shadow:0 1px 10px rgba(255,255,255,.18);white-space:nowrap;
+}
+.gp-corner-fixed .gp-corner-back{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:999px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.38);
+  color:rgba(255,255,255,.90);font-size:12px;font-weight:700;
+  text-decoration:none;transition:background .2s;white-space:nowrap;
+}
+.gp-corner-fixed .gp-corner-back:hover{background:rgba(255,255,255,.26);}
+@media(max-width:540px){
+  .gp-corner-fixed .gp-corner-text{display:none;}
+  .gp-corner-fixed .gp-corner-back span{display:none;}
+  .gp-corner-fixed .gp-corner-badge{width:32px;height:32px;border-radius:9px;}
+}
+</style>
+<div class="gp-corner-fixed">
+  <a class="gp-corner-brand"
+     href="https://godzillapaul-entrance.netlify.app/catalog/products.html"
+     aria-label="回到主頁">
+    <div class="gp-corner-badge">
+      <img src="https://godzillapaul-entrance.netlify.app/login-assets/icon-512x512.png"
+           alt="GodzillaPaul Logo" width="38" height="38">
+    </div>
+    <div class="gp-corner-text">
+      <small>GODZILLAPAUL</small>
+      <strong>商品解方庫</strong>
+    </div>
+  </a>
+  <a class="gp-corner-back"
+     href="https://godzillapaul-entrance.netlify.app/catalog/products.html"
+     aria-label="返回主頁">← <span>返回</span></a>
+</div>
+<!-- ▲ GP 品牌角落結束 ▲ -->
+
+<div class="lightbox" id="lightbox"><img alt="" id="lightbox-img" src=""/></div>
+<div class="deck">
+<!-- ═══════════════════════════════
+     Slide 01 · Cover（封面）
+════════════════════════════════ -->
+<section class="slide cover pdf-full-slide pdf-clean">
+<img alt="女性專屬癌症險封面" src="img1.jpg"/>
+</section>
+<!-- ═══════════════════════════════
+     Slide 02 · 重大傷病統計
+════════════════════════════════ -->
+<section class="slide v20-ci">
+  <div class="v20-grid">
+
+    <div class="v20-left">
+      <div class="v20-kicker">CRITICAL ILLNESS STRUCTURE</div>
+      <h2 class="v20-title">重大傷病不是平均發生<br><span class="red">癌症，是最大宗的缺口</span></h2>
+      <div class="v20-sub">115年2月重大傷病卡數 <strong>109.0萬張</strong>，其中癌症 <strong>50.9萬張</strong>，占 <strong>46.7%</strong>。</div>
+
+      <div class="v20-rank-card">
+        <div class="v20-panel-title">前五大發卡排名 <small>依卡數排序</small></div>
+        <div class="v20-rank-list">
+          <div class="v20-rank-row cancer">
+            <div class="v20-rank-num">1</div>
+            <div class="v20-rank-label">需積極或長期<br>治療之癌症</div>
+            <div class="v20-track"><div class="v20-fill" style="width:100%"></div></div>
+            <div class="v20-val"><span class="v20-main-val">50.9萬張</span><span class="v20-share">46.7%</span></div>
+          </div>
+          <div class="v20-rank-row">
+            <div class="v20-rank-num">2</div>
+            <div class="v20-rank-label">慢性精神病</div>
+            <div class="v20-track"><div class="v20-fill" style="width:37.2%"></div></div>
+            <div class="v20-val"><span class="v20-main-val">18.9萬張</span><span class="v20-share">17.4%</span></div>
+          </div>
+          <div class="v20-rank-row">
+            <div class="v20-rank-num">3</div>
+            <div class="v20-rank-label">全身性自體免疫<br>症候群</div>
+            <div class="v20-track"><div class="v20-fill" style="width:29.0%"></div></div>
+            <div class="v20-val"><span class="v20-main-val">14.8萬張</span><span class="v20-share">13.6%</span></div>
+          </div>
+          <div class="v20-rank-row">
+            <div class="v20-rank-num">4</div>
+            <div class="v20-rank-label">慢性腎衰竭</div>
+            <div class="v20-track"><div class="v20-fill" style="width:17.6%"></div></div>
+            <div class="v20-val"><span class="v20-main-val">8.9萬張</span><span class="v20-share">8.2%</span></div>
+          </div>
+          <div class="v20-rank-row">
+            <div class="v20-rank-num">5</div>
+            <div class="v20-rank-label">重大創傷</div>
+            <div class="v20-track"><div class="v20-fill" style="width:2.5%"></div></div>
+            <div class="v20-val"><span class="v20-main-val">1.3萬張</span><span class="v20-share">1.2%</span></div>
+          </div>
+        </div>
+        <div class="v20-talkline">這不是少數人的風險，而是重大傷病裡<strong>最常見的缺口</strong>。</div>
+      </div>
+    </div>
+
+    <div class="v20-right">
+      <div class="v20-trend-card">
+        <div class="v20-trend-head">
+          <div class="v20-trend-title">癌症卡數持續增加</div>
+          <div class="v20-growth"><div class="n">+9.7萬張</div><div class="t">109/4 至 115/2 增加</div></div>
+        </div>
+        <div class="v20-trend">
+          <svg viewBox="0 0 520 210" aria-label="癌症卡數逐年增加趨勢">
+            <line x1="36" y1="170" x2="500" y2="170" stroke="rgba(15,88,110,.16)" stroke-width="2"/>
+            <line x1="36" y1="105" x2="500" y2="105" stroke="rgba(15,88,110,.10)" stroke-width="1"/>
+            <line x1="36" y1="40"  x2="500" y2="40"  stroke="rgba(15,88,110,.10)" stroke-width="1"/>
+            <polyline class="v20-trend-line" points="36,164 113,146 190,123 267,102 344,71 421,43 500,22"/>
+            <g>
+              <circle class="v20-trend-dot" cx="36"  cy="164" r="6"/><text class="v20-trend-label" x="36"  y="194" text-anchor="middle">109/4</text><text class="v20-trend-num" x="36" y="153" text-anchor="middle">41.2萬</text>
+              <circle class="v20-trend-dot" cx="113" cy="146" r="5"/><text class="v20-trend-label" x="113" y="194" text-anchor="middle">110/4</text>
+              <circle class="v20-trend-dot" cx="190" cy="123" r="5"/><text class="v20-trend-label" x="190" y="194" text-anchor="middle">111/4</text>
+              <circle class="v20-trend-dot" cx="267" cy="102" r="5"/><text class="v20-trend-label" x="267" y="194" text-anchor="middle">112/4</text>
+              <circle class="v20-trend-dot" cx="344" cy="71"  r="5"/><text class="v20-trend-label" x="344" y="194" text-anchor="middle">113/4</text>
+              <circle class="v20-trend-dot" cx="421" cy="43"  r="5"/><text class="v20-trend-label" x="421" y="194" text-anchor="middle">114/4</text>
+              <circle class="v20-trend-dot" cx="500" cy="22"  r="6"/><text class="v20-trend-label" x="500" y="194" text-anchor="middle">115/2</text><text class="v20-trend-num" x="500" y="13" text-anchor="middle">50.9萬</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="v20-donut-card">
+        <div class="v20-donut-main">
+          <div class="v20-donut"></div>
+          <div class="v20-donut-center">
+            <div class="pct">46.7%</div>
+            <div class="txt">癌症占重大傷病卡數</div>
+          </div>
+        </div>
+        <div class="v20-keynote">
+          <div class="headline">接近一半</div>
+          <div class="body"><strong>重大傷病不是平均分布。</strong><br>當癌症占比快到一半，準備癌症保障就不是多買一張保單，而是先補最大缺口。</div>
+          <div class="v20-mini-card"><div class="n">50.9萬張</div><div class="t">115年2月癌症重大傷病卡數</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="v20-source">資料來源：全民健康保險重大傷病證明有效領證統計表</div>
+  <div class="slide-pg">02 / 14</div>
+</section>
+<section class="slide">
+<h2 class="animate-line" style="--i:0">近十年台灣人口數</h2>
+<div class="danger-pill animate-line" style="--i:1"># 人口數量進入<strong>負成長</strong>，即將跌破 2,300 萬人</div>
+<div class="teal-header animate-line" style="--i:2">近十年平均人口數：2,337 萬人</div>
+<div class="chart-wrap animate-line" style="--i:3">
+<canvas id="chart-pop"></canvas>
+</div>
+<div class="slide-sig"><span class="dot"></span>真馨相守 CLX</div>
+<div class="slide-pg">03 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 04 · 男女人口數
+════════════════════════════════ -->
+<section class="slide">
+<h2 class="animate-line" style="--i:0">近十年台灣男女人口數</h2>
+<div class="danger-pill animate-line" style="--i:1"># 不是少男少女，是少了人照顧你</div>
+<div class="teal-header animate-line" style="--i:2">近五年女性平均人口數：1,168.8 萬人</div>
+<div class="chart-wrap animate-line" style="--i:3">
+<canvas id="chart-gender"></canvas>
+</div>
+<div class="slide-sig"><span class="dot"></span>真馨相守 CLX</div>
+<div class="slide-pg">04 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 05 · 女性罹癌人數
+════════════════════════════════ -->
+<section class="slide">
+<h2 class="animate-line" style="--i:0">近十年女性罹癌人數</h2>
+<div class="danger-pill animate-line" style="--i:1"># 女性罹癌人數持續上升，醫療風險增加</div>
+<div class="teal-header animate-line" style="--i:2">近五年女性罹癌總計人數：305,387 人</div>
+<div class="chart-wrap animate-line" style="--i:3">
+<canvas id="chart-cancer"></canvas>
+</div>
+<div class="slide-sig"><span class="dot"></span>真馨相守 CLX</div>
+<div class="slide-pg">05 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 06 · 每40位就有1人
+════════════════════════════════ -->
+<section class="slide" style="justify-content:center;align-items:center;text-align:center;">
+<div>
+<div class="animate-line" style="--i:0;font-size:var(--fs-body);color:var(--ink-muted);margin-bottom:0.5em;">近五年女性罹癌總計人數 ÷ 近五年女性人口平均人數</div>
+<div class="animate-line" style="--i:1;display:flex;align-items:center;justify-content:center;gap:0.5em;font-size:2.3em;font-weight:700;flex-wrap:wrap;">
+<span>305,387 人</span><span style="color:var(--ink-muted)">÷</span>
+<span>1,168.8 萬人</span><span style="color:var(--ink-muted)">=</span>
+<span style="color:var(--rose);font-size:1.5em;font-weight:900;">2.5%</span>
+</div>
+<div class="animate-line" style="--i:2"></div>
+<div class="animate-line" style="--i:3;font-size:3em;font-weight:900;margin:0.3em 0;">
+      近五年，每 <span style="color:var(--rose);font-size:1.3em;">40</span> 位女性
+</div>
+<div class="animate-line" style="--i:4;font-size:3em;font-weight:900;margin-bottom:0.6em;">
+      就有 <span style="color:var(--rose);">一人罹癌</span>
+</div>
+<div class="animate-line" style="--i:5;font-size:var(--fs-body);color:var(--ink-muted);">您身邊 39 位女性親友中，就可能有 1 位正在面對癌症</div>
+</div>
+<div class="slide-sig"><span class="dot"></span>真馨相守 CLX</div>
+<div class="slide-pg">06 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 07 · 年齡罹癌比例
+════════════════════════════════ -->
+<section class="slide">
+<h2 class="animate-line" style="--i:0">女性各年齡區間罹癌比例</h2>
+<div class="teal-header animate-line" style="--i:1">50 歲以上為女性罹癌的高峰起點</div>
+<div class="animate-line" style="--i:2;display:flex;gap:3em;align-items:center;flex:1;">
+<div style="flex:0 0 auto;position:relative;width:22em;height:22em;">
+<canvas id="chart-pie"></canvas>
+<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
+<div style="font-size:2.6em;font-weight:900;color:var(--rose);line-height:1;">84%</div>
+<div style="font-size:1.05em;color:var(--ink-muted);">50歲以上</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:0.9em;">
+<div style="display:flex;align-items:flex-start;gap:0.8em;">
+<div style="width:1.1em;height:1.1em;border-radius:3px;background:#f4a7b9;flex-shrink:0;margin-top:0.2em;"></div>
+<div style="font-size:1.35em;"><strong>0–39 歲（青年期）：3%</strong><br/><span style="color:var(--ink-muted);font-size:0.9em;">人數較少，整體穩定</span></div>
+</div>
+<div style="display:flex;align-items:flex-start;gap:0.8em;">
+<div style="width:1.1em;height:1.1em;border-radius:3px;background:#e03e57;flex-shrink:0;margin-top:0.2em;"></div>
+<div style="font-size:1.35em;"><strong>40–49 歲（壯年期）：11%</strong><br/><span style="color:var(--ink-muted);font-size:0.9em;">風險攀升，留意特定癌症</span></div>
+</div>
+<div style="display:flex;align-items:flex-start;gap:0.8em;">
+<div style="width:1.1em;height:1.1em;border-radius:3px;background:#c0394f;flex-shrink:0;margin-top:0.2em;"></div>
+<div style="font-size:1.35em;"><strong>50–64 歲（中年期）：<span style="color:var(--rose);">39%</span></strong><br/><span style="color:var(--ink-muted);font-size:0.9em;">乳癌、甲狀腺癌、肺癌的高峰區</span></div>
+</div>
+<div style="display:flex;align-items:flex-start;gap:0.8em;">
+<div style="width:1.1em;height:1.1em;border-radius:3px;background:#8b1a2e;flex-shrink:0;margin-top:0.2em;"></div>
+<div style="font-size:1.35em;"><strong>65 歲以上（高齡期）：<span style="color:var(--rose);">47%</span></strong><br/><span style="color:var(--ink-muted);font-size:0.9em;">隨長壽風險與女性特有癌症累積</span></div>
+</div>
+<div style="background:rgba(224,62,87,0.08);border-radius:0.4em;padding:0.7em 1em;border-left:3px solid var(--rose);">
+<span style="font-size:1.45em;font-weight:800;color:var(--rose);">約 84% 癌症個案集中在 50 歲以上</span><br/>
+<span style="font-size:1.15em;color:var(--ink-muted);">（中高齡風險顯著增加）</span>
+</div>
+</div>
+</div>
+<div class="slide-sig"><span class="dot"></span>真馨相守 CLX</div>
+<div class="slide-pg">07 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 08 · 商品保費比較（10年/20年分開）
+════════════════════════════════ -->
+<section class="slide v13-premium-slide">
+<div class="v13-premium-head animate-line" style="--i:0">
+<div>
+<h2>商品保費比較（SDG / SDH / CLX）</h2>
+<div class="v13-premium-sub">CLX 以 <strong>基本保額 100 萬</strong> 規劃；女性特定癌症最高再增額 50 萬，合計最高保障 150 萬。</div>
+</div>
+<div class="v13-premium-note">單位：總保費／新台幣萬元</div>
+</div>
+<div class="v13-premium-grid animate-line" style="--i:1">
+<div class="v13-premium-card">
+<div class="v13-card-title"><span>10 年繳</span><small>短繳壓力與總成本</small></div>
+<table class="v13-premium-table">
+<thead><tr><th>年齡</th><th>SDG<br/><small>100萬</small></th><th>SDH<br/><small>100萬</small></th><th class="clz">CLX<br/><small>基本100萬<br/>特定癌症最高150萬</small></th></tr></thead>
+<tbody>
+<tr><td>18歲</td><td>57.2</td><td>87.0</td><td class="clz">43.5 <em>優勢</em></td></tr>
+<tr><td>30歲</td><td>68.1</td><td>88.0</td><td class="clz">51.5 <em>優勢</em></td></tr>
+<tr><td>40歲</td><td>80.0</td><td>91.0</td><td class="clz">61.0 <em>優勢</em></td></tr>
+<tr><td>50歲</td><td>90.0</td><td>115</td><td class="clz">71.0 <em>優勢</em></td></tr>
+<tr><td>60歲</td><td class="warn">175</td><td class="warn">186</td><td class="clz">88.0 <em>優勢</em></td></tr>
+</tbody>
+</table>
+</div>
+<div class="v13-premium-card">
+<div class="v13-card-title"><span>20 年繳</span><small>長繳分散與總成本</small></div>
+<table class="v13-premium-table">
+<thead><tr><th>年齡</th><th>SDG<br/><small>100萬</small></th><th>SDH<br/><small>100萬</small></th><th class="clz">CLX<br/><small>基本100萬<br/>特定癌症最高150萬</small></th></tr></thead>
+<tbody>
+<tr><td>18歲</td><td>60.0</td><td>80.0</td><td class="clz">46.0 <em>優勢</em></td></tr>
+<tr><td>30歲</td><td>76.0</td><td>86.0</td><td class="clz">58.0 <em>優勢</em></td></tr>
+<tr><td>40歲</td><td>94.0</td><td>94.0</td><td class="clz">71.0 <em>優勢</em></td></tr>
+<tr><td>50歲</td><td class="warn">132</td><td class="warn">130</td><td class="clz">94.0 <em>優勢</em></td></tr>
+<tr class="empty-row"><td>60歲</td><td colspan="3">CLX 20 年繳投保年齡至 50 歲</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="v13-premium-bottom animate-line" style="--i:2"><strong>重點：</strong>不是只看保費低，而是用基本保額 100 萬，拉出女性特定癌症最高 150 萬的保障效果。</div>
+<div class="slide-pg">08 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 09 · 商品介紹與四大特色（合併版）
+════════════════════════════════ -->
+<section class="slide v12-product-slide">
+<div class="v12-product-layout">
+<div class="v12-product-hero animate-line" style="--i:0">
+<div>
+<div class="v12-product-kicker">PRODUCT STRATEGY</div>
+<h2 class="v12-product-title">女性專屬癌症險<br/><span>CLX 四大關鍵</span></h2>
+<div class="v12-product-sub">CLX 不是單純多一張癌症險，而是把女性常見癌症、長期保障、外溢折扣與保費回收設計，整合成一張容易說清楚的保障方案。</div>
+<div class="v12-product-tags"><span>女性專屬</span><span>癌症保障</span><span>外溢機制</span><span>保費有去有回</span></div>
+</div>
+<div class="v12-product-disclaimer">商品文號：115.02.10 富壽商精字第1140005477號函備查；詳細給付內容與限制，仍以保單條款為準。</div>
+</div>
+<div class="v12-feature-grid animate-line" style="--i:1">
+<div class="v12-feature-card"><div class="v12-feature-no">1</div><div><div class="v12-feature-title">保障期間夠長</div><div class="v12-feature-body">繳費 <strong>10 年 / 20 年</strong>，保障至保險年齡屆滿 <strong>89 歲</strong>，不是只保年輕時，而是保到真正需要時。</div></div></div>
+<div class="v12-feature-card"><div class="v12-feature-no">2</div><div><div class="v12-feature-title">女性特定癌症加強</div><div class="v12-feature-body">針對乳癌、子宮頸癌、卵巢癌、皮膚癌等，最高給付基本保額 <strong>1.5 倍</strong>，把女性高風險區塊拉出來處理。</div></div></div>
+<div class="v12-feature-card"><div class="v12-feature-no">3</div><div><div class="v12-feature-title">手術與特定傷病額外給付</div><div class="v12-feature-body">更年期常見尿失禁、骨盆底問題等特定手術給付基本保額 <strong>2%</strong>；嚴重全身性紅斑性狼瘡腎病變等給付基本保額 <strong>10%</strong>。</div></div></div>
+<div class="v12-feature-card"><div class="v12-feature-no">4</div><div><div class="v12-feature-title">保費有去有回</div><div class="v12-feature-body">身故或屆滿 89 歲，領回年繳保費總和 <strong>1.06 倍</strong>，並扣除已申領之各項保險金。</div></div></div>
+</div>
+</div>
+<div class="slide-pg">09 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 10 · 給付一覽表
+════════════════════════════════ -->
+<section class="slide">
+<h2 class="animate-line" style="--i:0">給付項目一覽（示例基本保額 100 萬）</h2>
+<table class="benefit-table animate-line" style="--i:1">
+<thead><tr><th style="width:30%">給付項目</th><th>給付內容</th><th style="width:25%">給付金額</th></tr></thead>
+<tbody>
+<tr><td><strong>1. 首次罹患癌症</strong><br/>（初期/輕度，限1次）</td><td>第1年：年繳保費總和×1.06倍<br/>第2年起：保險金額×10%</td><td>第1年：約 30,740 元<br/><strong style="color:var(--rose);">第2年起：10 萬元</strong></td></tr>
+<tr><td><strong>2. 首次罹患癌症</strong><br/>（重度，限1次）</td><td>第1年：年繳保費總和×1.06倍<br/>第2年起：保險金額全額</td><td>第1年：約 30,740 元<br/><strong style="color:var(--rose);">第2年起：100 萬元</strong></td></tr>
+<tr><td><strong>3. 首次罹患特定癌症</strong><br/>（重度，第2年起，限1次）</td><td>第2年×10%；第3年×20%；第4年×30%<br/>第5年×40%；第6年起×50%</td><td><strong style="color:var(--fubon-teal);">最高 50 萬元</strong><br/>（第6保單年度起）</td></tr>
+<tr><td><strong>4. 特定手術保險金</strong>（限1次）</td><td>尿失禁、骨盆底重建、子宮懸吊等女性特定手術（14項）</td><td><strong style="color:var(--fubon-blue);">2 萬元</strong></td></tr>
+<tr><td><strong>5. 特定傷病保險金</strong><br/>（第2年起，限1次）</td><td>嚴重全身性紅斑性狼瘡腎病變 / 嚴重類風濕性關節炎</td><td><strong style="color:var(--fubon-blue);">10 萬元</strong></td></tr>
+<tr><td><strong>6. 身故/滿期保險金</strong><br/>（89歲屆滿仍生存）</td><td>年繳保費總和×1.06倍 − 已申領各項保險金累計總額</td><td><strong style="color:var(--mint);">保費有去有回<br/>× 1.06 倍</strong></td></tr>
+</tbody>
+</table>
+<div class="slide-sig"><span class="dot"></span>真馨相守 CLX</div>
+<div class="slide-pg">10 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 12 · 特定癌症 / 手術 / 傷病
+════════════════════════════════ -->
+<section class="slide v14-icd-slide">
+<h2 class="animate-line" style="--i:0">特定癌症（重度）涵蓋項目</h2>
+<div class="animate-line" style="font-size:var(--fs-aux);color:var(--ink-muted);margin-bottom:0.4em;">共 11 項 ICD-10-CM 編碼，強化女性特有癌症保障</div>
+<div class="icd-bonus-legend animate-line" style="--i:1"><span class="dot"></span>標示項目（C50・C53・C54・C56）另享女性特定癌症加成給付</div>
+<div class="icd-grid animate-line" style="--i:2">
+<div class="icd-cell"><div class="icd-code">C43</div><div class="icd-name">皮膚惡性黑色素瘤</div></div>
+<div class="icd-cell"><div class="icd-code">C44</div><div class="icd-name">皮膚之其他及未明示惡性腫瘤</div></div>
+<div class="icd-cell bonus"><div class="icd-code">C50</div><div class="icd-name">乳房惡性腫瘤</div></div>
+<div class="icd-cell"><div class="icd-code">C51</div><div class="icd-name">外陰惡性腫瘤</div></div>
+<div class="icd-cell"><div class="icd-code">C52</div><div class="icd-name">陰道惡性腫瘤</div></div>
+<div class="icd-cell bonus"><div class="icd-code">C53</div><div class="icd-name">子宮頸惡性腫瘤</div></div>
+<div class="icd-cell bonus"><div class="icd-code">C54</div><div class="icd-name">子宮體惡性腫瘤</div></div>
+<div class="icd-cell"><div class="icd-code">C55</div><div class="icd-name">未明示部位子宮惡性腫瘤</div></div>
+<div class="icd-cell bonus"><div class="icd-code">C56</div><div class="icd-name">卵巢惡性腫瘤</div></div>
+<div class="icd-cell"><div class="icd-code">C57</div><div class="icd-name">其他及未明示女性生殖器官惡性腫瘤</div></div>
+<div class="icd-cell"><div class="icd-code">C58</div><div class="icd-name">胎盤惡性腫瘤</div></div>
+</div>
+<div class="animate-line" style="display:grid;grid-template-columns:1fr 1fr;gap:0.9em;margin-top:1em;">
+<div class="info-box"><div style="font-weight:700;color:var(--fubon-blue);font-size:1.22em;margin-bottom:0.4em;">特定手術項目（14 項）</div>腹式或陰道式會陰尿道懸吊術、腹式尿失禁手術<br/>陰道式尿失禁手術、陰道懸吊術、膀胱懸吊術、KELLY手術<br/>尿道人工括約肌植入術、膀胱頸懸吊術、骨盆底重建術<br/>陰道人工網膜外露修復術、子宮懸吊術等</div>
+<div class="info-box" style="border-color:var(--orange);"><div style="font-weight:700;color:var(--orange);font-size:1.22em;margin-bottom:0.4em;">特定傷病項目（2 項）</div>1. <strong>嚴重全身性紅斑性狼瘡腎病變</strong><br/><br/>2. <strong>嚴重類風濕性關節炎</strong><br/>符合條款定義時，第2年度起給付基本保額 10%。</div>
+</div>
+<div class="slide-pg">11 / 14</div>
+</section>
+<!-- ═══════════════════════════════
+     Slide 12 · 男性十大癌症 + 自費缺口（由上到下）
+════════════════════════════════ -->
+<section class="slide v11-cost-slide v12-vertical">
+<div class="v12-cost-head"><h2 class="v12-cost-title">女性十大癌症與主要自費缺口</h2><div class="v12-cost-sub">女性常見癌症排行與自費缺口整理；右側金額為常見區間，實際依病況與治療方式而異。</div></div>
+<div class="v12-cancer-list"><div class="v12-cancer-row top3"><div class="v12-rank">1</div><div class="v12-name">乳癌</div><div class="v12-risk">女性最常見癌症之一，早期治療選擇多，自費項目多。</div><div class="v12-costs"><span class="v12-chip"><b>標靶HER2+</b><span>70～120萬/療程</span></span><span class="v12-chip"><b>乳房重建</b><span>15～30萬/單側</span></span><span class="v12-chip"><b>達文西</b><span>20～25萬</span></span></div></div><div class="v12-cancer-row top3"><div class="v12-rank">2</div><div class="v12-name">肺癌</div><div class="v12-risk">女性患者增加，不吸菸族群也要重視早期篩檢。</div><div class="v12-costs"><span class="v12-chip"><b>第三代標靶</b><span>200～250萬/年</span></span><span class="v12-chip"><b>免疫治療</b><span>300～600萬/年</span></span><span class="v12-chip"><b>質子治療</b><span>80～100萬/療程</span></span></div></div><div class="v12-cancer-row top3"><div class="v12-rank">3</div><div class="v12-name">大腸癌</div><div class="v12-risk">飲食西化與生活型態相關，早期發現治癒率高。</div><div class="v12-costs"><span class="v12-chip"><b>標靶藥物</b><span>100～200萬/年</span></span><span class="v12-chip"><b>達文西</b><span>18～25萬</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">4</div><div class="v12-name">甲狀腺癌</div><div class="v12-risk">女性常見，治療期長，術式與追蹤成本需留意。</div><div class="v12-costs"><span class="v12-chip"><b>達文西經口/腋下</b><span>16～21萬</span></span><span class="v12-chip"><b>消融術</b><span>6～15萬</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">5</div><div class="v12-name">子宮體癌</div><div class="v12-risk">與荷爾蒙、肥胖、年齡相關，手術與基因檢測常見。</div><div class="v12-costs"><span class="v12-chip"><b>達文西全子宮</b><span>16～20萬</span></span><span class="v12-chip"><b>基因檢測</b><span>5～15萬</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">6</div><div class="v12-name">肝癌</div><div class="v12-risk">與病毒性肝炎、肝硬化相關，標靶與栓塞費用高。</div><div class="v12-costs"><span class="v12-chip"><b>標靶藥物</b><span>100～150萬/年</span></span><span class="v12-chip"><b>栓塞治療</b><span>10～20萬</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">7</div><div class="v12-name">卵巢癌</div><div class="v12-risk">早期症狀不明顯，常需長期藥物與手術治療。</div><div class="v12-costs"><span class="v12-chip"><b>PARP抑制劑</b><span>100～150萬/年</span></span><span class="v12-chip"><b>達文西減瘤</b><span>20～30萬</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">8</div><div class="v12-name">皮膚癌</div><div class="v12-risk">特定類型治療選項多，自費雷射與標靶需準備。</div><div class="v12-costs"><span class="v12-chip"><b>雷射/顯微手術</b><span>5～15萬</span></span><span class="v12-chip"><b>免疫/標靶</b><span>100萬起</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">9</div><div class="v12-name">子宮頸癌</div><div class="v12-risk">可篩檢可預防，但治療仍可能需要手術與合併治療。</div><div class="v12-costs"><span class="v12-chip"><b>達文西根除術</b><span>20～25萬</span></span><span class="v12-chip"><b>化放療標靶</b><span>50～80萬</span></span></div></div><div class="v12-cancer-row"><div class="v12-rank">10</div><div class="v12-name">胃癌</div><div class="v12-risk">早期症狀容易被忽略，晚期治療常需免疫或標靶。</div><div class="v12-costs"><span class="v12-chip"><b>免疫/標靶</b><span>150～250萬/年</span></span><span class="v12-chip"><b>微創切除</b><span>15～25萬</span></span></div></div></div>
+<div class="v12-cost-footer"><span><strong>呈現邏輯：</strong>十大罹癌排行由上到下，費用缺口由右側補強。</span><span>實際醫療費用仍依病況、治療方式、醫院與個別用藥而異。</span></div>
+<div class="slide-pg">12 / 14</div>
+</section>
+<section class="slide closing pdf-full-slide pdf-clean">
+<img alt="女性專屬癌症險收束圖檔" src="img2.jpg"/>
+<div class="closing-overlay"></div>
+<div class="final-emotional-copy">
+<span class="soft">女生的風險不是比較容易生病</span>
+<span class="soft">而是她通常撐起整個家比較久</span>
+<span class="strong">當媽媽生病，<span class="gold">不是家裡少一個人</span></span>
+<span class="strong">而是整個家都停擺</span>
+</div>
+</section>
+<!-- ═══ Slide 14 · 保費試算 ═══ -->
+<section class="slide clz-calc-slide">
+<div class="cc-top">
+  <h2>保費試算</h2>
+  <span class="cc-chip">CLX 官方費率・女性專屬</span>
+</div>
+
+<div class="cc-body">
+
+  <!-- ─── LEFT：輸入 ─── -->
+  <div class="cc-left">
+    <div class="cc-panel">
+
+      <div class="cc-field">
+        <label>出生日期 <span class="cc-label-sub">民國年</span></label>
+        <div class="cc-roc-row">
+          <input type="number" class="cc-roc-y" id="cc-roc-y" placeholder="年" min="40" max="114"
+                 oninput="clzROC()" onchange="clzROC()">
+          <span class="cc-roc-sep">年</span>
+          <input type="number" class="cc-roc-md" id="cc-roc-m" placeholder="月" min="1" max="12"
+                 oninput="clzROC()" onchange="clzROC()">
+          <span class="cc-roc-sep">月</span>
+          <input type="number" class="cc-roc-md" id="cc-roc-d" placeholder="日" min="1" max="31"
+                 oninput="clzROC()" onchange="clzROC()">
+          <span class="cc-roc-sep">日</span>
+        </div>
+        <div class="cc-age-tag" id="cc-age-tag">保險年齡：<span id="cc-age-num">—</span> 歲</div>
+      </div>
+
+      <div class="cc-field">
+        <label>基本保額 <span class="cc-label-sub">50～300 萬・10萬單位</span></label>
+        <div class="cc-cov-wrap">
+          <input type="range" class="cc-cov-range" id="cc-cov-range" min="50" max="300" step="50" value="100"
+                 oninput="syncCov(this.value)">
+          <input type="number" class="cc-cov-num" id="cc-cov-num" min="50" max="300" step="50" value="100"
+                 onchange="syncCovNum(this.value)">
+          <span>萬</span>
+        </div>
+        <div class="cc-age-tag vis" style="background:rgba(0,165,155,.11);color:#00897b;display:block!important;margin-top:.3em;">
+          女性特定癌症最高：<span id="cc-specific-display">150</span> 萬
+        </div>
+        <span id="cc-cov-display" style="display:none">100</span>
+      </div>
+
+      <div class="cc-field">
+        <label>繳費年期</label>
+        <div class="cc-btn-row" id="grp-per">
+          <button class="cc-btn on" id="btn10yr" onclick="clzSet('per',10,this)">10 年繳</button>
+          <button class="cc-btn" id="btn20yr" onclick="clzSet('per',20,this)">20 年繳</button>
+        </div>
+      </div>
+
+      <div class="cc-field">
+        <label>繳費方式</label>
+        <div class="cc-btn-row cc-freq-row" id="grp-freq">
+          <button class="cc-btn cc-freq-btn on" onclick="clzSet('freq','annual',this)">年繳</button>
+          <button class="cc-btn cc-freq-btn" onclick="clzSet('freq','semi',this)">半年繳</button>
+          <button class="cc-btn cc-freq-btn" onclick="clzSet('freq','quarter',this)">季繳</button>
+          <button class="cc-btn cc-freq-btn" onclick="clzSet('freq','month',this)">月繳</button>
+        </div>
+      </div>
+
+      <div class="cc-field">
+        <label class="cc-chk-label">
+          <input type="checkbox" id="cc-discount" onchange="clzCalc()">
+          <span>健康管理折扣（每年健康檢查享續年度 1% 折扣）</span>
+        </label>
+        <label class="cc-chk-label" style="margin-top:.35em;">
+          <input type="checkbox" id="cc-pay-discount" checked onchange="clzCalc()">
+          <span>繳費方式折扣（年繳 −1%，預設勾選）</span>
+        </label>
+      </div>
+
+      <button class="cc-calc-btn" onclick="clzCalc()">立即試算</button>
+    </div>
+  </div>
+
+  <!-- ─── RIGHT：結果 ─── -->
+  <div class="cc-right">
+
+    <!-- 保費 Hero -->
+    <div class="cc-prem-box" id="cc-prem-box">
+      <div class="cc-hero-row">
+        <div class="cc-hero-item accent">
+          <div class="cc-hero-lbl">年繳保費</div>
+          <div class="cc-hero-num blue" id="cc-annual">—</div>
+          <div class="cc-hero-unit">元 ／ 年</div>
+          <div class="cc-hero-sub">約 <span id="cc-monthly">—</span> 元 ／ 月</div>
+        </div>
+        <div class="cc-hero-item">
+          <div class="cc-hero-lbl">繳費期總保費</div>
+          <div class="cc-hero-num" id="cc-total">—</div>
+          <div class="cc-hero-unit">元</div>
+          <div class="cc-hero-sub" id="cc-freq-col" style="display:none">
+            <span id="cc-freq-lbl">每期</span>&thinsp;<span id="cc-freq-val">—</span> 元
+          </div>
+        </div>
+        <div class="cc-hero-item accent">
+          <div class="cc-hero-lbl">屆滿 89 歲生存領回</div>
+          <div class="cc-hero-num gold" id="cc-maturity">—</div>
+          <div class="cc-hero-unit">元</div>
+          <div class="cc-hero-sub">總保費 × 1.06</div>
+        </div>
+      </div>
+      <div class="cc-disc-note" id="cc-disc-col" style="display:none">
+        健康管理折扣後，續年度年繳約 <strong id="cc-discounted">—</strong> 元
+      </div>
+      <div id="cc-sales-line" style="font-size:.76em;font-weight:800;color:#3a5566;background:rgba(0,165,155,.08);border:1px solid rgba(0,165,155,.18);border-radius:.5em;padding:.38em .75em;margin-top:.45em;line-height:1.5;">
+        請先輸入出生日期，系統將自動產生可對客戶說的結論。
+      </div>
+    </div>
+
+    <!-- 保障 Grid -->
+    <div class="cc-bene-section">
+      <div class="cc-bene-hd">
+        <span class="title">保障給付一覽</span>
+        <span class="cc-bene-badge">保額 <span id="bene-cov">—</span> 萬元</span>
+      </div>
+      <div class="cc-bene-grid">
+
+        <div class="cc-card red">
+          <div>
+            <div class="cc-card-label">癌症（重度）保險金</div>
+            <div class="cc-card-note">第 2 年起確診，一次給付全額保額</div>
+          </div>
+          <div class="cc-card-bottom">
+            <div>
+              <div class="cc-card-amt" id="b-heavy">—</div>
+              <div class="cc-card-unit">萬元</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc-card red2">
+          <div>
+            <div class="cc-card-label">女性特定癌症加碼</div>
+            <div class="cc-card-note">乳癌、子宮頸癌等11項，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">—</span> 萬</div>
+          </div>
+          <div class="cc-card-bottom">
+            <div>
+              <div class="cc-card-amt" id="b-specific">—</div>
+              <div class="cc-card-unit">萬元（增額）</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc-card orange">
+          <div>
+            <div class="cc-card-label">癌症（初期／輕度）</div>
+            <div class="cc-card-note">保額 10%，第 2 年起，限一次</div>
+          </div>
+          <div class="cc-card-bottom">
+            <div>
+              <div class="cc-card-amt" id="b-light">—</div>
+              <div class="cc-card-unit">萬元</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc-card teal">
+          <div>
+            <div class="cc-card-label">特定傷病保險金</div>
+            <div class="cc-card-note">紅斑性狼瘡腎病變／類風濕關節炎，保額 10%</div>
+          </div>
+          <div class="cc-card-bottom">
+            <div>
+              <div class="cc-card-amt" id="b-disease">—</div>
+              <div class="cc-card-unit">萬元</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc-card blue">
+          <div>
+            <div class="cc-card-label">特定手術保險金</div>
+            <div class="cc-card-note">尿失禁、骨盆底等女性 14 項，保額 2%</div>
+          </div>
+          <div class="cc-card-bottom">
+            <div>
+              <div class="cc-card-amt" id="b-surgery">—</div>
+              <div class="cc-card-unit">萬元</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cc-card green">
+          <div class="cc-waiver-row">
+            <div>
+              <div class="cc-card-label">豁免後續保費</div>
+              <div class="cc-card-note">確診首次重度癌症或 1～6 級失能，後續各期保費全數豁免，保障繼續有效至 89 歲</div>
+            </div>
+            <div class="cc-waiver-tag">自動豁免</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cc-note-s">
+      ＊依富邦人壽 CLX 官方費率表（女性），實際保費以核保結果為準。保險年齡：足歲餘數超過6個月加計1歲。投保年齡：10年繳18～60歲，20年繳18～50歲。
+    </div>
+    <!-- JS compat: hidden IDs -->
+    <span id="b-maturity2" style="display:none"></span>
+  </div>
+
+</div>
+<div class="slide-pg">14 / 14</div>
+</section>
+</div><!-- /.deck -->
+<!-- Control Bar -->
+<div class="ctrl-bar">
+<button onclick="prev()" title="上一張 ←">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+</button>
+<span class="counter" id="counter">1 / 13</span>
+<button onclick="next()" title="下一張 →">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button onclick="toggleMode()" title="投影片 ↔ 捲動">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"></path></svg>
+</button>
+<button onclick="window.print()" title="列印 / 匯出 PDF">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect></svg>
+</button>
+<button onclick="toggleGrid()" title="光桌一覽 G">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="7" rx="1" width="7" x="3" y="3"></rect><rect height="7" rx="1" width="7" x="14" y="3"></rect><rect height="7" rx="1" width="7" x="3" y="14"></rect><rect height="7" rx="1" width="7" x="14" y="14"></rect></svg>
+</button>
+<button id="btn-fs" onclick="document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()" title="全螢幕 F">
+<svg fill="none" id="icon-fs-enter" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"></path></svg>
+<svg fill="none" id="icon-fs-exit" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="display:none" viewbox="0 0 24 24"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"></path></svg>
+</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

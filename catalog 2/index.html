@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#060f1a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>GodzillaPaul｜財務人生導航</title>
+
+<!-- ── Favicon / PWA icons ── -->
+<!-- Apple Touch Icons -->
+<!-- Android / PWA -->
+
+<!-- ── Stylesheets ── -->
+<link rel="stylesheet" href="css/base.css?v=7">
+<link rel="stylesheet" href="css/index.css?v=7">
+<link rel="stylesheet" href="css/auth.css?v=1">
+</head>
+<body>
+<div class="member-bar" aria-label="會員狀態"><span class="member-email" data-member-email>確認會員身分中…</span><button class="member-logout" data-member-logout type="button">登出</button></div>
+<div class="app">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <!-- Topbar -->
+  <header class="shell topbar" aria-label="頁首">
+    <a class="brand" href="#tools" aria-label="回到工具選擇">
+      <div class="brand-badge">
+        <img src="../login-assets/icon-512x512.png" alt="GodzillaPaul Logo" width="58" height="58">
+      </div>
+      <div>
+        <small>GODZILLAPAUL</small>
+        <strong>財務人生導航</strong>
+      </div>
+    </a>
+    <span class="pill"><span class="pulse"></span>顧問試算</span>
+  </header>
+
+  <main>
+    <!-- Hero: logo LEFT circle, text RIGHT -->
+    <section class="shell hero">
+
+      <!-- Left col: circle logo -->
+      <aside class="brand-stage" aria-label="GodzillaPaul 品牌視覺">
+        <div class="logo-circle">
+          <img src="../login-assets/logo-hero.jpg" alt="GodzillaPaul Logo" width="600" height="600">
+        </div>
+      </aside>
+
+      <!-- Right col: copy -->
+      <div class="hero-copy">
+        <div class="hero-label">GODZILLAPAUL</div>
+        <h1>
+          <span>先算出人生缺口，</span>
+          <span>再選擇財務解方。</span>
+        </h1>
+        <p>你不是不知道要存錢，你是不知道自己到底差多少。</p>
+      </div>
+
+    </section>
+
+    <!-- Tools -->
+    <section class="shell section" id="tools">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">選擇問題</div>
+          <h2>你今天想先算哪一件事？</h2>
+        </div>
+        <div class="seg" role="tablist" aria-label="工具分類">
+          <button class="active" data-filter="all"      type="button">全部</button>
+          <button data-filter="life"     type="button">人生缺口</button>
+          <button data-filter="retire"   type="button">退休</button>
+          <button data-filter="cashflow" type="button">現金流</button>
+          <button data-filter="leverage" type="button">資產加速</button>
+          <button data-filter="property" type="button">房產</button>
+        </div>
+      </div>
+
+      <div class="grid" id="toolGrid">
+        <a class="tool-card tool-life" data-type="life"
+           href="./apps/life-sim/">
+          <div class="card-top"><span class="badge">01</span></div>
+          <div class="tool-title">現實人生<br>模擬器</div>
+          <div class="tool-question">我想知道人生要花多少錢</div>
+          <div class="tool-desc">算出生活、家庭、孩子、退休與理想人生的總成本。</div>
+          <div class="cta"><span class="cta-text">計算人生缺口</span><span class="arrow">→</span></div>
+        </a>
+
+        <a class="tool-card tool-retire" data-type="retire"
+           href="./apps/retirement/">
+          <div class="card-top"><span class="badge">02</span></div>
+          <div class="tool-title">退休<br>規劃表</div>
+          <div class="tool-question">我想知道退休要準備多少錢</div>
+          <div class="tool-desc">把退休年齡、月花費與目標本金變成清楚的退休路線。</div>
+          <div class="cta"><span class="cta-text">規劃退休目標</span><span class="arrow">→</span></div>
+        </a>
+
+        <a class="tool-card tool-income" data-type="cashflow"
+           href="./apps/v-calculator/">
+          <div class="card-top"><span class="badge">03</span></div>
+          <div class="tool-title">月配息<br>計算機</div>
+          <div class="tool-question">我想知道一筆錢每月能領多少</div>
+          <div class="tool-desc">輸入金額與標的，快速看見每月配息與現金流畫面。</div>
+          <div class="cta"><span class="cta-text">試算月配息</span><span class="arrow">→</span></div>
+        </a>
+
+        <a class="tool-card tool-accelerate" data-type="leverage"
+           href="./apps/leverage-life/">
+          <div class="card-top"><span class="badge">04</span></div>
+          <div class="tool-title">資產<br>加速器</div>
+          <div class="tool-question">我想知道如何加速資產累積</div>
+          <div class="tool-desc">用個人資產企業化邏輯，試算信貸投資套利與資產放大。</div>
+          <div class="cta"><span class="cta-text">試算資產加速</span><span class="arrow">→</span></div>
+        </a>
+        <a class="tool-card tool-property" data-type="property"
+           href="./apps/property-cashflow/">
+          <div class="card-top"><span class="badge">05</span></div>
+          <div class="tool-title">房產<br>現金流</div>
+          <div class="tool-question">我想知道房子能產生多少現金流</div>
+          <div class="tool-desc">房貸減壓、以房養老退休規劃、快速月付試算，三功能整合。</div>
+          <div class="cta"><span class="cta-text">試算房產現金流</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="shell section" id="solutions">
+      <div class="solution-wrap">
+        <div class="solution-links" aria-label="專屬資料庫入口">
+          <a class="solution-card solution-product" href="./products.html" aria-label="查看商品解方庫">
+            <h3>查看商品解方庫</h3>
+            <p>看完缺口與目標後，下一步就是找到合適的商品方向。</p>
+            <div class="solution-actions">
+              <span class="primary-btn">進入商品解方庫 →</span>
+            </div>
+          </a>
+          <a class="solution-card solution-claim" href="./claims.html" aria-label="查看理賠案例庫">
+            <h3>查看理賠案例庫</h3>
+            <p>從病名與事故情境出發，讓客戶看懂保險真正派上用場的時刻。</p>
+            <div class="solution-actions">
+              <span class="primary-btn claim-btn">進入理賠案例庫 →</span>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="shell footer-card">
+      <span>試算結果僅供參考，實際內容以正式契約與最新公告資料為準。</span>
+      <span>GodzillaPaul｜財務人生導航</span>
+    </footer>
+  </main>
+</div>
+
+<!-- ── Scripts ── -->
+<script src="js/index.js?v=7"></script>
+<script src="js/auth.js?v=2"></script>
+</body>
+</html>

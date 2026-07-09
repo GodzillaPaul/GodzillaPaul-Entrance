@@ -1,0 +1,134 @@
+/* ============ Career Timeline 升級 ============ */
+.fb-career-phase-row {
+    animation: uFadeInDown .8s var(--u-ease-out) both;
+}
+.fb-career-phase {
+    transition: transform var(--u-dur-base) var(--u-ease), border-color var(--u-dur-base) var(--u-ease) !important;
+    position: relative;
+    overflow: hidden;
+}
+.fb-career-phase::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    transition: left 1s var(--u-ease);
+    pointer-events: none;
+}
+.fb-career-phase:hover::after { left: 100%; }
+.fb-career-phase:hover {
+    transform: translateY(-2px);
+}
+
+/* Career steps 逐個進場 */
+.fb-career-steps > * {
+    animation: uFadeInUp .6s var(--u-ease-out) both;
+}
+.fb-career-steps > *:nth-child(1) { animation-delay: .1s; }
+.fb-career-steps > *:nth-child(2) { animation-delay: .2s; }
+.fb-career-steps > *:nth-child(3) { animation-delay: .3s; }
+.fb-career-steps > *:nth-child(4) { animation-delay: .4s; }
+.fb-career-steps > *:nth-child(5) { animation-delay: .5s; }
+.fb-career-steps > *:nth-child(6) { animation-delay: .6s; }
+.fb-career-steps > *:nth-child(7) { animation-delay: .7s; }
+.fb-career-steps > *:nth-child(8) { animation-delay: .8s; }
+.fb-career-steps > *:nth-child(9) { animation-delay: .9s; }
+
+/* CTA 大數字區（2年9個月） */
+.fb-career-cta {
+    animation: uFadeInUp .8s var(--u-ease-out) 1s both;
+}
+.fb-career-cta-big {
+    animation: uNumBeat 2.5s var(--u-ease-out) 1.4s both;
+    display: inline-block;
+}
+@keyframes uNumBeat {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.06); }
+    40% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+/* ============ 薪資卡升級 ============ */
+.fb-salary-grid {
+    gap: 16px !important;
+}
+.fb-sal-card {
+    animation: uFadeInUp .7s var(--u-ease-out) both;
+    cursor: default;
+    border-radius: 22px !important;
+}
+.fb-salary-grid .fb-sal-card:nth-child(1) { animation-delay: .1s; }
+.fb-salary-grid .fb-sal-card:nth-child(2) { animation-delay: .18s; }
+.fb-salary-grid .fb-sal-card:nth-child(3) { animation-delay: .26s; }
+.fb-salary-grid .fb-sal-card:nth-child(4) { animation-delay: .34s; }
+.fb-salary-grid .fb-sal-card:nth-child(5) { animation-delay: .42s; }
+.fb-salary-grid .fb-sal-card:nth-child(6) { animation-delay: .50s; }
+
+.fb-sal-card {
+    transition:
+        transform var(--u-dur-base) var(--u-ease-out),
+        box-shadow var(--u-dur-base) var(--u-ease),
+        border-color var(--u-dur-base) var(--u-ease) !important;
+}
+.fb-sal-card:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 26px 50px rgba(232,75,28,.22) !important;
+}
+.fb-sal-card.top-card:hover {
+    box-shadow: 0 28px 56px rgba(212,155,55,.32) !important;
+}
+
+/* Hero 數字進場 */
+.fb-sal-hero-num {
+    display: inline-block;
+    animation: uNumSlide .7s var(--u-ease-out) .3s both;
+}
+@keyframes uNumSlide {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Top card 金色徽章脈動 */
+.fb-sal-card.top-card .fb-sal-pct-tag {
+    animation: uGoldPulse 3s ease-in-out infinite;
+}
+@keyframes uGoldPulse {
+    0%, 100% { box-shadow: 0 4px 10px rgba(176,120,32,.32); }
+    50% { box-shadow: 0 4px 20px rgba(245,201,106,.55); }
+}
+
+/* ============ 收入試算表 modal 精修 ============ */
+.s6-income-table-wrap {
+    animation: uFadeInScale .6s var(--u-ease-out) both;
+}
+.s6-income-table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+.s6-income-table thead th {
+    transition: background .2s var(--u-ease);
+}
+.s6-income-table thead th:hover:not(.col-item) {
+    background: rgba(71,109,255,.08) !important;
+}
+
+/* Hero row 脈動強調 */
+.s6-income-table tbody tr.row-hero td {
+    animation: uHeroGlow 3s ease-in-out infinite;
+}
+@keyframes uHeroGlow {
+    0%, 100% { box-shadow: inset 0 0 0 rgba(232,75,28,0); }
+    50% { box-shadow: inset 0 0 30px rgba(232,75,28,.08); }
+}
+
+/* ============ Step 6 問卷（s6-question）升級 ============ */
+.s6-question-screen {
+    animation: uFadeInUp .7s var(--u-ease-out) both;
+}
+
+/* s6-gap grid 卡片升級（ideal vs adjust） */
+.s6-gap-grid {
+    animation: uFadeInUp .7s var(--u-ease-out) .2s both;
+}

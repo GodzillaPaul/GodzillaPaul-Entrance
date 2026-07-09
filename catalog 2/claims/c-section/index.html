@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>常見理賠案例01-剖腹產</title>
+<!--
+  ════════════════════════════════════════════════════════
+  kevin-design-system · deck-base.html
+  用途：所有 16:9 HTML 簡報的起點範本
+  使用方式：
+    1. 複製此檔案到目標路徑（例如 presentations/weekly-meeting/index.html）
+    2. 更新 variables.css 的相對路徑：
+         templates/         →  ../css/variables.css
+         presentations/xxx/ →  ../../css/variables.css
+    3. 在 <div class="deck"> 內填入 <section class="slide"> 內容
+    4. 不要修改 <script> 區塊
+  ════════════════════════════════════════════════════════
+-->
+
+<!-- Standalone design tokens: this file opens directly without external CSS. -->
+<style>
+:root {
+  --brand: #0b6f8f;
+  --brand-deep: #0a5874;
+  --brand-soft: #e5f2f2;
+  --accent: #d8a34d;
+  --orange: #c97138;
+  --success: #69d7ad;
+  --gold: #d8a34d;
+  --danger: #c63f42;
+  --surface: #f6f1e8;
+  --surface-warm: #f6f1e8;
+  --surface-cool: #eee6d9;
+  --surface-dark: #101820;
+  --panel: rgba(255,255,255,0.78);
+  --text: #34404b;
+  --text-strong: #182330;
+  --text-muted: #756f66;
+  --text-on-dark: #f6f7f8;
+  --line: rgba(151,108,63,0.24);
+  --shadow-soft: 0 20px 48px rgba(68,52,34,0.10);
+  --shadow-strong: 0 30px 68px rgba(68,52,34,0.18);
+  --radius: 8px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-display: var(--font-sans);
+  --fs-cover: 6.8em;
+  --fs-heading: 4.8em;
+  --fs-subtitle: 2.4em;
+  --fs-body: 1.55em;
+  --fs-meta: 0.95em;
+  --lh-tight: 1.05;
+  --lh-body: 1.45;
+  --top-ui-height: 64px;
+}
+</style>
+
+<style>
+
+/* ══════════════════════════════════════════════════════
+   每張 deck 的個別覆蓋 — 只在此處覆蓋，不改 variables.css
+   大多數情況下留空即可
+   ══════════════════════════════════════════════════════ */
+/* :root {
+  --brand:   #0093C1;
+  --surface: #FFFFFF;
+} */
+
+
+/* PDF page slides */
+.pdf-slide {
+  padding: 0;
+  background: #0a0a0a;
+  align-items: center;
+  justify-content: center;
+}
+.pdf-slide .pdf-page {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #fff;
+  cursor: zoom-in;
+}
+.pdf-slide.cover-slide {
+  overflow: hidden;
+}
+.pdf-slide.cover-slide .pdf-page {
+  object-fit: cover;
+  transform: scale(1.075);
+  transform-origin: center;
+}
+html.scroll-mode .pdf-slide {
+  padding: 0 !important;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+}
+html.scroll-mode .pdf-slide .pdf-page {
+  width: 100%;
+  height: 100%;
+}
+html.scroll-mode .pdf-slide.cover-slide .pdf-page,
+html.grid-mode .pdf-slide.cover-slide .pdf-page {
+  transform: none;
+}
+
+/* Premium opening cover */
+.premium-cover {
+  padding: 0;
+  background: var(--surface);
+  color: var(--text-strong);
+  isolation: isolate;
+}
+.premium-cover .cover-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: premiumBgIn 1.35s cubic-bezier(.22,1,.36,1) both;
+}
+.premium-cover .cover-soften {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 54%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 45% 30%, rgba(255,255,255,0.34), transparent 38%),
+    linear-gradient(90deg, rgba(246,241,232,0), rgba(246,241,232,0.18) 45%, rgba(246,241,232,0.04));
+  pointer-events: none;
+}
+.premium-cover .cover-zone {
+  position: absolute;
+  top: 0;
+  left: 54.2%;
+  width: 39.8%;
+  height: 100%;
+  z-index: 4;
+}
+.cover-dialog {
+  position: absolute;
+  left: 0;
+  top: 14.8%;
+  width: 100%;
+  min-height: 35%;
+  padding: 3.35em 3.65em 3.15em;
+  border-radius: 2.35em;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.68), rgba(255,255,255,0.34));
+  border: 1px solid rgba(255,255,255,0.46);
+  box-shadow:
+    0 30px 76px rgba(68,52,34,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.45);
+  backdrop-filter: blur(2.5px);
+  animation: cardIn 0.9s cubic-bezier(.22,1,.36,1) 0.12s both;
+}
+.cover-dialog::before {
+  content: "";
+  position: absolute;
+  inset: 0.9em;
+  border-radius: 1.45em;
+  border: 1px solid rgba(255,255,255,0.20);
+  pointer-events: none;
+}
+.cover-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  color: var(--brand-deep);
+  font-size: 1.05em;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.cover-eyebrow::before {
+  content: "";
+  width: 0.48em;
+  height: 0.48em;
+  border-radius: 999px;
+  background: var(--danger);
+  box-shadow: 0 0 0 0.28em rgba(198,63,66,0.12);
+}
+.premium-cover .cover-title {
+  margin-top: 0.32em;
+  color: var(--text-strong);
+  font-size: 5.62em;
+  line-height: 0.92;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+.premium-cover .cover-title .muted-line {
+  display: block;
+  color: #1f2a36;
+  font-size: 0.86em;
+}
+.premium-cover .cover-title .red-line {
+  display: block;
+  color: var(--danger);
+}
+.premium-cover .cover-subtitle {
+  margin-top: 1.05em;
+  color: rgba(34,45,58,0.72);
+  font-size: 1.34em;
+  line-height: 1.52;
+  font-weight: 760;
+  max-width: 29em;
+}
+.cover-accent-line {
+  margin-top: 1.6em;
+  width: 13.8em;
+  height: 0.28em;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--danger), var(--accent) 58%, rgba(255,255,255,0));
+  transform-origin: left center;
+  animation: lineGrow 0.85s cubic-bezier(.22,1,.36,1) 0.72s both;
+}
+.cover-case-bar {
+  position: absolute;
+  left: 0;
+  bottom: 14.2%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  color: rgba(57,52,46,0.64);
+  font-size: 0.92em;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.cover-case-bar .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+.cover-brand {
+  position: absolute;
+  right: 0;
+  bottom: 6.2%;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  color: rgba(40,39,36,0.42);
+  font-size: 0.82em;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+.cover-brand::before {
+  content: "";
+  width: 0.36em;
+  height: 0.36em;
+  border-radius: 999px;
+  background: rgba(198,63,66,0.72);
+}
+.cover-page {
+  position: absolute;
+  left: 0;
+  bottom: 6.2%;
+  color: rgba(40,39,36,0.34);
+  font-size: 0.8em;
+  line-height: 1;
+  font-weight: 820;
+  letter-spacing: 0.09em;
+}
+
+/* Narrative case slides */
+.story-slide {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(216,163,77,0.16), transparent 26%),
+    linear-gradient(90deg, rgba(11,111,143,0.08), transparent 24%),
+    linear-gradient(180deg, rgba(216,163,77,0.10), transparent 46%),
+    linear-gradient(135deg, var(--surface-warm), var(--surface-cool));
+  color: var(--text-strong);
+  justify-content: flex-start;
+  padding: 5.2em 6.2em 5em;
+}
+.story-slide::before,
+.slide.case-doc-slide::before,
+.slide.claim-slide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--orange) 54%, var(--accent) 100%);
+  z-index: 2;
+}
+.story-slide.dark-story {
+  background: var(--surface-dark);
+  color: #f6f8f8;
+}
+.story-slide h1,
+.story-slide h2 {
+  letter-spacing: 0;
+}
+.story-kicker {
+  color: var(--brand-deep);
+  font-size: 1.16em;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-bottom: 1em;
+}
+.story-title {
+  color: var(--text-strong);
+  font-size: 4.45em;
+  line-height: 1.06;
+  max-width: 13.8em;
+}
+.dark-story .story-title,
+.dark-story .story-kicker {
+  color: #f6f8f8;
+}
+.story-lead {
+  color: #52616c;
+  font-size: 1.48em;
+  line-height: 1.55;
+  max-width: 35em;
+  margin-top: 1.2em;
+}
+.dark-story .story-lead {
+  color: rgba(246,248,248,0.78);
+}
+.split-layout {
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  gap: 4.4em;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+}
+.template-four-cards {
+  padding-top: 4.8em;
+}
+.template-four-cards .split-layout {
+  grid-template-columns: 0.76fr 1.24fr;
+  gap: 5.8em;
+}
+.template-four-cards .story-title {
+  font-size: 5.18em;
+  max-width: 9.2em;
+}
+.template-four-cards .story-lead {
+  font-size: 1.92em;
+  line-height: 1.42;
+  max-width: 25em;
+}
+.template-four-cards .hero-stat-grid {
+  gap: 1.45em;
+}
+.template-four-cards .hero-stat {
+  min-height: 16.2em;
+  padding: 2em 2em;
+}
+.template-four-cards .hero-stat b {
+  font-size: 1.38em;
+}
+.template-four-cards .hero-stat strong {
+  font-size: 2.58em;
+}
+.template-four-cards .hero-stat span {
+  font-size: 1.42em;
+  line-height: 1.36;
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1em;
+  margin-top: 2.2em;
+}
+.info-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25em 1.35em;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+}
+.info-panel strong {
+  display: block;
+  color: var(--text-strong);
+  font-size: 1.32em;
+  margin-bottom: 0.38em;
+}
+.info-panel span {
+  color: #5a6670;
+  display: block;
+  font-size: 1.08em;
+  line-height: 1.45;
+}
+.big-number {
+  color: #e91e63;
+  font-size: 7.2em;
+  font-weight: 900;
+  line-height: 0.9;
+}
+.callout-line {
+  border-left: 0.5em solid #0093c1;
+  padding-left: 1.2em;
+  color: #2b3942;
+  font-size: 1.8em;
+  font-weight: 800;
+  line-height: 1.32;
+}
+.journey {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.9em;
+  margin-top: 3.2em;
+}
+.journey-step {
+  min-height: 16.8em;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 1.25em 1.1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.journey-step b {
+  color: #0093c1;
+  font-size: 1.12em;
+}
+.journey-step strong {
+  color: #18242c;
+  font-size: 1.45em;
+  line-height: 1.18;
+}
+.journey-step span {
+  color: #66727a;
+  font-size: 1.02em;
+  line-height: 1.4;
+}
+.cost-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75em;
+  margin-top: 2.5em;
+}
+.cost-row {
+  display: grid;
+  grid-template-columns: 13em 1fr 9em;
+  align-items: center;
+  gap: 1.1em;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 1.08em 1.25em;
+}
+.cost-row strong {
+  color: #17232b;
+  font-size: 1.25em;
+}
+.cost-row span {
+  color: #62707a;
+  font-size: 1.04em;
+  line-height: 1.35;
+}
+.cost-row em {
+  color: #e91e63;
+  font-size: 1.05em;
+  font-style: normal;
+  font-weight: 800;
+  text-align: right;
+}
+.claim-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4em;
+  margin-top: 3em;
+}
+.claim-block {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 1.8em 1.65em;
+  min-height: 22em;
+}
+.claim-block b {
+  color: #0093c1;
+  font-size: 1.05em;
+}
+.claim-block h3 {
+  color: #16222a;
+  font-size: 2.05em;
+  margin: 0.45em 0 0.7em;
+}
+.claim-block p {
+  color: #5c6972;
+  font-size: 1.13em;
+  line-height: 1.5;
+}
+.doc-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2em;
+  margin-top: 2.3em;
+}
+.doc-preview {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 24px 45px rgba(18,32,42,0.14);
+}
+.doc-preview img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.doc-preview footer {
+  padding: 1em 1.1em 1.15em;
+}
+.doc-preview strong {
+  color: #17232b;
+  display: block;
+  font-size: 1.18em;
+}
+.doc-preview span {
+  color: #61707a;
+  display: block;
+  font-size: 0.98em;
+  margin-top: 0.45em;
+  line-height: 1.35;
+}
+.evidence-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  margin-top: 3em;
+}
+.evidence-item {
+  border-top: 2px solid rgba(255,255,255,0.3);
+  padding-top: 1.1em;
+}
+.evidence-item strong {
+  color: #fff;
+  display: block;
+  font-size: 1.5em;
+  margin-bottom: 0.45em;
+}
+.evidence-item span {
+  color: rgba(246,248,248,0.7);
+  font-size: 1.08em;
+  line-height: 1.45;
+}
+.source-note {
+  position: absolute;
+  left: 6.2em;
+  right: 6.2em;
+  bottom: 2.2em;
+  color: #7b878f;
+  font-size: 0.88em;
+  line-height: 1.4;
+}
+.dark-story .source-note {
+  color: rgba(246,248,248,0.48);
+}
+
+
+
+/* Case rebuilt web slides */
+.section-cover .pdf-page {
+  object-fit: cover;
+}
+.web-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3em;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+}
+.template-treatment {
+  padding-top: 4.5em;
+}
+.template-treatment .story-title {
+  font-size: 4.65em;
+  max-width: 15em;
+}
+.story-title .title-accent {
+  color: var(--orange);
+  text-shadow: 0 10px 26px rgba(216, 111, 32, 0.18);
+}
+.template-treatment .web-hero-grid {
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 2.3em;
+  align-items: start;
+  margin-top: 1.2em;
+}
+.treatment-narrative {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 2.25em;
+  min-height: 31.5em;
+}
+.template-treatment .story-lead {
+  font-size: 1.54em;
+  line-height: 1.46;
+  margin-top: 0;
+  max-width: none;
+}
+.treatment-narrative .signal-note {
+  color: var(--brand-deep);
+  display: block;
+  font-size: 1.18em;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.8em;
+}
+.template-treatment .symptom-list {
+  margin-top: 1.4em;
+}
+.template-treatment .symptom-list span {
+  min-height: 3.35em;
+  display: flex;
+  align-items: center;
+  font-size: 1.28em;
+}
+.template-treatment .symptom-list span::before {
+  content: "";
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 999px;
+  background: var(--orange);
+  margin-right: 0.65em;
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 0.28em rgba(255,137,51,0.12);
+}
+.scenario-stack {
+  display: grid;
+  gap: 1.2em;
+  margin-top: 0;
+}
+.scenario-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.76)),
+    var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  min-height: 22.2em;
+  padding: 2em 2.1em;
+}
+.scenario-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--brand), var(--orange));
+}
+.scenario-card strong {
+  color: var(--text-strong);
+  display: block;
+  font-size: 2.2em;
+  line-height: 1.16;
+  margin-bottom: 0.5em;
+}
+.scenario-card p,
+.scenario-card li {
+  color: #56656e;
+  font-size: 1.34em;
+  line-height: 1.42;
+}
+.scenario-card ul {
+  display: grid;
+  gap: 0.48em;
+  list-style: none;
+  margin: 0.85em 0 0;
+  padding: 0;
+}
+.scenario-card li {
+  padding-left: 1.3em;
+  position: relative;
+}
+.scenario-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.48em;
+  height: 0.48em;
+  border-radius: 999px;
+  background: var(--orange);
+}
+.scenario-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.05em;
+}
+.scenario-mini {
+  background: rgba(255,255,255,0.78);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 28px rgba(15,32,42,0.08);
+  min-height: 12.5em;
+  padding: 1.35em 1.25em;
+}
+.scenario-mini b {
+  color: var(--brand-deep);
+  display: block;
+  font-size: 1.04em;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.48em;
+}
+.scenario-mini span {
+  color: var(--text-strong);
+  display: block;
+  font-size: 1.34em;
+  font-weight: 850;
+  line-height: 1.3;
+}
+.hero-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1em;
+}
+.hero-stat {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.3em 1.35em;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+.hero-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--brand), var(--orange));
+}
+.hero-stat b {
+  display: block;
+  color: var(--brand-deep);
+  font-size: 1.02em;
+  margin-bottom: 0.45em;
+}
+.hero-stat strong {
+  display: block;
+  color: var(--text-strong);
+  font-size: 1.68em;
+  line-height: 1.15;
+}
+.hero-stat span {
+  color: #63717a;
+  display: block;
+  font-size: 1.02em;
+  line-height: 1.42;
+  margin-top: 0.45em;
+}
+.reason-map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2em;
+  margin-top: 2.5em;
+}
+.reason-map.reason-map-eight {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+  margin-top: 1.45em;
+}
+.template-reason-matrix {
+  padding-top: 4.4em;
+}
+.template-reason-matrix .story-title {
+  font-size: 4.55em;
+  max-width: 16em;
+}
+.template-reason-matrix .reason-map-eight {
+  gap: 1.15em;
+  margin-top: 1.65em;
+}
+.template-reason-matrix .reason-map-eight .reason-card {
+  min-height: 15.2em;
+  padding: 1.55em 1.55em;
+}
+.template-reason-matrix .reason-map-eight .reason-card b {
+  width: 2.25em;
+  height: 2.25em;
+  font-size: 1.12em;
+}
+.template-reason-matrix .reason-map-eight .reason-card strong {
+  font-size: 2em;
+  margin-top: 0.58em;
+}
+.template-reason-matrix .reason-map-eight .reason-card span {
+  font-size: 1.28em;
+  line-height: 1.34;
+}
+.reason-card {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.94), rgba(255,255,255,0.72)),
+    var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.55em 1.45em;
+  min-height: 19em;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+.reason-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: var(--factor, var(--brand));
+}
+.reason-card b {
+  color: var(--danger);
+  font-size: 1.08em;
+}
+.reason-card strong {
+  display: block;
+  color: var(--text-strong);
+  font-size: 1.85em;
+  line-height: 1.15;
+  margin: 0.45em 0 0.65em;
+}
+.reason-card span {
+  color: #5e6c75;
+  font-size: 1.08em;
+  line-height: 1.48;
+}
+.reason-map-eight .reason-card {
+  min-height: 11.8em;
+  padding: 1.05em 1.1em;
+}
+.reason-map-eight .reason-card b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.05em;
+  height: 2.05em;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffe08b, #f5bd44);
+  color: #5b4313;
+  font-weight: 900;
+  box-shadow: inset 0 0 0 2px rgba(91,67,19,0.18);
+  position: relative;
+  z-index: 1;
+}
+.reason-map-eight .reason-card strong {
+  color: var(--factor, #c85f1f);
+  font-size: 1.4em;
+  margin: 0.5em 0 0.36em;
+  position: relative;
+  z-index: 1;
+}
+.reason-map-eight .reason-card span {
+  font-size: 0.95em;
+  line-height: 1.38;
+  position: relative;
+  z-index: 1;
+}
+.factor-labor { --factor: #d96f20; }
+.factor-fetal { --factor: #0b8fb3; }
+.factor-maternal { --factor: #7b5bc9; }
+.factor-history { --factor: #b54f7a; }
+.reason-slide .story-title {
+  font-size: 4.05em;
+  max-width: 15em;
+}
+.symptom-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75em;
+  margin-top: 1.2em;
+}
+.symptom-list span {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: #24323a;
+  font-weight: 800;
+  padding: 0.85em 1em;
+  box-shadow: 0 10px 24px rgba(15,32,42,0.06);
+}
+.context-band {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2em;
+  align-items: stretch;
+  margin-top: 2em;
+}
+.context-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 1.55em;
+  box-shadow: 0 16px 34px rgba(15,32,42,0.08);
+}
+.context-card strong {
+  display: block;
+  color: #14212a;
+  font-size: 1.65em;
+  line-height: 1.18;
+  margin-bottom: 0.5em;
+}
+.context-card p {
+  color: #5f6e77;
+  font-size: 1.08em;
+  line-height: 1.55;
+}
+.slide.case-doc-slide {
+  background:
+    radial-gradient(circle at 84% 8%, rgba(216,163,77,0.16), transparent 26%),
+    linear-gradient(180deg, rgba(11,111,143,0.08), transparent 34%),
+    linear-gradient(135deg, var(--surface-warm), var(--surface-cool));
+  padding: 4.1em 4.4em 4.1em;
+  justify-content: flex-start;
+}
+.case-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2em;
+  margin-bottom: 1.35em;
+}
+.case-head h2 {
+  color: var(--text-strong);
+  font-size: 3.45em;
+  line-height: 1.06;
+  letter-spacing: 0;
+}
+.case-tag {
+  color: var(--brand-deep);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-size: 1.02em;
+  margin-bottom: 0.5em;
+}
+.total-pill {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), transparent 45%),
+    var(--surface-dark);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 1.2em 1.45em;
+  min-width: 22em;
+  text-align: right;
+  box-shadow: var(--shadow-strong);
+}
+.total-pill span {
+  display: block;
+  color: rgba(255,255,255,0.62);
+  font-size: 1em;
+  margin-bottom: 0.35em;
+}
+.total-pill strong {
+  display: block;
+  font-size: 3.15em;
+  line-height: 1;
+  color: var(--accent);
+}
+.doc-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25em;
+  min-height: 0;
+  flex: 1;
+}
+.doc-panel-large {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-strong);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.doc-panel-large img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  display: block;
+  background: #fff;
+}
+.doc-panel-large footer {
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding: 0.85em 1em;
+  color: #53626b;
+  font-size: 1.02em;
+  line-height: 1.35;
+}
+.slide.claim-slide {
+  background:
+    radial-gradient(circle at 86% 12%, rgba(216,163,77,0.18), transparent 26%),
+    radial-gradient(circle at 7% 18%, rgba(11,111,143,0.25), transparent 30%),
+    linear-gradient(135deg, #101a24 0%, #11151c 52%, #090d13 100%);
+  color: #f7f4ec;
+  padding: 4em 4.4em 4.4em;
+  justify-content: flex-start;
+}
+.slide.claim-slide .case-tag {
+  color: #7cc4d6;
+  text-shadow: 0 1px 18px rgba(124,196,214,0.16);
+}
+.claim-layout {
+  display: grid;
+  grid-template-columns: 1.45fr 0.85fr;
+  gap: 1.45em;
+  flex: 1;
+  min-height: 0;
+}
+.slide.claim-slide .claim-image {
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 30px 62px rgba(0,0,0,0.34);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.claim-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.claim-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.slide.claim-slide .claim-copy h2 {
+  color: #f7f4ec;
+  font-size: 3.15em;
+  line-height: 1.06;
+  letter-spacing: 0;
+  margin-bottom: 0.25em;
+  text-shadow: 0 1px 26px rgba(0,0,0,0.36);
+}
+.slide.claim-slide .claim-metric {
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius);
+  padding: 1.2em 1.35em;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.105), rgba(255,255,255,0.04)),
+    rgba(18,26,35,0.90);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 14px 28px rgba(0,0,0,0.18);
+}
+.slide.claim-slide .claim-metric span {
+  display: block;
+  color: rgba(247,244,236,0.66);
+  font-size: 1.02em;
+  margin-bottom: 0.35em;
+}
+.slide.claim-slide .claim-metric strong {
+  display: block;
+  color: #f0bf61;
+  font-size: 3.1em;
+  line-height: 1;
+}
+.slide.claim-slide .claim-metric.payout strong {
+  color: #75e0af;
+}
+.slide.claim-slide .claim-copy .claim-summary-text {
+  color: rgba(247,244,236,0.78);
+  font-size: 1.08em;
+  line-height: 1.5;
+  margin-top: 0.35em;
+}
+.slide.claim-slide .claim-copy .small-note {
+  color: rgba(247,244,236,0.50);
+  font-size: 0.78em;
+  line-height: 1.32;
+  margin-top: auto;
+}
+
+.section-divider {
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255,255,255,0.26), transparent 24%),
+    linear-gradient(135deg, var(--surface-warm), var(--surface-cool));
+  padding: 5.3em 6.2em 5.2em;
+  color: var(--text-strong);
+  justify-content: center;
+}
+.section-divider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: linear-gradient(90deg, var(--brand) 0%, var(--orange) 54%, var(--accent) 100%);
+}
+.section-divider::after {
+  content: "";
+  position: absolute;
+  inset: 8.5em 6.4em auto auto;
+  width: 33em;
+  height: 33em;
+  border-radius: 50%;
+  border: 1px solid rgba(151,108,63,0.20);
+  background: radial-gradient(circle, rgba(255,255,255,0.34), rgba(255,255,255,0));
+  pointer-events: none;
+}
+.divider-layout {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  align-items: center;
+  gap: 5.8em;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.divider-kicker {
+  color: var(--brand-deep);
+  font-size: 1.15em;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1em;
+}
+.section-divider .divider-title {
+  color: var(--text-strong);
+  font-size: 5.15em;
+  line-height: 1.02;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+.section-divider .divider-title span {
+  display: block;
+  color: var(--danger);
+}
+.section-divider .divider-lead {
+  color: rgba(52,64,75,0.75);
+  font-size: 1.58em;
+  line-height: 1.48;
+  margin-top: 1.15em;
+  max-width: 28em;
+  font-weight: 680;
+}
+.divider-panel {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.54));
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: var(--radius);
+  padding: 2.35em;
+  box-shadow: var(--shadow-strong);
+  backdrop-filter: blur(6px);
+}
+.section-divider .divider-panel h3 {
+  color: var(--text-strong);
+  font-size: 2.15em;
+  margin-bottom: 0.85em;
+}
+.divider-facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85em;
+}
+.divider-fact {
+  display: grid;
+  grid-template-columns: 9.5em 1fr;
+  gap: 1em;
+  align-items: center;
+  padding: 1em 1.1em;
+  background: rgba(255,255,255,0.64);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.divider-fact span {
+  color: rgba(52,64,75,0.62);
+  font-size: 1.02em;
+  font-weight: 820;
+}
+.divider-fact strong {
+  color: var(--text-strong);
+  font-size: 1.45em;
+  line-height: 1.15;
+}
+.divider-fact.important strong {
+  color: var(--danger);
+}
+.divider-next {
+  margin-top: 1.15em;
+  color: var(--brand-deep);
+  font-size: 1.12em;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+/* ══════════════════════════════════════════════════════
+   CSS 進場動畫
+   ══════════════════════════════════════════════════════ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes premiumBgIn {
+  from { transform: scale(1.018); filter: saturate(0.96) contrast(0.98); }
+  to   { transform: scale(1); filter: saturate(1) contrast(1); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes lineGrow {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+.animate-line {
+  opacity: 0;
+  animation: fadeInUp 0.45s ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 0.12s);
+}
+.active .hero-stat.animate-line,
+.active .info-panel.animate-line,
+.active .reason-card.animate-line,
+.active .treatment-narrative.animate-line {
+  animation-name: cardIn;
+  animation-duration: 0.52s;
+}
+
+/* ══════════════════════════════════════════════════════
+   DECK 版型 — 不需修改
+   ══════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: #0a0a0a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* 固定畫布模式：不讓 body 滾動 */
+}
+
+/* scroll-mode：手機或按 ⇄ 按鈕切換時使用 */
+html.scroll-mode, html.scroll-mode body {
+  height: auto;
+  overflow: auto;
+}
+
+/* ── 固定畫布 1920×1080（由 JS fitCanvas() 縮放至 viewport）── */
+.deck {
+  position: fixed;
+  top: 0; left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+}
+
+/* ── 投影片基底 ── */
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2em 4.5em 5.5em;
+  font-size: 15px; /* 固定基準：1920px 畫布上 1em = 15px，overflow 計算永遠準確 */
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* scroll-mode 時所有投影片都顯示，垂直排列 */
+html.scroll-mode .deck {
+  position: relative; /* 退出固定畫布，回到文件流 */
+  width: 100%;
+  height: auto;
+  transform: none !important; /* 取消 scale，讓捲動正常 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;           /* ← 投影片間隔（深色縫隙讓讀者辨認分頁）*/
+  padding: 8px;
+  background: #0a0a0a;
+}
+html.scroll-mode .slide {
+  position: relative;
+  display: flex !important;
+  width: 100%;
+  min-height: 56.25vw; /* 維持 16:9 */
+  border-radius: 4px;
+  font-size: clamp(9px, 1.2vw, 15px); /* scroll mode：恢復響應式字級 */
+}
+
+/* 手機 scroll-mode：文字自適應，不裁切內容 */
+@media (max-width: 768px) {
+  html.scroll-mode .slide {
+    font-size: clamp(11px, 2.8vw, 15px); /* 隨 vw 縮放，最低 11px 保持可讀 */
+    padding: 1.5em 2em 4em;              /* 左右從 4.5em 縮為 2em，釋放內容寬度 */
+    min-height: 0;
+    height: auto;      /* 讓高度隨內容撐開，不強制 16:9 */
+    overflow: visible; /* 不裁切超出的文字 */
+  }
+  html.scroll-mode .slide .slide-sig { left: 2em; }
+  html.scroll-mode .slide .slide-pg  { right: 2em; }
+}
+
+/* 光桌一覽（grid-mode）*/
+html.grid-mode body { overflow: auto; background: #1a1a1a; }
+html.grid-mode .deck {
+  position: relative; /* 退出固定畫布 */
+  width: 100%;
+  transform: none !important; /* 取消 scale */
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+  padding: 64px 20px 20px;
+}
+html.grid-mode .slide {
+  position: relative !important;
+  display: flex !important;
+  overflow: hidden !important;
+  cursor: pointer;
+  border-radius: 8px;
+  outline: 2px solid transparent;
+  transition: outline 0.15s;
+  /* 不用 font-size 縮放——改由 JS 設 zoom，確保 vw/px/em 全部等比縮放 */
+}
+html.grid-mode .slide:hover { outline-color: var(--brand); }
+html.grid-mode .slide.grid-current { outline-color: var(--orange); }
+
+/* 光桌頁碼標籤：補償 zoom，視覺恆為 ~11px */
+html.grid-mode .slide::after {
+  content: attr(data-slide-num);
+  position: absolute;
+  bottom: calc(8px / var(--grid-zoom, 1));
+  right:  calc(10px / var(--grid-zoom, 1));
+  font-size: calc(11px / var(--grid-zoom, 1));
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--font-sans);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── 投影片字級預設 ── */
+.slide h1 { font-family: var(--font-display); font-weight: 900; font-size: var(--fs-cover);    line-height: var(--lh-tight); color: var(--text-strong); letter-spacing: 0.02em; }
+.slide h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-heading);  line-height: var(--lh-tight); color: var(--text-strong); letter-spacing: 0.02em; }
+.slide h3 { font-family: var(--font-sans);    font-weight: 700; font-size: var(--fs-subtitle); line-height: var(--lh-tight); color: var(--text-strong); }
+.slide p, .slide li { font-size: var(--fs-body); line-height: var(--lh-body); }
+.slide .meta {
+  font-family: var(--font-sans); font-size: var(--fs-meta);
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── 投影片變體 ── */
+.slide.cover {
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+  justify-content: flex-end;
+  padding-bottom: 5em;
+}
+.slide.cover h1, .slide.cover h2 { color: var(--text-on-dark); }
+.slide.cover .meta { color: rgba(245,245,245,0.5); }
+
+.slide.dark {
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+}
+.slide.dark h1, .slide.dark h2 { color: var(--text-on-dark); }
+.slide.dark .meta { color: rgba(245,245,245,0.5); }
+
+/* 格線底 — 章節頁、KPI 頁用 */
+.slide-grid {
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(rgba(0,147,193,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,147,193,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── 頁碼 & 署名 ── */
+.slide-pg {
+  position: absolute; right: 5em; bottom: 1.8em;
+  font-size: var(--fs-meta); color: var(--text-muted);
+  font-family: var(--font-sans); font-weight: 600;
+}
+.slide.cover .slide-pg, .slide.dark .slide-pg { color: rgba(245,245,245,0.35); }
+
+.slide-sig {
+  position: absolute; left: 5em; bottom: 1.8em;
+  display: flex; align-items: center; gap: 0.6em;
+  font-size: var(--fs-meta); color: var(--text-muted);
+  font-family: var(--font-sans); font-weight: 600; letter-spacing: 0.06em;
+}
+.slide.cover .slide-sig, .slide.dark .slide-sig { color: rgba(245,245,245,0.35); }
+
+/* 署名品牌點 */
+.slide-sig .dot {
+  width: 0.35em; height: 0.35em;
+  border-radius: 50%; background: var(--brand);
+  flex-shrink: 0;
+}
+.slide.cover .slide-sig .dot, .slide.dark .slide-sig .dot { background: var(--accent); }
+
+/* ── Pill 膠囊標籤 ── */
+.pill {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  padding: 0.3em 0.9em; border-radius: 999px;
+  background: rgba(0,147,193,0.10); color: var(--brand);
+  font-size: var(--fs-meta); font-weight: 700;
+  font-family: var(--font-sans); letter-spacing: 0.02em;
+}
+.pill.success { background: rgba(48,218,162,0.12); color: #1ea87a; }
+.pill.gold    { background: rgba(255,201,79,0.15);  color: #b88a00; }
+.pill.orange  { background: rgba(255,137,51,0.12);  color: var(--orange); }
+.pill.danger  { background: rgba(224,62,87,0.10);   color: var(--danger); }
+
+/* ── 顏色 Utility ── */
+.text-brand   { color: var(--brand); }
+.text-success { color: var(--success); }
+.text-gold    { color: var(--gold); }
+.text-orange  { color: var(--orange); }
+.text-danger  { color: var(--danger); }
+.text-muted   { color: var(--text-muted); }
+
+/* ── Lightbox ── */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0.88);
+  align-items: center; justify-content: center;
+}
+.lightbox.active { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 6px; }
+
+/* ── 控制列 ── */
+.top-rail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--top-ui-height);
+  z-index: 115;
+  background:
+    linear-gradient(180deg, rgba(11,15,20,0.98), rgba(8,11,15,0.94));
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.26);
+}
+.library-link {
+  position: fixed;
+  top: 12px;
+  left: 18px;
+  z-index: 130;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 16px 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.045)),
+    rgba(16,24,32,0.78);
+  color: rgba(255,255,255,0.88);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+  backdrop-filter: blur(16px);
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.library-link:hover {
+  color: #fff;
+  border-color: rgba(240,191,97,0.55);
+  background:
+    linear-gradient(135deg, rgba(240,191,97,0.20), rgba(124,196,214,0.10)),
+    rgba(16,24,32,0.82);
+  transform: translateY(-1px);
+}
+.library-link svg {
+  width: 18px;
+  height: 18px;
+}
+.library-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  padding: 3px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+  border: 1px solid rgba(255,255,255,0.38);
+  box-shadow: 0 7px 18px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.20);
+  overflow: hidden;
+  position: relative;
+  flex: 0 0 auto;
+}
+.library-logo::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.96);
+  z-index: 0;
+}
+.library-logo img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.ctrl-bar {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(16,24,32,0.74);
+  backdrop-filter: blur(16px);
+  border-radius: 999px;
+  padding: 8px 14px;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 18px 42px rgba(0,0,0,0.28);
+}
+.ctrl-bar.hidden { opacity: 0; pointer-events: none; }
+.ctrl-bar button {
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.75); padding: 6px 8px;
+  border-radius: 6px; transition: background 0.15s; display: flex; align-items: center;
+}
+.ctrl-bar button:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.ctrl-bar button svg { width: 18px; height: 18px; }
+.ctrl-bar .counter {
+  font-family: var(--font-sans); font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,0.6); min-width: 52px; text-align: center;
+}
+.deck-progress {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  z-index: 135;
+  background: rgba(16,24,32,0.12);
+  pointer-events: none;
+}
+.deck-progress span {
+  display: block;
+  width: var(--progress, 5%);
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand), var(--orange), var(--accent));
+  transition: width 0.32s ease;
+}
+
+/* 列印（PDF 匯出）*/
+@media print {
+  html, body { height: auto; overflow: visible; background: #fff; }
+  .top-rail, .library-link, .ctrl-bar, .lightbox, .deck-progress { display: none !important; }
+  .deck { height: auto; display: block; }
+  .slide {
+    position: relative !important; inset: auto !important;
+    display: flex !important;
+    page-break-after: always;
+    break-after: page;
+    width: 100vw; height: 56.25vw;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="">
+</div>
+<div class="top-rail" aria-hidden="true"></div>
+<div class="deck-progress" aria-hidden="true"><span id="deck-progress-fill"></span></div>
+<a class="library-link" href="https://godzillapaul-entrance.netlify.app/catalog/claims.html" title="回理賠案例庫" aria-label="回理賠案例庫">
+  <span class="library-logo" aria-hidden="true"><img src="assets/brand/godzillapaul-logo.png" alt=""></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+  <span>理賠案例庫</span>
+</a>
+
+<!-- ══════════════════════════════════
+     投影片內容區 — 在這裡新增 <section class="slide">
+     ══════════════════════════════════ -->
+<div class="deck">
+
+  <section class="slide premium-cover" aria-label="封面">
+    <img class="cover-art" src="assets/cover-premium.jpg" alt="剖腹產理賠案例封面" loading="eager" decoding="async">
+    <div class="cover-soften"></div>
+    <section class="cover-zone">
+      <div class="cover-dialog">
+        <div class="cover-eyebrow">CLAIM CASE ANALYSIS</div>
+        <h1 class="cover-title">
+          <span class="muted-line">剖腹產</span>
+          <span class="red-line">理賠案例</span>
+        </h1>
+        <p class="cover-subtitle">從醫療必要性、診斷書與收據，讀懂理賠結果如何形成。</p>
+        <div class="cover-accent-line"></div>
+      </div>
+      <div class="cover-case-bar">
+        <span>CASE 01 · C-SECTION CLAIM STORY</span>
+        <span class="line"></span>
+      </div>
+      <div class="cover-page">01 / 18</div>
+      <div class="cover-brand">GODZILLAPAUL</div>
+    </section>
+  </section>
+
+  <section class="slide story-slide template-four-cards" aria-label="剖腹產理賠導讀">
+    <div class="split-layout">
+      <div>
+        <div class="story-kicker animate-line" style="--i:0">MEDICAL FIRST</div>
+        <h2 class="story-title animate-line" style="--i:1">剖腹產理賠<br>先看醫療原因</h2>
+        <p class="story-lead animate-line" style="--i:2">剖腹產理賠的核心，是醫療必要性。當原因、文件與花費能串在一起，就能清楚看見保障如何回應風險。</p>
+      </div>
+      <div class="hero-stat-grid">
+        <div class="hero-stat animate-line" style="--i:3"><b>01</b><strong>安胎住院</strong><span>不是休息而已，是降低早產風險。</span></div>
+        <div class="hero-stat animate-line" style="--i:4"><b>02</b><strong>胎位不正</strong><span>自然產風險提高，可能改採剖腹產。</span></div>
+        <div class="hero-stat animate-line" style="--i:5"><b>03</b><strong>產程遲滯</strong><span>試產進展不順，醫師可能轉手術。</span></div>
+        <div class="hero-stat animate-line" style="--i:6"><b>04</b><strong>文件判讀</strong><span>原因、花費、給付，一頁一頁看懂。</span></div>
+      </div>
+    </div>
+    <div class="source-note">醫療內容為案例解讀用途；實際診療依醫師判斷，實際理賠依保單條款、醫療文件與保險公司核定。</div>
+  </section>
+
+  <section class="slide story-slide template-treatment" aria-label="安胎情境說明">
+    <div class="story-kicker animate-line" style="--i:0">ANTEPARTUM CARE</div>
+    <h2 class="story-title animate-line" style="--i:1">為什麼需要安胎？<br><span class="title-accent">重點是延長懷孕週數</span></h2>
+    <div class="web-hero-grid">
+      <div class="treatment-narrative animate-line" style="--i:2">
+        <span class="signal-note">未滿 37 週，身體提前出現早產警訊</span>
+        <p class="story-lead animate-line" style="--i:2">安胎不是單純休息，而是替胎兒爭取成熟時間。當症狀持續或無法靠休息緩解，醫師可能安排住院觀察、產前照護與藥物處置。</p>
+        <div class="symptom-list animate-line" style="--i:3">
+          <span>子宮收縮頻繁</span>
+          <span>陰道出血</span>
+          <span>羊水破裂</span>
+          <span>持續下背痛</span>
+          <span>腹部明顯緊繃</span>
+          <span>骨盆壓迫下墜</span>
+        </div>
+      </div>
+      <div class="scenario-stack">
+        <div class="scenario-card animate-line" style="--i:4">
+          <strong>醫師安排安胎，通常是因為早產風險需要被控制</strong>
+          <p>診斷書會留下週數、症狀、住院原因與醫師處置。這些內容能幫助理解：這次住院不是單純休息，而是有醫療上的必要性。</p>
+          <ul>
+            <li>先確認身體出現哪些早產警訊。</li>
+            <li>再看住院期間產生哪些醫療費用。</li>
+          </ul>
+        </div>
+        <div class="scenario-mini-grid">
+          <div class="scenario-mini animate-line" style="--i:5"><b>處置方式</b><span>住院觀察、臥床休息、產前照護、安胎藥物</span></div>
+          <div class="scenario-mini animate-line" style="--i:6"><b>判斷重點</b><span>症狀是否持續，休息後是否仍無法緩解</span></div>
+          <div class="scenario-mini animate-line" style="--i:7"><b>文件重點</b><span>診斷書看原因，收據看花費，理賠明細看給付結果</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="source-note">未滿 37 週且出現早產相關徵兆時，應由醫師評估是否需要安胎住院；本頁為案例說明用途。</div>
+  </section>
+
+  <section class="slide story-slide reason-slide template-reason-matrix" aria-label="剖腹產常見理賠原因">
+    <div class="story-kicker animate-line" style="--i:0">CLAIMABLE C-SECTION CONTEXT</div>
+    <h2 class="story-title animate-line" style="--i:1">醫療險常見可理賠的剖腹產原因</h2>
+    <div class="reason-map reason-map-eight">
+      <div class="reason-card factor-labor animate-line" style="--i:2"><b>1</b><strong>產程遲滯</strong><span>產程卡住，無法順利自然分娩。</span></div>
+      <div class="reason-card factor-fetal animate-line" style="--i:3"><b>2</b><strong>胎兒窘迫</strong><span>胎兒狀況不穩，需要快速處理。</span></div>
+      <div class="reason-card factor-labor animate-line" style="--i:4"><b>3</b><strong>胎頭骨盆不對稱</strong><span>條件不利自然產，風險提高。</span></div>
+      <div class="reason-card factor-fetal animate-line" style="--i:5"><b>4</b><strong>胎位不正</strong><span>胎位不利，可能改採剖腹產。</span></div>
+      <div class="reason-card factor-fetal animate-line" style="--i:6"><b>5</b><strong>多胞胎</strong><span>多胎妊娠，需要更嚴謹評估。</span></div>
+      <div class="reason-card factor-maternal animate-line" style="--i:7"><b>6</b><strong>臍帶脫落</strong><span>可能需要緊急醫療處置。</span></div>
+      <div class="reason-card factor-history animate-line" style="--i:8"><b>7</b><strong>兩次以上死產</strong><span>既往病史提高分娩風險。</span></div>
+      <div class="reason-card factor-maternal animate-line" style="--i:9"><b>8</b><strong>分娩相關疾病</strong><span>疾病影響自然產安全。</span></div>
+    </div>
+    <div class="source-note">實際理賠仍以診斷書、病歷、收據、保單條款與保險公司核定為準。</div>
+  </section>
+
+  <section class="slide case-doc-slide" aria-label="安胎住院 診斷書與收據">
+    <div class="case-head">
+      <div>
+        <div class="case-tag animate-line" style="--i:0">CASE 01 · DOCUMENTS</div>
+        <h2 class="animate-line" style="--i:1">安胎住院：診斷書與收據</h2>
+      </div>
+      <div class="total-pill animate-line" style="--i:2"><span>本案總花費</span><strong>NT$ 42,291</strong></div>
+    </div>
+    <div class="doc-pair">
+      <div class="doc-panel-large animate-line" style="--i:3"><img src="assets/crops/slide-04.jpg" alt="安胎住院 診斷書" loading="lazy"><footer>診斷書：確認診斷、入出院日、手術/醫囑說明。</footer></div>
+      <div class="doc-panel-large animate-line" style="--i:4"><img src="assets/crops/slide-05.jpg" alt="安胎住院 收據" loading="lazy"><footer>收據：確認病房、手術、材料、麻醉與自費項目。</footer></div>
+    </div>
+  </section>
+
+  <section class="slide claim-slide" aria-label="安胎住院 理賠金額">
+    <div class="case-tag animate-line" style="--i:0">CASE 01 · CLAIM RESULT</div>
+    <div class="claim-layout">
+      <div class="claim-image animate-line" style="--i:1"><img src="assets/crops/slide-06.jpg" alt="安胎住院 理賠明細" loading="lazy"></div>
+      <div class="claim-copy">
+        <h2 class="animate-line" style="--i:2">安胎住院<br>理賠結果</h2>
+        <div class="claim-metric animate-line" style="--i:3"><span>本案總花費</span><strong>NT$ 42,291</strong></div>
+        <div class="claim-metric payout animate-line" style="--i:4"><span>理賠金額</span><strong>NT$ 63,271</strong></div>
+        <p class="claim-summary-text animate-line" style="--i:5">本案醫療支出合計 42,291 元，理賠結果為 63,271 元。從診斷原因到費用明細，可以清楚看見住院與處置項目如何被保障回應。</p>
+        <p class="small-note">給付結果依條款、投保內容與保險公司核定。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-divider" aria-label="胎位不正 1 章節">
+    <div class="divider-layout">
+      <div>
+        <div class="divider-kicker animate-line" style="--i:0">CASE 02 · CLAIM PATH</div>
+        <h2 class="divider-title animate-line" style="--i:1">胎位不正<span>理賠脈絡</span></h2>
+        <p class="divider-lead animate-line" style="--i:2">當胎位提高自然產風險，醫師處置理由會成為判讀診斷書與理賠結果的關鍵。</p>
+      </div>
+      <div class="divider-panel animate-line" style="--i:3">
+        <h3>本段重點</h3>
+        <div class="divider-facts">
+          <div class="divider-fact"><span>醫療原因</span><strong>胎位不正</strong></div>
+          <div class="divider-fact important"><span>本案總花費</span><strong>NT$ 128,284</strong></div>
+          <div class="divider-fact"><span>理賠金額</span><strong>NT$ 227,590</strong></div>
+        </div>
+        <div class="divider-next">下一頁看診斷書與收據</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide case-doc-slide" aria-label="胎位不正 1 診斷書與收據">
+    <div class="case-head">
+      <div>
+        <div class="case-tag animate-line" style="--i:0">CASE 02 · DOCUMENTS</div>
+        <h2 class="animate-line" style="--i:1">胎位不正 1：診斷書與收據</h2>
+      </div>
+      <div class="total-pill animate-line" style="--i:2"><span>本案總花費</span><strong>NT$ 128,284</strong></div>
+    </div>
+    <div class="doc-pair">
+      <div class="doc-panel-large animate-line" style="--i:3"><img src="assets/crops/slide-09.jpg" alt="胎位不正 1 診斷書" loading="lazy"><footer>診斷書：確認診斷、入出院日、手術/醫囑說明。</footer></div>
+      <div class="doc-panel-large animate-line" style="--i:4"><img src="assets/crops/slide-10.jpg" alt="胎位不正 1 收據" loading="lazy"><footer>收據：確認病房、手術、材料、麻醉與自費項目。</footer></div>
+    </div>
+  </section>
+
+  <section class="slide claim-slide" aria-label="胎位不正 1 理賠金額">
+    <div class="case-tag animate-line" style="--i:0">CASE 02 · CLAIM RESULT</div>
+    <div class="claim-layout">
+      <div class="claim-image animate-line" style="--i:1"><img src="assets/crops/slide-11.jpg" alt="胎位不正 1 理賠明細" loading="lazy"></div>
+      <div class="claim-copy">
+        <h2 class="animate-line" style="--i:2">胎位不正 1<br>理賠結果</h2>
+        <div class="claim-metric animate-line" style="--i:3"><span>本案總花費</span><strong>NT$ 128,284</strong></div>
+        <div class="claim-metric payout animate-line" style="--i:4"><span>理賠金額</span><strong>NT$ 227,590</strong></div>
+        <p class="claim-summary-text animate-line" style="--i:5">本案總花費 128,284 元，理賠金額 227,590 元。胎位不正導致剖腹產處置，相關病房、手術與住院給付在理賠明細中逐項呈現。</p>
+        <p class="small-note">給付結果依條款、投保內容與保險公司核定。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-divider" aria-label="胎位不正 2 章節">
+    <div class="divider-layout">
+      <div>
+        <div class="divider-kicker animate-line" style="--i:0">CASE 03 · CLAIM PATH</div>
+        <h2 class="divider-title animate-line" style="--i:1">胎位不正<span>費用放大</span></h2>
+        <p class="divider-lead animate-line" style="--i:2">同樣是剖腹產，住院天數、自費項目與投保內容不同，最後呈現的花費與理賠也會不同。</p>
+      </div>
+      <div class="divider-panel animate-line" style="--i:3">
+        <h3>本段重點</h3>
+        <div class="divider-facts">
+          <div class="divider-fact"><span>醫療原因</span><strong>胎位不正</strong></div>
+          <div class="divider-fact important"><span>本案總花費</span><strong>NT$ 164,388</strong></div>
+          <div class="divider-fact"><span>理賠金額</span><strong>NT$ 248,077</strong></div>
+        </div>
+        <div class="divider-next">下一頁看診斷書與收據</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide case-doc-slide" aria-label="胎位不正 2 診斷書與收據">
+    <div class="case-head">
+      <div>
+        <div class="case-tag animate-line" style="--i:0">CASE 03 · DOCUMENTS</div>
+        <h2 class="animate-line" style="--i:1">胎位不正 2：診斷書與收據</h2>
+      </div>
+      <div class="total-pill animate-line" style="--i:2"><span>本案總花費</span><strong>NT$ 164,388</strong></div>
+    </div>
+    <div class="doc-pair">
+      <div class="doc-panel-large animate-line" style="--i:3"><img src="assets/crops/slide-13.jpg" alt="胎位不正 2 診斷書" loading="lazy"><footer>診斷書：確認診斷、入出院日、手術/醫囑說明。</footer></div>
+      <div class="doc-panel-large animate-line" style="--i:4"><img src="assets/crops/slide-14.jpg" alt="胎位不正 2 收據" loading="lazy"><footer>收據：確認病房、手術、材料、麻醉與自費項目。</footer></div>
+    </div>
+  </section>
+
+  <section class="slide claim-slide" aria-label="胎位不正 2 理賠金額">
+    <div class="case-tag animate-line" style="--i:0">CASE 03 · CLAIM RESULT</div>
+    <div class="claim-layout">
+      <div class="claim-image animate-line" style="--i:1"><img src="assets/crops/slide-15.jpg" alt="胎位不正 2 理賠明細" loading="lazy"></div>
+      <div class="claim-copy">
+        <h2 class="animate-line" style="--i:2">胎位不正 2<br>理賠結果</h2>
+        <div class="claim-metric animate-line" style="--i:3"><span>本案總花費</span><strong>NT$ 164,388</strong></div>
+        <div class="claim-metric payout animate-line" style="--i:4"><span>理賠金額</span><strong>NT$ 248,077</strong></div>
+        <p class="claim-summary-text animate-line" style="--i:5">本案總花費 164,388 元，理賠金額 248,077 元。醫療文件確認剖腹產原因，費用與給付明細對照後，保障效果更直觀。</p>
+        <p class="small-note">給付結果依條款、投保內容與保險公司核定。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-divider" aria-label="產程遲滯 1 章節">
+    <div class="divider-layout">
+      <div>
+        <div class="divider-kicker animate-line" style="--i:0">CASE 04 · CLAIM PATH</div>
+        <h2 class="divider-title animate-line" style="--i:1">產程遲滯<span>轉為剖腹產</span></h2>
+        <p class="divider-lead animate-line" style="--i:2">產程不順時，剖腹產常是為了降低分娩風險；診斷書會交代醫師判斷與處置原因。</p>
+      </div>
+      <div class="divider-panel animate-line" style="--i:3">
+        <h3>本段重點</h3>
+        <div class="divider-facts">
+          <div class="divider-fact"><span>醫療原因</span><strong>產程遲滯</strong></div>
+          <div class="divider-fact important"><span>本案總花費</span><strong>NT$ 157,300</strong></div>
+          <div class="divider-fact"><span>理賠金額</span><strong>NT$ 235,400</strong></div>
+        </div>
+        <div class="divider-next">下一頁看診斷書與收據</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide case-doc-slide" aria-label="產程遲滯 1 診斷書與收據">
+    <div class="case-head">
+      <div>
+        <div class="case-tag animate-line" style="--i:0">CASE 04 · DOCUMENTS</div>
+        <h2 class="animate-line" style="--i:1">產程遲滯 1：診斷書與收據</h2>
+      </div>
+      <div class="total-pill animate-line" style="--i:2"><span>本案總花費</span><strong>NT$ 157,300</strong></div>
+    </div>
+    <div class="doc-pair">
+      <div class="doc-panel-large animate-line" style="--i:3"><img src="assets/crops/slide-17.jpg" alt="產程遲滯 1 診斷書" loading="lazy"><footer>診斷書：確認診斷、入出院日、手術/醫囑說明。</footer></div>
+      <div class="doc-panel-large animate-line" style="--i:4"><img src="assets/crops/slide-18.jpg" alt="產程遲滯 1 收據" loading="lazy"><footer>收據：確認病房、手術、材料、麻醉與自費項目。</footer></div>
+    </div>
+  </section>
+
+  <section class="slide claim-slide" aria-label="產程遲滯 1 理賠金額">
+    <div class="case-tag animate-line" style="--i:0">CASE 04 · CLAIM RESULT</div>
+    <div class="claim-layout">
+      <div class="claim-image animate-line" style="--i:1"><img src="assets/crops/slide-19.jpg" alt="產程遲滯 1 理賠明細" loading="lazy"></div>
+      <div class="claim-copy">
+        <h2 class="animate-line" style="--i:2">產程遲滯 1<br>理賠結果</h2>
+        <div class="claim-metric animate-line" style="--i:3"><span>本案總花費</span><strong>NT$ 157,300</strong></div>
+        <div class="claim-metric payout animate-line" style="--i:4"><span>理賠金額</span><strong>NT$ 235,400</strong></div>
+        <p class="claim-summary-text animate-line" style="--i:5">本案總花費 157,300 元，理賠金額 235,400 元。產程遲滯轉為剖腹產後，收據與理賠明細呈現保障對醫療支出的實際支援。</p>
+        <p class="small-note">給付結果依條款、投保內容與保險公司核定。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide section-divider" aria-label="產程遲滯 2 章節">
+    <div class="divider-layout">
+      <div>
+        <div class="divider-kicker animate-line" style="--i:0">CASE 05 · CLAIM PATH</div>
+        <h2 class="divider-title animate-line" style="--i:1">產程遲滯<span>保障回應</span></h2>
+        <p class="divider-lead animate-line" style="--i:2">當文件能證明醫療處置與費用明細，理賠結果就能更具體地呈現保障價值。</p>
+      </div>
+      <div class="divider-panel animate-line" style="--i:3">
+        <h3>本段重點</h3>
+        <div class="divider-facts">
+          <div class="divider-fact"><span>醫療原因</span><strong>產程遲滯</strong></div>
+          <div class="divider-fact important"><span>本案總花費</span><strong>NT$ 62,877</strong></div>
+          <div class="divider-fact"><span>理賠金額</span><strong>NT$ 153,797</strong></div>
+        </div>
+        <div class="divider-next">下一頁看診斷書與收據</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide case-doc-slide" aria-label="產程遲滯 2 診斷書與收據">
+    <div class="case-head">
+      <div>
+        <div class="case-tag animate-line" style="--i:0">CASE 05 · DOCUMENTS</div>
+        <h2 class="animate-line" style="--i:1">產程遲滯 2：診斷書與收據</h2>
+      </div>
+      <div class="total-pill animate-line" style="--i:2"><span>本案總花費</span><strong>NT$ 62,877</strong></div>
+    </div>
+    <div class="doc-pair">
+      <div class="doc-panel-large animate-line" style="--i:3"><img src="assets/crops/slide-21.jpg" alt="產程遲滯 2 診斷書" loading="lazy"><footer>診斷書：確認診斷、入出院日、手術/醫囑說明。</footer></div>
+      <div class="doc-panel-large animate-line" style="--i:4"><img src="assets/crops/slide-22.jpg" alt="產程遲滯 2 收據" loading="lazy"><footer>收據：確認病房、手術、材料、麻醉與自費項目。</footer></div>
+    </div>
+  </section>
+
+  <section class="slide claim-slide" aria-label="產程遲滯 2 理賠金額">
+    <div class="case-tag animate-line" style="--i:0">CASE 05 · CLAIM RESULT</div>
+    <div class="claim-layout">
+      <div class="claim-image animate-line" style="--i:1"><img src="assets/crops/slide-23.jpg" alt="產程遲滯 2 理賠明細" loading="lazy"></div>
+      <div class="claim-copy">
+        <h2 class="animate-line" style="--i:2">產程遲滯 2<br>理賠結果</h2>
+        <div class="claim-metric animate-line" style="--i:3"><span>本案總花費</span><strong>NT$ 62,877</strong></div>
+        <div class="claim-metric payout animate-line" style="--i:4"><span>理賠金額</span><strong>NT$ 153,797</strong></div>
+        <p class="claim-summary-text animate-line" style="--i:5">本案總花費 62,877 元，理賠金額 153,797 元。當診斷原因、住院紀錄與費用明細完整，理賠結果能更清楚反映保障價值。</p>
+        <p class="small-note">給付結果依條款、投保內容與保險公司核定。</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 控制列 -->
+<div class="ctrl-bar">
+  <button onclick="prev()" title="上一張 ←">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <span class="counter" id="counter">1 / 18</span>
+  <button onclick="next()" title="下一張 →">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <button onclick="toggleMode()" title="投影片 ↔ 捲動模式">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+  </button>
+  <button onclick="window.print()" title="列印 / 匯出 PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  </button>
+  <button onclick="toggleGrid()" title="光桌一覽 G">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+  </button>
+  <button id="btn-fs" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="全螢幕 F">
+    <svg id="icon-fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+    <svg id="icon-fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"/></svg>
+  </button>
+</div>
+<script>
+document.addEventListener('fullscreenchange', () => {
+  const inFS = !!document.fullscreenElement;
+  document.getElementById('icon-fs-enter').style.display = inFS ? 'none' : '';
+  document.getElementById('icon-fs-exit').style.display  = inFS ? ''     : 'none';
+});
+
+/* ── 控制列自動隱藏 ── */
+(function () {
+  const bar = document.querySelector('.ctrl-bar');
+  let hideTimer;
+  function showBar() {
+    bar.classList.remove('hidden');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => bar.classList.add('hidden'), 5000);
+  }
+  document.addEventListener('mousemove', showBar);
+  document.addEventListener('keydown',   showBar);
+  document.addEventListener('touchstart', showBar, { passive: true });
+  bar.addEventListener('mouseenter', () => { clearTimeout(hideTimer); bar.classList.remove('hidden'); });
+  bar.addEventListener('mouseleave', showBar);
+  showBar(); // 初始化：5 秒後自動隱藏
+})();
+</script>
+
+<!-- ══════════════════════════════════
+     JS 換頁邏輯 — 禁止修改此區塊
+     ══════════════════════════════════ -->
+<script>
+/* ── Lightbox ── */
+const lightbox    = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+document.addEventListener('click', e => {
+  const img = e.target.closest('.slide img');
+  if (!img || img.closest('.lightbox')) return;
+  lightboxImg.src = img.src;
+  lightbox.classList.add('active');
+  e.stopPropagation();
+});
+lightbox.addEventListener('click', e => { if (e.target !== lightboxImg) closeLightbox(); });
+function closeLightbox() { lightbox.classList.remove('active'); }
+
+/* ── 固定畫布縮放 ── */
+const deckEl = document.querySelector('.deck');
+function getTopUiHeight() {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue('--top-ui-height');
+  return Number.parseFloat(raw) || 64;
+}
+function fitCanvas() {
+  if (mode !== 'slide') return;
+  const topUiHeight = getTopUiHeight();
+  const availableHeight = Math.max(320, window.innerHeight - topUiHeight);
+  const s = Math.min(window.innerWidth / 1920, availableHeight / 1080);
+  const x = (window.innerWidth - 1920 * s) / 2;
+  const y = topUiHeight;
+  deckEl.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  /* 投影片完整顯示於上方工具列下方，不覆蓋內容。 */
+}
+window.addEventListener('resize', fitCanvas);
+
+/* ── 換頁核心 ── */
+let mode    = 'slide';
+let current = Math.max(0, (Number(new URLSearchParams(window.location.search).get('slide')) || 1) - 1);
+const slides  = document.querySelectorAll('.slide');
+const counter = document.getElementById('counter');
+const progressFill = document.getElementById('deck-progress-fill');
+current = Math.min(current, slides.length - 1);
+
+// 保存原始 inline style，供光桌模式還原
+slides.forEach(s => { s.setAttribute('data-orig-style', s.getAttribute('style') || ''); });
+
+// 換頁時重播 animate-line 動畫
+function resetAnimations(slide) {
+  slide.querySelectorAll('.animate-line').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = '';
+  });
+}
+
+function render() {
+  if (mode === 'slide') {
+    slides.forEach((s, i) => {
+      s.style.position = 'absolute';
+      s.style.inset    = '0';
+      s.style.display  = i === current ? 'flex' : 'none';
+      s.classList.toggle('active', i === current);
+      if (i === current) resetAnimations(s);
+    });
+    fitCanvas(); /* 每次換頁確保 scale 正確（全螢幕切換後尺寸會變）*/
+  } else {
+    slides.forEach((s, i) => {
+      s.style.position = 'relative';
+      s.style.display  = 'flex';
+      s.classList.toggle('active', i === current);
+    });
+    deckEl.style.transform = 'none'; /* scroll/grid mode 不縮放 */
+  }
+  counter.textContent = (current + 1) + ' / ' + slides.length;
+  progressFill.style.setProperty('--progress', ((current + 1) / slides.length * 100).toFixed(2) + '%');
+}
+
+function next() { if (current < slides.length - 1) { current++; render(); } }
+function prev() { if (current > 0)                  { current--; render(); } }
+
+function toggleMode() {
+  mode = mode === 'slide' ? 'scroll' : 'slide';
+  document.body.classList.toggle('scroll-mode');
+  document.documentElement.classList.toggle('scroll-mode');
+  render();
+}
+
+/* ── 鍵盤操作 ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ')  { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft')                     { e.preventDefault(); prev(); }
+  if (e.key === 'f' || e.key === 'F')            { document.documentElement.requestFullscreen?.(); }
+  if (e.key === 'g' || e.key === 'G')            { toggleGrid(); }
+  if (e.key === 'Escape') {
+    if (document.body.classList.contains('grid-mode'))   { toggleGrid(); }
+    else if (lightbox.classList.contains('active'))       { closeLightbox(); }
+    else if (document.fullscreenElement)                  { document.exitFullscreen(); }
+  }
+});
+
+/* ── 列印前還原（讓 print CSS 接管）── */
+window.addEventListener('beforeprint', () => {
+  slides.forEach(s => { s.style.position = ''; s.style.inset = ''; s.style.display = ''; });
+});
+window.addEventListener('afterprint', () => { render(); });
+
+/* ── 光桌一覽 ── */
+function toggleGrid() {
+  const isGrid = document.body.classList.toggle('grid-mode');
+  document.documentElement.classList.toggle('grid-mode');
+  if (isGrid) {
+    // 先讓 grid layout 計算完畢，再量 cell 寬度
+    requestAnimationFrame(() => {
+      const natW = window.innerWidth;
+      const natH = window.innerHeight;
+      // 以第一張投影片的實際寬度算縮放比例
+      const thumbW = (slides[0]?.getBoundingClientRect().width) || 360;
+      const zoom   = thumbW / natW;
+
+      slides.forEach((s, i) => {
+        // 設定 inline style：還原原始 + 加上尺寸與 zoom
+        const orig = s.getAttribute('data-orig-style') || '';
+        s.style.cssText = orig +
+          `;width:${natW}px;height:${natH}px;zoom:${zoom};--grid-zoom:${zoom}`;
+        s.setAttribute('data-slide-num', i + 1);
+        s.classList.toggle('grid-current', i === current);
+        s._gridClick = () => { current = i; toggleGrid(); render(); };
+        s.addEventListener('click', s._gridClick);
+      });
+      requestAnimationFrame(() => {
+        const cur = document.querySelector('.slide.grid-current');
+        if (cur) cur.scrollIntoView({ block: 'center', behavior: 'instant' });
+      });
+    });
+  } else {
+    slides.forEach(s => {
+      // 清除 zoom/width/height，還原原始 inline style
+      s.style.cssText = s.getAttribute('data-orig-style') || '';
+      if (s._gridClick) { s.removeEventListener('click', s._gridClick); delete s._gridClick; }
+      s.classList.remove('grid-current');
+    });
+    render();
+  }
+}
+
+/* ── 手機：自動切換捲動模式 ── */
+if (window.innerWidth <= 768) {
+  mode = 'scroll';
+  document.body.classList.add('scroll-mode');
+  document.documentElement.classList.add('scroll-mode');
+}
+
+/* ── 全螢幕切換後重算 scale ── */
+document.addEventListener('fullscreenchange', () => { if (mode === 'slide') fitCanvas(); });
+
+/* ── 觸控左右滑動（slide mode 限定）── */
+let touchStartX = 0;
+let touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (mode !== 'slide') return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+  if (dx < 0) next(); else prev();
+});
+
+/* ── 初始化 ── */
+render();
+</script>
+</body>
+</html>

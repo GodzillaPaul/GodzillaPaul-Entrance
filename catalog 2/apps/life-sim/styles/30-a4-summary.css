@@ -1,0 +1,435 @@
+/* ============================================================
+   A4 客戶試算摘要 v2 — 列印用版型
+   螢幕上隱藏，html2canvas 拍下後輸出 jsPDF
+   專為業務 KYC 追蹤設計：理想 vs 調整 兩版本並列
+   ============================================================ */
+
+/* 摘要頁本體：A4 portrait 96dpi 換算 794 x 1123 px */
+#a4-summary-sheet {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 794px;
+    background: #ffffff;
+    color: #1a2440;
+    /* 字體鏈：強制使用 SF Pro TC / PingFang TC，與升級後 UX 一致 */
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "SF Pro Text",
+                 "PingFang TC", "Heiti TC", "Microsoft JhengHei",
+                 "微軟正黑體", "Noto Sans TC", sans-serif !important;
+    font-feature-settings: "tnum" 1, "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    z-index: -1;
+    pointer-events: none;
+    /* 阻擋父層 zoom / transform 影響 */
+    zoom: 1 !important;
+    transform: none !important;
+}
+
+#a4-summary-sheet *,
+#a4-summary-sheet *::before,
+#a4-summary-sheet *::after {
+    box-sizing: border-box;
+    font-family: inherit !important;
+}
+
+.a4-page {
+    width: 794px;
+    min-height: 1123px;
+    padding: 26px 32px 18px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+/* === Header === */
+.a4-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid #0f2d52;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+}
+.a4-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f2d52;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+}
+.a4-subtitle {
+    font-size: 12px;
+    color: #6d7ea4;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+.a4-date {
+    font-size: 11px;
+    color: #95a3c2;
+    text-align: right;
+    line-height: 1.5;
+}
+.a4-date strong {
+    color: #0f2d52;
+    font-weight: 700;
+    font-size: 14px;
+    display: block;
+}
+
+/* === Profile bar === */
+.a4-profile {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    background: linear-gradient(135deg, #f4f7ff, #eef3ff);
+    border: 1px solid #c6d7fa;
+    border-radius: 10px;
+    padding: 9px 16px;
+    margin-bottom: 10px;
+}
+.a4-profile-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.a4-profile-label {
+    font-size: 10px;
+    color: #6d7ea4;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+.a4-profile-value {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f2d52;
+    line-height: 1.2;
+}
+
+/* === Section title === */
+.a4-section { margin-bottom: 9px; }
+.a4-section-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #0a84ff;
+    letter-spacing: 2.5px;
+    margin-bottom: 7px;
+    padding: 4px 10px;
+    background: rgba(10, 132, 255, .08);
+    border-left: 4px solid #0a84ff;
+    border-radius: 0 6px 6px 0;
+}
+
+/* === 收入結構（4 格藍色卡片） === */
+.a4-income {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+.a4-income-card {
+    background: #f8fafd;
+    border: 1px solid #d8e3f4;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+}
+.a4-income-card.total {
+    background: linear-gradient(135deg, #e6f0ff, #d4e4ff);
+    border-color: #0a84ff;
+}
+.a4-income-card .a4-inc-label {
+    font-size: 10px;
+    color: #6d7ea4;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+}
+.a4-income-card .a4-inc-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f2d52;
+    line-height: 1.1;
+}
+.a4-income-card.total .a4-inc-value { color: #0a84ff; }
+.a4-inc-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6d7ea4;
+    font-size: 14px;
+    font-weight: 700;
+    user-select: none;
+}
+
+/* === 兩種情境對比（理想 vs 調整後） === */
+.a4-scenario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.a4-scn-card {
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1.5px solid;
+    position: relative;
+}
+.a4-scn-card.ideal {
+    background: linear-gradient(135deg, #fff8ec, #ffeec5);
+    border-color: #f5c96a;
+}
+.a4-scn-card.adjust {
+    background: linear-gradient(135deg, #e6f0ff, #d4e4ff);
+    border-color: #0a84ff;
+}
+.a4-scn-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    color: white;
+}
+.a4-scn-card.ideal .a4-scn-tag { background: #b07820; }
+.a4-scn-card.adjust .a4-scn-tag { background: #0a84ff; }
+
+.a4-scn-rows {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 10px;
+    font-size: 11px;
+}
+.a4-scn-rows .a4-scn-key {
+    color: #6d7ea4;
+    font-weight: 600;
+}
+.a4-scn-rows .a4-scn-val {
+    text-align: right;
+    font-weight: 800;
+    color: #0f2d52;
+    font-size: 13px;
+}
+.a4-scn-rows .a4-scn-val.gap-bad { color: #e84b1c; }
+.a4-scn-rows .a4-scn-val.gap-good { color: #00a86b; }
+
+/* === 支出明細並列表格 === */
+.a4-exp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+}
+.a4-exp-table th {
+    text-align: left;
+    padding: 5px 8px;
+    background: #eef3ff;
+    color: #3a4a6e;
+    font-weight: 700;
+    font-size: 10px;
+    border-bottom: 2px solid #c6d7fa;
+    letter-spacing: 0.5px;
+}
+.a4-exp-table th.num,
+.a4-exp-table td.num { text-align: right; }
+.a4-exp-table td {
+    padding: 4px 8px;
+    border-bottom: 1px dashed #e0e8f7;
+    vertical-align: middle;
+}
+.a4-exp-table .a4-cat-name { font-weight: 700; color: #0f2d52; font-size: 11px; }
+
+/* 雙欄 header：理想用金、調整用藍 */
+.a4-exp-table th.th-ideal  { color: #b07820; background: #fff8ec; }
+.a4-exp-table th.th-adjust { color: #0a84ff; background: #eef3ff; }
+
+/* 並列 cell（每邊一個 dual-cell：左文字 / 右金額） */
+.a4-exp-table .dual-side {
+    padding: 5px 8px;
+    vertical-align: top;
+}
+.a4-exp-table .ideal-side  { background: rgba(255,248,236, .35); }
+.a4-exp-table .adjust-side { background: rgba(238,243,255, .35); }
+
+.dual-cell {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 8px;
+    align-items: start;
+    line-height: 1.35;
+}
+.dual-cell .dual-text { min-width: 0; }
+.dual-cell .a4-choice-main {
+    color: #0f2d52;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 1.3;
+}
+.dual-cell .a4-label-detail {
+    color: #6d7ea4;
+    font-size: 9.5px;
+    margin-top: 2px;
+    line-height: 1.4;
+    /* 不裁切，完整呈現細節 */
+}
+.dual-cell .dual-amount {
+    font-weight: 800;
+    font-size: 12px;
+    color: #0f2d52;
+    font-feature-settings: "tnum" 1;
+    white-space: nowrap;
+    align-self: start;
+    padding-top: 1px;
+}
+.dual-cell .dual-amount.ideal  { color: #b07820; }
+.dual-cell .dual-amount.adjust { color: #0a84ff; }
+
+/* 未保留：灰色弱化、金額劃掉 */
+.dual-cell.removed { opacity: 0.55; }
+.dual-cell.removed .dual-text {
+    color: #95a3c2;
+    font-size: 10.5px;
+    font-style: italic;
+}
+.dual-cell.removed .dual-amount {
+    color: #95a3c2;
+    text-decoration: line-through;
+    font-weight: 600;
+}
+
+.a4-exp-table tfoot td {
+    font-weight: 800;
+    background: #f4f7ff;
+    border-top: 2px solid #c6d7fa;
+    color: #0f2d52;
+    font-size: 12px;
+    padding: 7px 8px;
+    text-align: right;
+}
+.a4-exp-table tfoot td:first-child { text-align: left; }
+.a4-exp-table tfoot td.ideal  { color: #b07820; background: #fff1d4; }
+.a4-exp-table tfoot td.adjust { color: #0a84ff; background: #d4e4ff; }
+.a4-exp-table .a4-empty {
+    text-align: center;
+    color: #95a3c2;
+    padding: 16px;
+    font-style: italic;
+}
+
+/* === Retirement summary === */
+.a4-retire {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    background: linear-gradient(135deg, #fff8ec, #fff1d4);
+    border: 1px solid #f5c96a;
+    border-radius: 10px;
+    padding: 8px 14px;
+}
+.a4-retire .a4-profile-value { color: #b07820; font-size: 15px; }
+
+/* === KYC 追蹤備註區（業務手寫） === */
+.a4-kyc {
+    background: linear-gradient(135deg, #fdfdf8, #f8f5e8);
+    border: 1.5px dashed #d4c896;
+    border-radius: 10px;
+    padding: 8px 14px 10px;
+}
+.a4-kyc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.a4-kyc-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #8a6c1d;
+    letter-spacing: 2px;
+}
+.a4-kyc-hint {
+    font-size: 9px;
+    color: #b07820;
+    font-style: italic;
+}
+.a4-kyc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 14px;
+    font-size: 10px;
+}
+.a4-kyc-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    border-bottom: 1px solid #d4c896;
+    padding: 3px 0 5px;
+}
+.a4-kyc-key {
+    color: #8a6c1d;
+    font-weight: 700;
+    flex-shrink: 0;
+    min-width: 70px;
+}
+.a4-kyc-line {
+    flex: 1;
+    color: #1a2440;
+    min-height: 12px;
+}
+.a4-kyc-row.full {
+    grid-column: 1 / -1;
+}
+.a4-kyc-row.tall {
+    grid-column: 1 / -1;
+    flex-direction: column;
+    align-items: stretch;
+    border-bottom: none;
+    gap: 4px;
+}
+.a4-kyc-row.tall .a4-kyc-key { min-width: 0; }
+/* 一條大線：拉高高度，給更多手寫空間 */
+.a4-kyc-row.tall .a4-kyc-line {
+    border-bottom: 1.5px solid #d4c896;
+    min-height: 26px;
+    padding-bottom: 2px;
+}
+
+/* === Footer === */
+.a4-footer {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed #c6d7fa;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #95a3c2;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   A4 匯出按鈕
+   ============================================================ */
+.a4-export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #00b87a, #00d688);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 184, 122, .35);
+    transition: transform .18s, box-shadow .18s;
+    line-height: 1;
+    font-family: inherit;
+}
+.a4-export-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 184, 122, .5);
+}
+.a4-export-btn:active:not(:disabled) { transform: translateY(0); }
+.a4-export-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.a4-export-btn svg { flex-shrink: 0; }

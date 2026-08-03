@@ -148,20 +148,36 @@
         width: 70px;
         height: 70px;
         border-radius: 999px;
-        display: grid;
-        place-items: center;
-        background: conic-gradient(var(--accent, #2e8b7e) var(--pdf-age-pct, 38%), #dedede var(--pdf-age-pct, 38%));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        border: 2px solid rgba(118, 119, 124, 0.22);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.08), inset 0 0 0 8px rgba(255, 255, 255, 0.68);
+        box-sizing: border-box;
       }
       .pdf-donut span {
-        display: grid;
-        place-items: center;
-        width: 52px;
-        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
         border-radius: 999px;
         background: #fff;
         color: #1d1d1f;
+        border: 1px solid rgba(118, 119, 124, 0.18);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
         font-weight: 900;
         font-size: 15px;
+      }
+      .pdf-income-card:first-child .pdf-donut {
+        border-color: var(--accent, #2e8b7e);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.08), inset 0 0 0 8px rgba(255, 255, 255, 0.74);
+      }
+      .pdf-income-card:nth-child(2) .pdf-donut {
+        border-color: rgba(118, 119, 124, 0.30);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.07), inset 0 0 0 8px rgba(245, 245, 247, 0.95);
       }
       .pdf-donut-amount { color: var(--accent, #2e8b7e); font-size: 20px; font-weight: 900; }
       .pdf-donut-amount small { color: #76777c; font-size: 10px; font-weight: 700; }

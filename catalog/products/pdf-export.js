@@ -151,33 +151,33 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #ffffff;
-        border: 2px solid rgba(118, 119, 124, 0.22);
-        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.08), inset 0 0 0 8px rgba(255, 255, 255, 0.68);
+        position: relative;
+        background: transparent;
         box-sizing: border-box;
+      }
+      .pdf-donut-svg {
+        position: absolute;
+        inset: 0;
+        width: 70px;
+        height: 70px;
+        display: block;
+        overflow: visible;
       }
       .pdf-donut span {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 54px;
-        height: 54px;
+        position: relative;
+        z-index: 1;
+        width: 47px;
+        height: 47px;
         border-radius: 999px;
         background: #fff;
         color: #1d1d1f;
-        border: 1px solid rgba(118, 119, 124, 0.18);
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
         box-sizing: border-box;
         font-weight: 900;
         font-size: 15px;
-      }
-      .pdf-income-card:first-child .pdf-donut {
-        border-color: var(--accent, #2e8b7e);
-        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.08), inset 0 0 0 8px rgba(255, 255, 255, 0.74);
-      }
-      .pdf-income-card:nth-child(2) .pdf-donut {
-        border-color: rgba(118, 119, 124, 0.30);
-        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.07), inset 0 0 0 8px rgba(245, 245, 247, 0.95);
       }
       .pdf-donut-amount { color: var(--accent, #2e8b7e); font-size: 20px; font-weight: 900; }
       .pdf-donut-amount small { color: #76777c; font-size: 10px; font-weight: 700; }
@@ -511,11 +511,22 @@
     }).join('');
   }
 
-  function renderIncomePanel(data, side) {
+  function renderDonutSvg(agePct) {
+    const pct = Math.max(0, Math.min(99, Number(agePct) || 0));
+    const accent = escapeHtml(getCssVar('--accent', '#2e8b7e'));
+    return `
+      <svg class="pdf-donut-svg" viewBox="0 0 70 70" aria-hidden="true" focusable="false">
+        <circle cx="35" cy="35" r="27" fill="none" stroke="#dedede" stroke-width="8"></circle>
+        <circle cx="35" cy="35" r="27" fill="none" stroke="${accent}" stroke-width="8" stroke-linecap="butt" pathLength="100" stroke-dasharray="${pct} 100" transform="rotate(-90 35 35)"></circle>
+      </svg>
+    `;
+  }
+
+  function renderIncomePanel(data, side, agePct) {
     const donutClass = side === 'right' ? ' pdf-donut-muted' : '';
     const donut = `
       <div class="pdf-donut-wrap${donutClass}">
-        <div class="pdf-donut"><span>${escapeHtml(data.age)}歲</span></div>
+        <div class="pdf-donut">${renderDonutSvg(agePct)}<span>${escapeHtml(data.age)}歲</span></div>
         <div class="pdf-donut-amount">${escapeHtml(data.amount)}<small> 萬</small></div>
       </div>
     `;
@@ -547,8 +558,8 @@
           <div class="pdf-date">產出日期 ${escapeHtml(today)}</div>
         </div>
         <section class="pdf-income-compare" style="--accent:${escapeHtml(getCssVar('--accent', '#2e8b7e'))};--pdf-age-pct:${compare.agePct}%;">
-          ${renderIncomePanel(compare.left, 'left')}
-          ${renderIncomePanel(compare.right, 'right')}
+          ${renderIncomePanel(compare.left, 'left', compare.agePct)}
+          ${renderIncomePanel(compare.right, 'right', compare.agePct)}
         </section>
         <section class="pdf-table-section">
           <div class="pdf-table-note">‧ 本保險為分紅保險單,保單紅利為預估值,本公司不保證其給付金額。最可能紅利‧繳清保險金額。</div>

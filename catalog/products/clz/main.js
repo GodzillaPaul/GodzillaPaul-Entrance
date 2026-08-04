@@ -404,3 +404,27 @@ function clzSet(k,v,btn){
   clzCalc();
 }
 
+// P10｜逐步播放理賠故事（預設完整顯示，方便列印與靜態閱讀）
+let _clzStoryStep=0;
+function clzTimelineStep(){
+  const track=document.getElementById('clz-time-track');
+  const label=document.getElementById('clz-story-btn-label');
+  if(!track||!label)return;
+  _clzStoryStep=_clzStoryStep>=5?1:_clzStoryStep+1;
+  for(let i=1;i<=5;i++)track.classList.remove('story-step-'+i);
+  track.classList.add('story-step-'+_clzStoryStep);
+  label.textContent=_clzStoryStep===5?'重新播放':'下一個節點';
+}
+
+// P11｜點擊切換療法總覽與費用明細
+function clzTherapyTab(name,button){
+  document.querySelectorAll('.clz-therapy-tabs button').forEach(el=>{
+    el.classList.remove('active');
+    el.setAttribute('aria-selected','false');
+  });
+  document.querySelectorAll('.clz-therapy-panel').forEach(el=>el.classList.remove('active'));
+  button.classList.add('active');
+  button.setAttribute('aria-selected','true');
+  const panel=document.getElementById('therapy-panel-'+name);
+  if(panel)panel.classList.add('active');
+}

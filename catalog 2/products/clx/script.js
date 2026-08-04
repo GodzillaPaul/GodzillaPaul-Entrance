@@ -452,3 +452,14 @@ function clzSet(k,v,btn){
   btn.classList.add('on');
   clzCalc();
 }
+// P10｜逐步播放 CLX 女性理賠故事（預設完整顯示）
+let _clzStoryStep=0;
+function clzTimelineStep(){
+  const track=document.getElementById('clz-time-track');
+  const label=document.getElementById('clz-story-btn-label');
+  if(!track||!label)return;
+  _clzStoryStep=_clzStoryStep>=5?1:_clzStoryStep+1;
+  for(let i=1;i<=5;i++)track.classList.remove('story-step-'+i);
+  track.classList.add('story-step-'+_clzStoryStep);
+  label.textContent=_clzStoryStep===5?'重新播放':'下一個節點';
+}

@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#062f35">
 <title>GodzillaPaul｜理賠案例庫</title>
 <link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/claims.css">
+<link rel="stylesheet" href="css/claims.css?v=2">
 <link rel="stylesheet" href="css/auth.css?v=1">
 </head>
 <body>
@@ -70,12 +70,12 @@
           <button data-folder="heart" type="button">心臟相關</button>
           <button data-folder="joint" type="button">關節相關</button>
           <button data-folder="reproductive" type="button">生殖器相關</button>
-          <button data-folder="death" type="button">身故理賠</button>
+          <button class="is-building" data-folder="death" type="button" disabled aria-disabled="true">身故理賠・建置中</button>
           <button data-folder="organ" type="button">胸腹部臟器</button>
-          <button data-folder="overseas" type="button">國外收據</button>
+          <button class="is-building" data-folder="overseas" type="button" disabled aria-disabled="true">國外收據・建置中</button>
           <button data-folder="back" type="button">腰背部</button>
-          <button data-folder="property" type="button">產險</button>
-          <button data-folder="other" type="button">其他</button>
+          <button class="is-building" data-folder="property" type="button" disabled aria-disabled="true">產險・建置中</button>
+          <button class="is-building" data-folder="other" type="button" disabled aria-disabled="true">其他・建置中</button>
         </div>
 
         <div class="filter-label">保障類型</div>
@@ -104,7 +104,7 @@
     </footer>
   </main>
 </div>
-<script src="js/claims.js"></script>
-<script src="js/auth.js?v=2"></script>
+<script src="js/claims.js?v=2"></script>
+<script src="js/auth.js?v=3"></script>
 </body>
 </html>

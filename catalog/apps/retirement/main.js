@@ -350,7 +350,7 @@ function renderInputPage(S, onStateChange, onGenerate) {
       <header class="gp-shell gp-topbar">
         <div class="gp-brand"><div class="gp-mark"><img src="./assets_logo.jpg" alt="GodzillaPaul Logo" style="width:100%;height:100%;object-fit:contain;border-radius:12px;display:block"></div><div><small>GodzillaPaul</small><strong>退休規劃表</strong></div></div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <a href="https://godzillapaul-entrance.netlify.app/catalog/" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.30);color:rgba(255,255,255,.88);font-size:13px;font-weight:700;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.22)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">← <span>返回</span></a>
+          <a href="../../" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.30);color:rgba(255,255,255,.88);font-size:13px;font-weight:700;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,.22)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">← <span>返回</span></a>
           <span class="gp-pill"><span class="gp-pulse"></span>退休試算</span>
         </div>
       </header>

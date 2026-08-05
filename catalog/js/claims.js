@@ -10,12 +10,12 @@
     { title:'心臟相關', folder:'heart', isFolder:true, categories:['major','medical','hospital','surgery'], tags:['#心臟','#重大傷病'], summary:'心肌梗塞、心導管、支架與心臟手術等案例。', keywords:'心臟 心肌梗塞 心導管 支架 心律不整 心臟手術', url:'' },
     { title:'關節相關', folder:'joint', isFolder:true, categories:['medical','surgery','accident-medical','fracture'], tags:['#關節','#意外骨折'], summary:'手腳關節、韌帶、骨折、人工關節與相關手術費用。', keywords:'手腳 關節 韌帶 十字韌帶 半月板 人工關節 骨折', url:'' },
     { title:'生殖器相關', folder:'reproductive', isFolder:true, categories:['medical','surgery','hospital'], tags:['#生殖器官','#醫療實支'], summary:'婦科、泌尿與生殖器官相關治療案例。', keywords:'生殖器 子宮 卵巢 攝護腺 泌尿 婦科 手術', url:'' },
-    { title:'身故理賠', folder:'death', isFolder:true, categories:['life'], tags:['#壽險','#身故'], summary:'身故理賠文件、受益人、傳承與稅源準備提醒。', keywords:'身故 壽險 受益人 傳承 遺產稅 死亡證明', url:'' },
+    { title:'身故理賠', folder:'death', isFolder:true, underConstruction:true, categories:['life'], tags:['#壽險','#身故'], summary:'身故理賠文件、受益人、傳承與稅源準備提醒。', keywords:'身故 壽險 受益人 傳承 遺產稅 死亡證明', url:'' },
     { title:'胸腹部臟器', folder:'organ', isFolder:true, categories:['medical','hospital','surgery','major'], tags:['#胸腹部','#醫療實支'], summary:'胸腔、腹部臟器疾病與手術住院案例。', keywords:'胸腔 肺 肝 胃 腸 腎 腹部 臟器 手術 住院', url:'' },
-    { title:'國外收據', folder:'overseas', isFolder:true, categories:['medical','accident-medical'], tags:['#海外就醫','#收據'], summary:'出國就醫、海外收據與理賠文件準備情境。', keywords:'國外 海外 收據 就醫 旅平險 意外實支 醫療實支', url:'' },
+    { title:'國外收據', folder:'overseas', isFolder:true, underConstruction:true, categories:['medical','accident-medical'], tags:['#海外就醫','#收據'], summary:'出國就醫、海外收據與理賠文件準備情境。', keywords:'國外 海外 收據 就醫 旅平險 意外實支 醫療實支', url:'' },
     { title:'腰背部', folder:'back', isFolder:true, categories:['medical','surgery','accident-medical'], tags:['#腰背部','#醫療實支'], summary:'椎間盤、腰椎、脊椎與相關手術治療案例。', keywords:'腰背 椎間盤 腰椎 脊椎 復健 手術 醫療實支', url:'' },
-    { title:'產險', folder:'property', isFolder:true, categories:['accident-medical','accident-hospital','fracture'], tags:['#產險','#意外'], summary:'產險、意外與特定事故相關理賠案例。', keywords:'產險 意外 傷害 車禍 旅平險 寵物險 責任險', url:'' },
-    { title:'其他', folder:'other', isFolder:true, categories:['medical','hospital','surgery'], tags:['#其他案例','#補充情境'], summary:'無法直接歸類但客戶常問的理賠情境。', keywords:'其他 理賠 補充 案例 醫療 住院 手術', url:'' },
+    { title:'產險', folder:'property', isFolder:true, underConstruction:true, categories:['accident-medical','accident-hospital','fracture'], tags:['#產險','#意外'], summary:'產險、意外與特定事故相關理賠案例。', keywords:'產險 意外 傷害 車禍 旅平險 寵物險 責任險', url:'' },
+    { title:'其他', folder:'other', isFolder:true, underConstruction:true, categories:['medical','hospital','surgery'], tags:['#其他案例','#補充情境'], summary:'無法直接歸類但客戶常問的理賠情境。', keywords:'其他 理賠 補充 案例 醫療 住院 手術', url:'' },
 
     { title:'剖腹產', series:'常見理賠案例 01', folder:'common women', categories:['medical','hospital','surgery'], tags:['#醫療實支','#住院定額','#手術定額'], summary:'生產遇到醫療必要時，住院、手術與相關費用都可能成為理賠重點。', keywords:'剖腹產 生產 胎位不正 婦女 住院 手術 醫療實支', url:'./claims/c-section/' },
     { title:'息肉切除', series:'常見理賠案例 02', folder:'common outpatient organ', categories:['medical','surgery'], tags:['#醫療實支','#手術定額'], summary:'息肉切除常見於門診或住院處置，重點在收據明細與手術項目。', keywords:'息肉 切除 大腸息肉 胃息肉 門診手術 手術定額 醫療實支', url:'./claims/polyps/' },
@@ -53,14 +53,15 @@
       const categoryData = item.categories.join(' ');
       const keywords = [item.title, item.series || '', item.summary, item.tags.join(' '), item.keywords].join(' ');
       const wrapperTag = hasUrl ? 'a' : 'article';
-      const href = hasUrl ? ' href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener"' : '';
+      const href = hasUrl ? ' href="' + escapeHtml(item.url) + '"' : '';
       const placeholderClass = hasUrl ? '' : ' is-placeholder';
       const folderClass = item.isFolder ? ' is-folder' : '';
-      const status = item.isFolder ? '案例專區' : (item.series || '理賠案例');
+      const buildingClass = item.underConstruction ? ' is-building' : '';
+      const status = item.underConstruction ? '建置中' : (item.isFolder ? '案例專區' : (item.series || '理賠案例'));
       const badge = item.isFolder ? String(index + 1).padStart(2, '0') : (item.series || '').replace('常見理賠案例 ', '');
-      const ctaText = item.isFolder ? '查看這個專區' : (hasUrl ? '打開理賠案例' : '案例連結待補');
-      const arrow = item.isFolder ? '→' : (hasUrl ? '→' : '+');
-      return '<' + wrapperTag + ' class="claim-card' + placeholderClass + folderClass + '" data-folder="' + escapeHtml(item.folder) + '" data-categories="' + escapeHtml(categoryData) + '" data-keywords="' + escapeHtml(keywords) + '"' + href + '>' +
+      const ctaText = item.underConstruction ? '內容建置中' : (item.isFolder ? '查看這個專區' : (hasUrl ? '打開理賠案例' : '案例連結待補'));
+      const arrow = item.underConstruction ? '…' : (item.isFolder ? '→' : (hasUrl ? '→' : '+'));
+      return '<' + wrapperTag + ' class="claim-card' + placeholderClass + folderClass + buildingClass + '" data-folder="' + escapeHtml(item.folder) + '" data-categories="' + escapeHtml(categoryData) + '" data-keywords="' + escapeHtml(keywords) + '"' + href + '>' +
         '<div class="claim-top"><span class="claim-badge">' + escapeHtml(badge) + '</span><span class="claim-status">' + escapeHtml(status) + '</span></div>' +
         '<div class="claim-title">' + escapeHtml(item.title) + '</div>' +
         '<div class="claim-desc">' + escapeHtml(item.summary) + '</div>' +
@@ -115,7 +116,7 @@
   input.addEventListener('input', applyFilter);
   grid.addEventListener('click', function (event) {
     const card = event.target.closest('.claim-card.is-folder');
-    if (!card) return;
+    if (!card || card.classList.contains('is-building')) return;
     const folder = (card.dataset.folder || '').split(' ')[0];
     const btn = folderButtons.find(function (b) { return b.dataset.folder === folder; });
     if (btn) btn.click();

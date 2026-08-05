@@ -37,8 +37,11 @@ package.json            Netlify Identity 伺服器驗證套件
 - 商品解方庫已搬入 `/catalog/products/`，包含 PFW、PF566、PFA、PFJ、PFK、UND、CLZ、CLX、PFN。
 - PFW、PF566、PFA、PFJ、PFK、PFN 商品試算支援 A4 單頁 PDF 匯出；PDF 套件使用本地檔案，不依賴 CDN。
 - 馬上幸福與富邦錢包活動回饋已下架，相關回饋列已在商品頁隱藏。
-- 理賠案例庫目前仍有部分連到 `godzillapaul.github.io` 的外部頁面；若也要完整保護，後續需再分批搬進 `/catalog/claims/`。
+- 理賠案例庫的 12 組案例均已放在 `/catalog/claims/` 內；身故理賠、國外收據、產險與其他四個尚無內容的分類會明確標示「建置中」。
+- 商品、工具與案例頁的 Logo／返回連結均採相對路徑，不會因更換網域或本機預覽而跳回舊站。
+- 專案只保留唯一的 `/catalog/` 會員區；請勿再放入未受角色規則保護的目錄副本。
+- 全站已加入 Content Security Policy 與 Permissions Policy；Chart.js 暫時固定使用指定版本 CDN，其餘既有 PDF 套件優先使用本機檔案。
 
 ## 測試提醒
 
-Netlify Identity 需要 HTTPS 與已啟用的 Netlify 專案。一般本機伺服器可檢查版面，但完整邀請、登入與 CDN 角色規則應在 Netlify 部署網址測試。
+Netlify Identity 需要 HTTPS 與已啟用的 Netlify 專案。一般本機伺服器與 `file://` 會顯示「本機預覽」並略過會員驗證，方便檢查版面；正式部署仍由 Netlify CDN 的 `/catalog/*` 角色規則保護。完整邀請、登入與 CDN 角色規則仍應在 Netlify 部署網址測試。

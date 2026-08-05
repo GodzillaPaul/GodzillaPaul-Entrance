@@ -1,6 +1,16 @@
 (() => {
   const email = document.querySelector("[data-member-email]");
   const logoutButton = document.querySelector("[data-member-logout]");
+  const isLocalPreview = window.location.protocol === "file:" ||
+    ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+  // 本機與 ZIP 預覽沒有 Netlify Functions；略過驗證只為方便檢查版面。
+  // 正式部署仍由 Netlify CDN 的 /catalog/* 角色規則保護。
+  if (isLocalPreview) {
+    if (email) email.textContent = "本機預覽";
+    if (logoutButton) logoutButton.hidden = true;
+    return;
+  }
 
   fetch("/.netlify/functions/me", { credentials: "same-origin" })
     .then(response => {

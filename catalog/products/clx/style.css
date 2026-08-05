@@ -882,3 +882,12 @@ html:not(.scroll-mode):not(.grid-mode) .slide{width:100%;height:100%;}
 :root{--clx-rose:#C63F75;--clx-mauve:#8E5AA8;}
 .v21-ci .v21-big-cancer strong,.v21-ci .v21-pct,.v21-donut-center b{color:var(--rose)!important;}
 .v13-premium-table th.clz small{color:var(--rose)!important;background:rgba(224,62,87,.12)!important;}
+/* v23 · CLX/CLZ 統一頁碼與 P10 全版圖 */
+.deck>.slide:not(.cover):not(.closing)>.slide-pg{
+  position:absolute!important;right:32px!important;bottom:24px!important;
+  font-size:16px!important;line-height:1!important;font-family:var(--font-sans)!important;
+  font-weight:600!important;letter-spacing:0!important;color:rgba(15,23,42,.46)!important;
+  z-index:20!important;
+}
+.p10-image-slide{padding:0!important;background:#fff!important;overflow:hidden!important;}
+.p10-image-slide>.p10-timeline-image{display:block;width:100%;height:100%;object-fit:contain;}

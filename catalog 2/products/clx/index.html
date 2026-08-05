@@ -68,8 +68,9 @@ requestAnimationFrame(triggerActiveChart);
 </style>
 <div class="gp-corner-fixed">
   <a class="gp-corner-brand"
-     href="https://godzillapaul.github.io/Catalog_GodzillaPaul/"
-     aria-label="回到主頁">
+     href="../../index.html"
+     onclick="return gpCatalogNavigate(event,'home')"
+     aria-label="回到入口首頁">
     <div class="gp-corner-badge">
       <img src="https://godzillapaul.github.io/Catalog_GodzillaPaul/favicon/icon-512x512.png"
            alt="GodzillaPaul Logo" width="38" height="38">
@@ -80,8 +81,9 @@ requestAnimationFrame(triggerActiveChart);
     </div>
   </a>
   <a class="gp-corner-back"
-     href="https://godzillapaul.github.io/Catalog_GodzillaPaul/"
-     aria-label="返回主頁">← <span>返回</span></a>
+     href="../../products.html"
+     onclick="return gpCatalogNavigate(event,'products')"
+     aria-label="返回商品專區">← <span>返回</span></a>
 </div>
 <!-- ▲ GP 品牌角落結束 ▲ -->
 
@@ -602,8 +604,8 @@ requestAnimationFrame(triggerActiveChart);
 <button onclick="toggleMode()" title="投影片 ↔ 捲動">
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"></path></svg>
 </button>
-<button onclick="window.print()" title="列印 / 匯出 PDF">
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect height="8" width="12" x="6" y="14"></rect></svg>
+<button onclick="downloadFullDeckPDF('CLX')" title="下載整份 PDF（14頁）">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5"></path><path d="M5 21h14a2 2 0 002-2v-3M3 16v3a2 2 0 002 2"></path></svg>
 </button>
 <button onclick="toggleGrid()" title="光桌一覽 G">
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><rect height="7" rx="1" width="7" x="3" y="3"></rect><rect height="7" rx="1" width="7" x="14" y="3"></rect><rect height="7" rx="1" width="7" x="3" y="14"></rect><rect height="7" rx="1" width="7" x="14" y="14"></rect></svg>
@@ -613,6 +615,9 @@ requestAnimationFrame(triggerActiveChart);
 <svg fill="none" id="icon-fs-exit" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="display:none" viewbox="0 0 24 24"><path d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"></path></svg>
 </button>
 </div>
+<script src="assets/vendor/html2canvas.min.js"></script>
+<script src="assets/vendor/jspdf.umd.min.js"></script>
+<script src="pdf-export.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

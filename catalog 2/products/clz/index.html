@@ -12,7 +12,7 @@ requestAnimationFrame(triggerActiveChart);
 </head>
 <body>
 <div class="gp-corner">
-  <a class="gp-corner-brand" href="https://godzillapaul.github.io/Catalog_GodzillaPaul/" aria-label="回到主頁">
+  <a class="gp-corner-brand" href="../../index.html" onclick="return gpCatalogNavigate(event,'home')" aria-label="回到入口首頁">
     <div class="gp-corner-badge">
       <img src="https://godzillapaul.github.io/Catalog_GodzillaPaul/favicon/icon-512x512.png" alt="GodzillaPaul Logo" width="42" height="42">
     </div>
@@ -21,7 +21,7 @@ requestAnimationFrame(triggerActiveChart);
       <strong>商品解方庫</strong>
     </div>
   </a>
-  <a class="gp-corner-back" href="https://godzillapaul.github.io/Catalog_GodzillaPaul/" aria-label="返回主頁">← <span>返回</span></a>
+  <a class="gp-corner-back" href="../../products.html" onclick="return gpCatalogNavigate(event,'products')" aria-label="返回商品專區">← <span>返回</span></a>
 </div>
 
 
@@ -633,8 +633,8 @@ requestAnimationFrame(triggerActiveChart);
   <button onclick="toggleMode()" title="投影片 ↔ 捲動">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
   </button>
-  <button onclick="window.print()" title="列印 / 匯出 PDF">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  <button onclick="downloadFullDeckPDF('CLZ')" title="下載整份 PDF（14頁）">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5"/><path d="M5 21h14a2 2 0 002-2v-3M3 16v3a2 2 0 002 2"/></svg>
   </button>
   <button onclick="toggleGrid()" title="光桌一覽 G">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -645,6 +645,9 @@ requestAnimationFrame(triggerActiveChart);
   </button>
 </div>
 
+<script src="assets/vendor/html2canvas.min.js"></script>
+<script src="assets/vendor/jspdf.umd.min.js"></script>
+<script src="pdf-export.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

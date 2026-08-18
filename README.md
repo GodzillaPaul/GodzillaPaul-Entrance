@@ -41,6 +41,7 @@ package.json            Netlify Identity 伺服器驗證套件
 - 商品、工具與案例頁的 Logo／返回連結均採相對路徑，不會因更換網域或本機預覽而跳回舊站。
 - 專案只保留唯一的 `/catalog/` 會員區；請勿再放入未受角色規則保護的目錄副本。
 - 全站已加入 Content Security Policy 與 Permissions Policy；Chart.js 暫時固定使用指定版本 CDN，其餘既有 PDF 套件優先使用本機檔案。
+- PFW、PF566、PFA、PFJ、PFK、PFN 六個美元商品的美元／台幣匯率，統一優先由 `netlify/functions/exchange-rate.mjs` 伺服器端抓取三個獨立來源，成功結果於 Netlify CDN 快取 30 分鐘；若 Function 暫時失效，瀏覽器會再嘗試直接來源、最近 7 天成功值，最後才使用預設 32。
 
 ## 測試提醒
 

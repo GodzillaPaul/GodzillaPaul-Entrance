@@ -1476,19 +1476,36 @@ function fillWheel(id, items, sel) {
 }
 
 // ====== FX ======
-function setFxRate(rate, status) {
+const FX_DEFAULT_RATE = 32;
+const FX_CACHE_KEY = 'godzillapaul-usd-twd-rate-v1';
+
+function setFxRate(rate, status, meta = {}) {
   state.fxRate = rate;
   document.getElementById('exrate').value = rate.toFixed(2);
   const fxEl = document.getElementById('fxStatus');
-  if (status === 'live') fxEl.innerHTML = '<span class="live">● 即時匯率</span> ' + new Date().toLocaleString('zh-TW', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
+  if (status === 'live') {
+    const stamp = meta.asOf ? new Date(meta.asOf) : new Date();
+    const timeText = Number.isNaN(stamp.getTime()) ? '' : ' ' + stamp.toLocaleString('zh-TW', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
+    const sourceText = meta.source ? ` · ${meta.source}` : '';
+    fxEl.innerHTML = `<span class="live">● 最新匯率</span>${timeText}${sourceText}`;
+    try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify({rate, asOf: meta.asOf || new Date().toISOString(), source: meta.source || ''})); } catch (e) {}
+  }
+  else if (status === 'cached') fxEl.innerHTML = '<span class="failed">● 暫用最近匯率</span>';
   else if (status === 'manual') fxEl.innerHTML = '<span class="failed">● 手動匯率</span>';
-  else if (status === 'failed') fxEl.innerHTML = '<span class="failed">● 抓取失敗,使用預設 32</span>';
+  else if (status === 'failed') fxEl.innerHTML = '<span class="failed">● 暫時無法更新，使用預設 32</span>';
   else fxEl.textContent = '抓取中...';
   recompute();
 }
+
+function validFxRate(value) {
+  const rate = Number(value);
+  return Number.isFinite(rate) && rate >= 20 && rate <= 60 ? Number(rate.toFixed(2)) : null;
+}
+
 async function fetchRate() {
   document.getElementById('fxStatus').textContent = '抓取中...';
   const apis = [
+    {url: '/.netlify/functions/exchange-rate', getRate: d => d?.rate, getMeta: d => ({source: d?.source, asOf: d?.asOf})},
     {url: 'https://open.er-api.com/v6/latest/USD', getRate: d => d?.rates?.TWD},
     {url: 'https://api.exchangerate-api.com/v4/latest/USD', getRate: d => d?.rates?.TWD},
     {url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', getRate: d => d?.usd?.twd}
@@ -1498,11 +1515,24 @@ async function fetchRate() {
       const r = await fetch(api.url, {cache: 'no-cache'});
       if (!r.ok) continue;
       const d = await r.json();
-      const rate = api.getRate(d);
-      if (rate && rate > 1 && rate < 100) { setFxRate(parseFloat(rate.toFixed(2)), 'live'); return; }
+      const rate = validFxRate(api.getRate(d));
+      if (rate) {
+        const meta = api.getMeta ? api.getMeta(d) : {source: new URL(api.url).hostname, asOf: new Date().toISOString()};
+        setFxRate(rate, 'live', meta);
+        return;
+      }
     } catch (e) {}
   }
-  setFxRate(state.fxRate, 'failed');
+  try {
+    const cached = JSON.parse(localStorage.getItem(FX_CACHE_KEY) || 'null');
+    const cachedRate = validFxRate(cached?.rate);
+    const cachedAge = Date.now() - new Date(cached?.asOf || 0).getTime();
+    if (cachedRate && cachedAge >= 0 && cachedAge <= 7 * 24 * 60 * 60 * 1000) {
+      setFxRate(cachedRate, 'cached');
+      return;
+    }
+  } catch (e) {}
+  setFxRate(FX_DEFAULT_RATE, 'failed');
 }
 
 // ====== EVENTS ======

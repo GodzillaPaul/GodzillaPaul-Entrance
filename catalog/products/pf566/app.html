@@ -141,6 +141,7 @@ input { font-family: inherit; }
 
 .fx-refresh-btn { border: 1px solid var(--border); background: white; padding: 6px 14px; border-radius: 999px; font: inherit; font-size: 12px; color: var(--muted); cursor: pointer; }
 .fx-refresh-btn:hover { color: var(--accent); border-color: var(--accent); }
+.fx-refresh-btn:disabled { opacity: .55; cursor: wait; color: var(--muted); }
 
 .summary-pill { background: var(--accent); color: white; border-radius: 999px; padding: 7px 16px; font-size: 13px; margin: 6px 0 14px 0; display: inline-block; font-weight: 600; }
 
@@ -470,7 +471,7 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
     </div>
     <div class="ctrl-right">
       <div class="pill-toggle" id="ccyToggle">
-        <button class="pill-btn active" data-c="TWD">台幣&nbsp;<input class="exrate-inline" id="exrate" value="32.00" type="number" step="0.01" min="1" onclick="event.stopPropagation()"></button>
+        <button class="pill-btn active" data-c="TWD">台幣&nbsp;<input class="exrate-inline" id="exrate" value="32.0" type="number" step="0.1" min="1" onclick="event.stopPropagation()"></button>
         <button class="pill-btn" data-c="USD">美元</button>
       </div>
       <div class="fx-status" id="fxStatus"></div>
@@ -522,7 +523,7 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
   </div>
 
   <div class="summary-pill" id="summary-pill" style="display:none"></div>
-  <button class="fx-refresh-btn" id="fxRefresh" style="margin-left:8px">↻ 更新匯率</button>
+  <button class="fx-refresh-btn" id="fxRefresh" style="margin-left:8px" type="button" title="重新抓取最新美元兌台幣匯率">↻ 更新最新匯率</button>
 
   <!-- INFOGRAPHIC 對比圖 (PFW 獨有) -->
   <div class="info-section" id="info-section" style="display:none">
@@ -1230,7 +1231,7 @@ const FX_CACHE_KEY = 'godzillapaul-usd-twd-rate-v1';
 
 function setFxRate(rate, status, meta = {}) {
   state.fxRate = rate;
-  document.getElementById('exrate').value = rate.toFixed(2);
+  document.getElementById('exrate').value = rate.toFixed(1);
   const fxEl = document.getElementById('fxStatus');
   if (status === 'live') {
     const stamp = meta.asOf ? new Date(meta.asOf) : new Date();
@@ -1248,40 +1249,60 @@ function setFxRate(rate, status, meta = {}) {
 
 function validFxRate(value) {
   const rate = Number(value);
-  return Number.isFinite(rate) && rate >= 20 && rate <= 60 ? Number(rate.toFixed(2)) : null;
+  return Number.isFinite(rate) && rate >= 20 && rate <= 60 ? Number(rate.toFixed(1)) : null;
 }
 
 async function fetchRate() {
+  const refreshButton = document.getElementById('fxRefresh');
+  if (refreshButton?.disabled) return;
+  if (refreshButton) {
+    refreshButton.disabled = true;
+    refreshButton.setAttribute('aria-busy', 'true');
+    refreshButton.textContent = '↻ 更新中...';
+  }
   document.getElementById('fxStatus').textContent = '抓取中...';
-  const apis = [
-    {url: '/.netlify/functions/exchange-rate', getRate: d => d?.rate, getMeta: d => ({source: d?.source, asOf: d?.asOf})},
-    {url: 'https://open.er-api.com/v6/latest/USD', getRate: d => d?.rates?.TWD},
-    {url: 'https://api.exchangerate-api.com/v4/latest/USD', getRate: d => d?.rates?.TWD},
-    {url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', getRate: d => d?.usd?.twd}
-  ];
-  for (const api of apis) {
+
+  try {
+    const apis = [
+      {url: '/.netlify/functions/exchange-rate', getRate: d => d?.rate, getMeta: d => ({source: d?.source, asOf: d?.asOf})},
+      {url: 'https://open.er-api.com/v6/latest/USD', getRate: d => d?.rates?.TWD},
+      {url: 'https://api.exchangerate-api.com/v4/latest/USD', getRate: d => d?.rates?.TWD},
+      {url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', getRate: d => d?.usd?.twd}
+    ];
+    for (const api of apis) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        let r;
+        try { r = await fetch(api.url, {cache: 'no-cache', signal: controller.signal}); }
+        finally { clearTimeout(timeout); }
+        if (!r.ok) continue;
+        const d = await r.json();
+        const rate = validFxRate(api.getRate(d));
+        if (rate) {
+          const meta = api.getMeta ? api.getMeta(d) : {source: new URL(api.url).hostname, asOf: new Date().toISOString()};
+          setFxRate(rate, 'live', meta);
+          return;
+        }
+      } catch (e) {}
+    }
     try {
-      const r = await fetch(api.url, {cache: 'no-cache'});
-      if (!r.ok) continue;
-      const d = await r.json();
-      const rate = validFxRate(api.getRate(d));
-      if (rate) {
-        const meta = api.getMeta ? api.getMeta(d) : {source: new URL(api.url).hostname, asOf: new Date().toISOString()};
-        setFxRate(rate, 'live', meta);
+      const cached = JSON.parse(localStorage.getItem(FX_CACHE_KEY) || 'null');
+      const cachedRate = validFxRate(cached?.rate);
+      const cachedAge = Date.now() - new Date(cached?.asOf || 0).getTime();
+      if (cachedRate && cachedAge >= 0 && cachedAge <= 7 * 24 * 60 * 60 * 1000) {
+        setFxRate(cachedRate, 'cached');
         return;
       }
     } catch (e) {}
-  }
-  try {
-    const cached = JSON.parse(localStorage.getItem(FX_CACHE_KEY) || 'null');
-    const cachedRate = validFxRate(cached?.rate);
-    const cachedAge = Date.now() - new Date(cached?.asOf || 0).getTime();
-    if (cachedRate && cachedAge >= 0 && cachedAge <= 7 * 24 * 60 * 60 * 1000) {
-      setFxRate(cachedRate, 'cached');
-      return;
+    setFxRate(FX_DEFAULT_RATE, 'failed');
+  } finally {
+    if (refreshButton) {
+      refreshButton.disabled = false;
+      refreshButton.removeAttribute('aria-busy');
+      refreshButton.textContent = '↻ 更新最新匯率';
     }
-  } catch (e) {}
-  setFxRate(FX_DEFAULT_RATE, 'failed');
+  }
 }
 
 // ====== Mode unit labels ======

@@ -37,7 +37,7 @@ async function fetchProvider(provider) {
   }
 
   return {
-    rate: Number(rate.toFixed(2)),
+    rate: Number(rate.toFixed(1)),
     source: provider.name,
     asOf: provider.timestamp(data) || new Date().toISOString(),
   }

@@ -1,5 +1,5 @@
 (function(){
-  var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', qMethod='equal', dLifeBudgetMode='pct';
+  var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', qMethod='equal', qSelectedPlan='p2', dLifeBudgetMode='pct';
   var PFK2Y={"1":{"0":[356,11575.68],"1":[370,11573.03],"2":[384,11571.18],"3":[398,11570.15],"4":[413,11570.05],"5":[429,11571.6],"6":[445,11572.38],"7":[461,11573.94],"8":[479,11577.26],"9":[497,11581.24],"10":[515,11585.49],"11":[534,11591.24],"12":[554,11598.12],"13":[574,11603.28],"14":[595,11607.65],"15":[617,11610.42],"16":[640,11613.34],"17":[664,11615.08],"18":[688,11614.92],"19":[714,11616.06],"20":[740,11615.96],"21":[768,11617.28],"22":[796,11616.92],"23":[826,11618.11],"24":[856,11617.88],"25":[888,11619.25],"26":[921,11620.96],"27":[955,11622.7],"28":[990,11624.57],"29":[1027,11626.96],"30":[1064,11627.7],"31":[1103,11628.88],"32":[1142,11629.17],"33":[1183,11630.05],"34":[1226,11631.49],"35":[1270,11632.42],"36":[1316,11634.47],"37":[1363,11635.41],"38":[1412,11636.75],"39":[1463,11638.39],"40":[1516,11641.19],"41":[1573,11646.4],"42":[1632,11651.74],"43":[1693,11657.43],"44":[1757,11663.1],"45":[1823,11669.2],"46":[1891,11674.29],"47":[1962,11680.06],"48":[2035,11684.82],"49":[2111,11690.31],"50":[2190,11697.46],"51":[2269,11701.27],"52":[2352,11705.94],"53":[2437,11710.1],"54":[2526,11715.74],"55":[2617,11719.65],"56":[2712,11725.51],"57":[2811,11731.6],"58":[2913,11736.41],"59":[3018,11741.39],"60":[3128,11748.21],"61":[3254,11764.33],"62":[3386,11780.69],"63":[3523,11796.44],"64":[3665,11811.04],"65":[3814,11825.57],"66":[3968,11832.48],"67":[4129,11836.33],"68":[4296,11831.36],"69":[4470,11819.2],"70":[4650,11793.58],"71":[4764,11746.31],"72":[4881,11692.41],"73":[5000,11629.94],"74":[5000,11433.16],"75":[5000,11367.01],"76":[5000,11300.24],"77":[5000,11258.7],"78":[5000,11261.78]},"2":{"0":[270,11561.79],"1":[280,11558.05],"2":[291,11555.9],"3":[302,11555.19],"4":[313,11552.67],"5":[325,11552.99],"6":[338,11554.09],"7":[350,11553.57],"8":[363,11554.11],"9":[377,11556.36],"10":[391,11558.97],"11":[406,11561.82],"12":[422,11566.55],"13":[438,11570.08],"14":[454,11572.48],"15":[471,11574.3],"16":[489,11576.02],"17":[508,11578.15],"18":[527,11579.65],"19":[547,11580.07],"20":[567,11581.26],"21":[588,11582.19],"22":[610,11583.51],"23":[633,11584.83],"24":[657,11586.96],"25":[682,11588.6],"26":[708,11591.04],"27":[734,11591.37],"28":[762,11592.8],"29":[790,11593.97],"30":[821,11597.11],"31":[852,11598.56],"32":[884,11599.82],"33":[917,11600.96],"34":[951,11601.77],"35":[987,11603.34],"36":[1024,11604.47],"37":[1062,11605.3],"38":[1102,11606.88],"39":[1144,11608.62],"40":[1186,11609.33],"41":[1234,11615.66],"42":[1283,11620.11],"43":[1334,11625.87],"44":[1387,11631.01],"45":[1442,11634.95],"46":[1499,11639.55],"47":[1559,11644.4],"48":[1621,11649.36],"49":[1685,11652.99],"50":[1753,11659.57],"51":[1825,11667.63],"52":[1899,11674.24],"53":[1977,11682.61],"54":[2057,11688.89],"55":[2141,11696.76],"56":[2228,11703.21],"57":[2319,11711.03],"58":[2413,11717.59],"59":[2512,11725.5],"60":[2613,11732.14],"61":[2723,11744.22],"62":[2838,11755.49],"63":[2957,11766.76],"64":[3082,11777.68],"65":[3212,11789.41],"66":[3347,11800.17],"67":[3488,11811.69],"68":[3635,11821.6],"69":[3788,11829.05],"70":[3948,11828.76],"71":[4199,11855.16],"72":[4466,11863.12],"73":[4750,11846.4],"74":[4800,11636.6],"75":[4850,11572.38],"76":[4900,11506.16],"77":[4950,11437.74],"78":[5000,11368.5]}};
   var MARKET_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv';
   var market={fxRate:31.6947,fxDate:'2026-06-24',audRate:22.4251,audDate:'2026-05-27',funds:[
@@ -280,8 +280,10 @@
     var section=$('quickCalc'); if(!section) return;
     var showResult=step==='result';
     var showSafety=step==='safety';
+    var showTable=step==='table';
     section.classList.toggle('show-safety', showSafety);
     section.classList.toggle('show-result', showResult);
+    section.classList.toggle('show-table', showTable);
     calcQ();
     if(shouldScroll!==false) section.scrollIntoView({behavior:'smooth', block:'start'});
   }
@@ -372,13 +374,15 @@
   if(dStepProperty)dStepProperty.onclick=function(){setToolDStep('property')};
   if(dStepSafety)dStepSafety.onclick=function(){setToolDStep('safety')};
   if(dStepResult)dStepResult.onclick=function(){setToolDStep('result')};
-  var qNextSafety=$('q-next-safety'), qBackMortgage=$('q-back-mortgage'), qShowResult=$('q-show-result'), qStepMortgage=$('q-step-mortgage'), qStepSafety=$('q-step-safety'), qStepResult=$('q-step-result');
+  var qNextSafety=$('q-next-safety'), qBackMortgage=$('q-back-mortgage'), qShowResult=$('q-show-result'), qStepMortgage=$('q-step-mortgage'), qStepSafety=$('q-step-safety'), qStepResult=$('q-step-result'), qBackResult=$('q-back-result');
   if(qNextSafety)qNextSafety.onclick=function(){setQuickStep('safety')};
   if(qBackMortgage)qBackMortgage.onclick=function(){setQuickStep('mortgage')};
   if(qShowResult)qShowResult.onclick=function(){setQuickStep('result')};
   if(qStepMortgage)qStepMortgage.onclick=function(){setQuickStep('mortgage')};
   if(qStepSafety)qStepSafety.onclick=function(){setQuickStep('safety')};
   if(qStepResult)qStepResult.onclick=function(){setQuickStep('result')};
+  if(qBackResult)qBackResult.onclick=function(){setQuickStep('result')};
+  document.querySelectorAll('[data-q-report]').forEach(function(btn){btn.addEventListener('click',function(){showQuickReport(btn.dataset.qReport)})});
 
   function toggleMethods(){
     $('a-method-equal').classList.toggle('active',aMethod==='equal'); $('a-method-wealth').classList.toggle('active',aMethod==='wealth'); document.querySelectorAll('.a-equal-only').forEach(x=>x.classList.toggle('hidden',aMethod!=='equal')); document.querySelectorAll('.a-wealth-only').forEach(x=>x.classList.toggle('hidden',aMethod!=='wealth'));
@@ -620,6 +624,22 @@
     });
   }
 
+  function renderQuickTable(){
+    var source=$(qSelectedPlan==='p1'?'q-p1-report':'q-p2-report'), target=$('q-active-report');
+    if(!source||!target) return;
+    target.innerHTML=source.innerHTML;
+    var planName=qSelectedPlan==='p1'?'方案一':'方案二';
+    setText('q-table-title',planName+'年度試算表');
+    setText('q-table-subtitle',qSelectedPlan==='p1'?'60% 配息，40% 做 PFK 兩年總預算。':'80% 配息，20% 付首年PFK，第二年保費由保單借款支應。');
+    var payoff=reportText(qSelectedPlan==='p1'?'q-p1-payoff':'q-p2-payoff');
+    setText('q-table-summary',payoff==='尚未達成'?planName+'目前在 20 年內尚未覆蓋房貸本金餘額，可調整房屋價值額度或配息標的再比較。':planName+'目前推估 '+payoff+' 有機會用 PFK 現金價值加累積配息覆蓋房貸本金餘額。');
+  }
+
+  function showQuickReport(kind){
+    qSelectedPlan=kind==='p1'?'p1':'p2';
+    setQuickStep('table');
+  }
+
   function buildQuickPlan(kind,budgetWan,totalLoanWan,loanRows){
     var investRate=kind==='p1'?0.6:0.8, pfkRate=kind==='p1'?0.4:0.2;
     var investWan=Math.max(budgetWan*investRate,0);
@@ -654,13 +674,13 @@
     var bestText=best?'第 '+best.payoffYear+' 年':'尚未達成';
     var last=best?best.rows[best.payoffYear-1]:(p2.rows[p2.rows.length-1]||p1.rows[p1.rows.length-1]||{redeem:0});
 
-    setText('q-total-loan-show',wan(totalLoan)); setText('q-current-loan-show',wan(currentLoan)); setText('q-budget-show',wan1(budget)); setText('q-budget-live',wan1(budget));
+    setText('q-total-loan-show',wan(totalLoan)); setText('q-current-loan-show',wan(currentLoan)); setText('q-budget-show',wan1(budget));
     setText('q-total-pay',money(totalPay)); setText('q-live-note','投入預算＝房屋價值額度 '+wan(totalLoan)+'－目前房貸 '+wan(currentLoan)+'。目前房貸月付約 '+money(currentPay)+'。');
     setText('q-result-total-loan',wan(totalLoan)); setText('q-result-budget',wan1(budget)); setText('q-best-payoff',bestText);
-    setText('q-p1-payoff-live',p1.payoffYear?'第 '+p1.payoffYear+' 年':'尚未達成'); setText('q-p2-payoff-live',p2.payoffYear?'第 '+p2.payoffYear+' 年':'尚未達成');
     renderQuickPlan('q-p1',p1,p1.rows); renderQuickPlan('q-p2',p2,p2.rows);
-    setText('q-payoff-gap',money(last.redeem));
+    setText('q-payoff-strip-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標。':'20 年內尚未覆蓋房貸本金餘額。');
     setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，PFK保單現金價值加上累積配息約可在第 '+best.payoffYear+' 年覆蓋房貸本金餘額。':'20 年內尚未覆蓋房貸本金餘額，可提高投入額度、拉長配息累積或調整標的再試算。');
+    renderQuickTable();
   }
 
   function calcC(){
@@ -961,6 +981,7 @@
 
   var dc=$('d-copy-summary'); if(dc){dc.onclick=function(){copyToClipboard('房產現金流OS【傳承安家】\n方案一月套利：'+(($('d-p1-net')||{}).textContent||'')+'\n方案二第6年月套利：'+(($('d-planned-net')||{}).textContent||'')+'\n方案一投入本金：'+(($('d-p1-invest')||{}).textContent||'')+'\n方案二投入本金：'+(($('d-p2-invest')||{}).textContent||''))}}
   var qc=$('q-copy-summary'); if(qc){qc.onclick=function(){copyToClipboard('房產月收引擎【快速試算】\n房貸總額：'+(($('q-result-total-loan')||{}).textContent||'')+'\n投入預算：'+(($('q-result-budget')||{}).textContent||'')+'\n方案一可能結清：'+(($('q-p1-payoff')||{}).textContent||'')+'\n方案二可能結清：'+(($('q-p2-payoff')||{}).textContent||'')+'\n判讀：'+(($('q-payoff-copy')||{}).textContent||''))}}
+  var qt=$('q-copy-table'); if(qt){qt.onclick=function(){copyToClipboard('房產月收引擎【快速試算年度表】\n'+(($('q-table-title')||{}).textContent||'')+'\n'+(($('q-table-summary')||{}).textContent||''))}}
 
   populateFundSelects(); syncFxFields(); updateDividendNotes();
   toggleMethods(); calcAll(); refreshMarket();

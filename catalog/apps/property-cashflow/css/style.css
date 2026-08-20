@@ -276,6 +276,188 @@
   .quick-plan-head { grid-template-columns: 1fr; }
   .quick-plan-head strong { text-align: left; }
 }
+
+/* Quick calculator result redesign */
+#quickCalc .quick-client-lens,
+#quickCalc .quick-result-strip { display: none !important; }
+#quickCalc.show-table .quick-table-copy { display: inline !important; }
+#quickCalc.show-table .quick-result-copy { display: none !important; }
+#quickCalc.show-table .step-result { background: linear-gradient(135deg, var(--green), var(--gold)); color: white; }
+#quickCalc.show-table .quick-form-grid,
+#quickCalc.show-table .quick-result-page { display: none !important; }
+#quickCalc .quick-table-page { display: none; max-width: 1280px; margin: 0 auto; }
+#quickCalc.show-table .quick-table-page { display: block; }
+
+.quick-result-shell {
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 20px 54px rgba(19,28,24,.1);
+}
+
+.quick-result-top {
+  min-height: 112px;
+  border-radius: 22px;
+  padding: 22px 26px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #08110d, #2b2418);
+  color: white;
+}
+
+.quick-result-top span {
+  display: block;
+  color: rgba(255,255,255,.55);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.quick-result-top h3 {
+  margin: 8px 0 8px;
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: 1.12;
+}
+
+.quick-result-top p {
+  margin: 0;
+  max-width: 920px;
+  color: rgba(255,255,255,.66);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.quick-result-shell .quick-compare-grid {
+  align-items: stretch;
+}
+
+.quick-result-shell .quick-plan-card {
+  appearance: none;
+  width: 100%;
+  min-height: 390px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+}
+
+.quick-result-shell .quick-plan-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 52px rgba(20,32,28,.12);
+  border-color: rgba(47,118,86,.32);
+}
+
+.quick-result-shell .quick-plan-head {
+  min-height: 132px;
+  padding: 22px 24px 14px;
+}
+
+.quick-result-shell .quick-plan-head h3 {
+  font-size: clamp(22px, 2vw, 34px);
+  line-height: 1.25;
+}
+
+.quick-result-shell .quick-plan-head strong {
+  min-width: 150px;
+  font-size: clamp(34px, 4vw, 60px);
+  color: #137c52;
+}
+
+.quick-result-shell .compare-lines {
+  padding: 8px 24px 10px;
+}
+
+.quick-card-action {
+  display: block;
+  margin: 12px 24px 22px;
+  min-height: 48px;
+  border-radius: 14px;
+  background: #101820;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 48px;
+}
+
+.quick-result-shell .plan-b .quick-card-action {
+  background: var(--green);
+}
+
+.quick-result-shell .quick-payoff-strip {
+  margin-top: 14px;
+  min-height: 62px;
+}
+
+.quick-result-shell .quick-payoff-strip b {
+  font-size: clamp(26px, 2.8vw, 42px);
+}
+
+.quick-table-card {
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 20px 54px rgba(19,28,24,.1);
+}
+
+.quick-table-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.quick-table-head small {
+  display: block;
+  color: #8a96a0;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.quick-table-head h3 {
+  margin: 7px 0 6px;
+  color: #101820;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.15;
+}
+
+.quick-table-head p {
+  margin: 0;
+  color: #6f7882;
+  font-size: 14px;
+}
+
+.quick-table-wrap.is-full {
+  max-height: min(520px, 56vh);
+}
+
+.quick-table-wrap.is-full .quick-flow-table {
+  min-width: 980px;
+  font-size: 14px;
+}
+
+.quick-table-wrap.is-full .quick-flow-table th,
+.quick-table-wrap.is-full .quick-flow-table td {
+  padding: 11px 12px;
+}
+
+.quick-table-summary {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(47,118,86,.08);
+  color: #405048;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.55;
+}
+
+@media (max-width: 1180px) {
+  .quick-result-shell .quick-plan-card { min-height: 0; }
+}
+
+@media (max-width: 760px) {
+  .quick-table-head { flex-direction: column; }
+  .quick-card-action { margin-left: 18px; margin-right: 18px; }
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; width: 100%; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow: clip; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", sans-serif; }

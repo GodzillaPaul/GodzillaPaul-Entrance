@@ -728,16 +728,11 @@
     <!-- CALCULATOR -->
     <section id="quickCalc" class="slide"><div class="slide-inner quick-slide">
       <div class="topline"><div class="kicker">E · QUICK CHECK</div><button class="ghost" data-go="home">返回總覽</button></div>
-      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入房貸與房屋價值額度，投入預算會自動帶出。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，不用另外填壽險保額或保留預算。</span><span class="quick-result-copy">比較兩種預算配置，展開年度報表看可能一次結清房貸的時間點。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入房貸與房屋價值額度，投入預算會自動帶出。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，不用另外填壽險保額或保留預算。</span><span class="quick-result-copy">先比較兩個方案的可能結清年度，再點方案看年度試算表。</span><span class="quick-table-copy">年度試算表顯示本金餘額、PFK保單現金價值與累積配息還款。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
       <div class="tool-stepper quick-stepper" aria-label="快速試算流程">
         <button class="step-mortgage" id="q-step-mortgage" type="button">1 房貸資料</button>
         <button class="step-safety" id="q-step-safety" type="button">2 配息與PFK</button>
-        <button class="step-result" id="q-step-result" type="button">3 年度結果</button>
-      </div>
-      <div class="quick-client-lens">
-        <div><span>投入預算</span><b id="q-budget-live">450萬</b></div>
-        <div><span>方案一可能結清</span><b id="q-p1-payoff-live">尚未達成</b></div>
-        <div><span>方案二可能結清</span><b id="q-p2-payoff-live">尚未達成</b></div>
+        <button class="step-result" id="q-step-result" type="button">3 結果比較</button>
       </div>
       <div class="quick-form-grid">
         <div class="input-panel quick-input-panel">
@@ -787,13 +782,14 @@
       </div>
 
       <div class="quick-result-page">
-        <div class="quick-result-strip">
-          <div><span>房貸總額</span><b id="q-result-total-loan">1000萬</b></div>
-          <div><span>投入預算</span><b id="q-result-budget">450萬</b></div>
-          <div class="is-best"><span>較早可能結清</span><b id="q-best-payoff">尚未達成</b></div>
-        </div>
-        <div class="quick-compare-grid">
-          <div class="quick-plan-card plan-a">
+        <div class="quick-result-shell">
+          <div class="quick-result-top">
+            <span>快速比較</span>
+            <h3>先看哪一個方案更早有機會結清房貸。</h3>
+            <p id="q-payoff-copy">快速試算會用 PFK 現金價值加上配息累積，回推可能一次結清房貸的年度。</p>
+          </div>
+          <div class="quick-compare-grid">
+          <button class="quick-plan-card plan-a" type="button" data-q-report="p1">
             <div class="quick-plan-head"><div><small>方案一</small><h3>60% 配息，40% 做 PFK 兩年總預算</h3></div><strong id="q-p1-payoff">尚未達成</strong></div>
             <div class="compare-lines">
               <div><span>投入V月配息</span><b id="q-p1-invest">270萬</b></div>
@@ -801,12 +797,9 @@
               <div><span>預估月配息</span><b class="green" id="q-p1-income" data-raw="0">$0</b></div>
               <div><span>第6年PFK現金價值</span><b id="q-p1-surr6">0萬</b></div>
             </div>
-            <details class="quick-report-details" open>
-              <summary>展開方案一年度數字報表</summary>
-              <div class="quick-table-wrap"><table class="quick-flow-table"><thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead><tbody id="q-p1-report"></tbody></table></div>
-            </details>
-          </div>
-          <div class="quick-plan-card plan-b">
+            <span class="quick-card-action">查看方案一年度試算表</span>
+          </button>
+          <button class="quick-plan-card plan-b" type="button" data-q-report="p2">
             <div class="quick-plan-head"><div><small>方案二</small><h3>80% 配息，20% 付首年PFK，第二年保單借款</h3></div><strong id="q-p2-payoff">尚未達成</strong></div>
             <div class="compare-lines">
               <div><span>投入V月配息</span><b id="q-p2-invest">360萬</b></div>
@@ -814,17 +807,40 @@
               <div><span>預估月配息</span><b class="green" id="q-p2-income" data-raw="0">$0</b></div>
               <div><span>第二年保單借款月息</span><b class="red" id="q-p2-policy-cost" data-raw="0">$0</b></div>
             </div>
-            <details class="quick-report-details" open>
-              <summary>展開方案二年度數字報表</summary>
-              <div class="quick-table-wrap"><table class="quick-flow-table"><thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead><tbody id="q-p2-report"></tbody></table></div>
-            </details>
+            <span class="quick-card-action">查看方案二年度試算表</span>
+          </button>
+          </div>
+          <div class="quick-payoff-strip"><span id="q-payoff-strip-copy">目前會先比較哪個方案較早覆蓋房貸本金餘額。</span><b id="q-best-payoff">尚未達成</b></div>
+          <div class="proposal-actions compact-actions">
+            <button class="btn btn-primary" id="q-copy-summary" type="button">複製結果</button>
+            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
           </div>
         </div>
-        <div class="quick-payoff-strip"><span id="q-payoff-copy">快速試算會用 PFK 現金價值加上配息累積，回推可能一次結清房貸的年度。</span><b id="q-payoff-gap">$0</b></div>
+      </div>
+
+      <div class="quick-table-page">
+        <div class="quick-table-card">
+          <div class="quick-table-head">
+            <div>
+              <small>年度試算表</small>
+              <h3 id="q-table-title">方案二年度試算表</h3>
+              <p id="q-table-subtitle">用本金餘額、PFK保單現金價值與累積配息還款，判斷可能結清年度。</p>
+            </div>
+            <button class="btn btn-outline" id="q-back-result" type="button">返回結果比較</button>
+          </div>
+          <div class="quick-table-wrap is-full"><table class="quick-flow-table"><thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead><tbody id="q-active-report"></tbody></table></div>
+          <div class="quick-table-summary" id="q-table-summary">目前試算會顯示最早覆蓋房貸本金餘額的年度。</div>
+        </div>
         <div class="proposal-actions compact-actions">
-          <button class="btn btn-primary" id="q-copy-summary" type="button">複製結果</button>
+          <button class="btn btn-primary" id="q-copy-table" type="button">複製此方案</button>
           <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
         </div>
+      </div>
+      <div class="quick-report-cache system-hidden">
+        <span id="q-result-total-loan">1000萬</span>
+        <span id="q-result-budget">450萬</span>
+        <table><tbody id="q-p1-report"></tbody></table>
+        <table><tbody id="q-p2-report"></tbody></table>
       </div>
     </div></section>
 

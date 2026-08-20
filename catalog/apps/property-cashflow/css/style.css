@@ -2662,13 +2662,15 @@ body {
 
 /* ══ 統一三步驟標題格式 ══ */
 #toolA .tool-title h2,
-#toolB .tool-title h2 {
+#toolB .tool-title h2,
+#quickCalc .tool-title h2 {
   font-size: clamp(22px, 2vw, 28px) !important;
   font-weight: 800 !important;
   letter-spacing: -.01em;
 }
 #toolA .tool-title p,
-#toolB .tool-title p {
+#toolB .tool-title p,
+#quickCalc .tool-title p {
   display: block !important;
   font-size: 13px !important;
   color: var(--text3);
@@ -3148,28 +3150,53 @@ body {
   }
 }
 
-/* Home choice panel final override: this is the actual four-card homepage area. */
+/* Home choice panel final override: five cards, one row. */
 @media (min-width: 1025px) {
   #home .home-choice-panel {
     display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 12px !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    flex: 0 0 auto;
+    align-items: stretch;
   }
   #home .home-choice-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     min-width: 0;
-    min-height: 104px;
-    padding: 16px 18px;
+    min-height: 132px;
+    height: auto;
+    padding: 14px 16px;
     border-radius: 20px;
   }
+  #home .home-choice-card span {
+    font-size: 11px;
+    line-height: 1.3;
+  }
   #home .home-choice-card b {
-    font-size: clamp(19px, 1.35vw, 25px);
-    line-height: 1.12;
+    margin-top: 6px;
+    font-size: clamp(16px, 1.15vw, 22px);
+    line-height: 1.14;
+    text-wrap: balance;
   }
   #home .home-choice-card i {
-    margin-top: 10px;
-    font-size: 12px;
-    line-height: 1.35;
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 1.4;
+    text-wrap: pretty;
   }
+  #home .home-choice-card::after {
+    width: 92px;
+    height: 92px;
+    right: -46px;
+    bottom: -52px;
+  }
+}
+@media (min-width: 1025px) and (max-width: 1320px) {
+  #home .home-choice-panel { gap: 8px !important; }
+  #home .home-choice-card { padding: 12px 13px; min-height: 98px; }
+  #home .home-choice-card b { font-size: 16px; }
+  #home .home-choice-card i { font-size: 10.5px; }
 }
 
 /* Route D result expanded table: prevent bottom clipping. */
@@ -3542,115 +3569,99 @@ body {
   }
 }
 
-/* Quick Check final lock: Tool A structure wins over legacy quick styles. */
+/* ==========================================================================
+   05 快速試算 (#quickCalc) — 與「01 房貸減壓」(#toolA) 完全相同的版型
+   所有版面、間距、字級皆對齊 #toolA，僅保留快速試算專屬的年度試算表。
+   ========================================================================== */
+
+/* ---------- 標題列（與 #toolA 相同：桌機隱藏 topline） ---------- */
 #quickCalc .topline { min-height: 0; }
 #quickCalc .tool-title {
-  max-width: none;
-  margin: 0 0 8px;
-  padding: 0 0 10px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
-  border-bottom: 1px solid rgba(18,29,25,.08);
+  gap: 24px;
+  max-width: none;
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
 }
+#quickCalc .tool-title > div { min-width: 0; }
 #quickCalc .tool-title h2 {
   margin: 0;
-  font-size: clamp(28px, 2.6vw, 42px);
-  line-height: 1.08;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
   letter-spacing: 0;
+  color: #18231f;
 }
 #quickCalc .tool-title p {
-  margin: 4px 0 0;
-  color: #8a94a1;
-  font-size: clamp(13px, 1vw, 16px);
-  line-height: 1.45;
+  margin: 0;
+  color: var(--text3);
+  font-size: 14px;
+  line-height: 1.5;
 }
 #quickCalc .tool-title p span { display: none !important; }
 #quickCalc:not(.show-safety):not(.show-result):not(.show-table) .quick-mortgage-copy,
 #quickCalc.show-safety .quick-safety-copy,
 #quickCalc.show-result .quick-result-copy,
 #quickCalc.show-table .quick-table-copy { display: inline !important; }
-#quickCalc .quick-stepper,
-#quickCalc.show-result .quick-stepper,
-#quickCalc.show-table .quick-stepper {
-  width: 100%;
-  max-width: 760px;
-  margin: 4px 0 18px;
-}
+
+/* ---------- 步驟列（沿用 .tool-stepper 基礎樣式，僅補目前步驟高亮） ---------- */
+#quickCalc .quick-stepper { width: auto; }
 #quickCalc .step-mortgage,
 #quickCalc .step-safety,
 #quickCalc .step-result {
   background: transparent;
-  color: #66707d;
+  color: #6b7280;
   box-shadow: none;
 }
 #quickCalc:not(.show-safety):not(.show-result):not(.show-table) .step-mortgage,
 #quickCalc.show-safety .step-safety,
 #quickCalc.show-result .step-result,
 #quickCalc.show-table .step-result {
-  background: linear-gradient(135deg, var(--green), var(--gold));
+  background: linear-gradient(135deg, var(--leaf), #6d5538);
   color: #fff;
   box-shadow: 0 12px 24px rgba(31,109,82,.16);
 }
-#quickCalc .quick-tool-layout,
-#quickCalc .quick-result-page,
-#quickCalc .quick-table-page {
+
+/* ---------- 版面骨架（與 #toolA 相同：單欄、置中、最大 1120） ---------- */
+#quickCalc .tool-layout {
+  display: block;
+  max-width: 1160px;
+}
+#quickCalc .input-panel {
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
 }
-#quickCalc .quick-tool-layout { display: block; }
-#quickCalc .quick-input-panel {
-  width: 100%;
+#quickCalc .input-panel .field { margin-bottom: 14px; }
+#quickCalc .advisor-output {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 22px;
-  border-radius: 28px;
-  background: rgba(255,255,255,.94);
-  border: 1px solid rgba(18,29,25,.08);
-  box-shadow: 0 24px 60px rgba(18,29,25,.09);
 }
 #quickCalc .q-input-page { display: none; }
 #quickCalc:not(.show-safety):not(.show-result):not(.show-table) .q-mortgage-page,
 #quickCalc.show-safety .q-safety-page { display: block; }
-#quickCalc .compact-subtitle { margin-top: 12px; }
+#quickCalc:not(.show-result):not(.show-table) .quick-result-page,
+#quickCalc:not(.show-table) .quick-table-page,
+#quickCalc.show-result .quick-input-panel,
+#quickCalc.show-table .quick-input-panel,
+#quickCalc.show-table .quick-result-page { display: none !important; }
+#quickCalc.show-result .quick-result-page,
+#quickCalc.show-table .quick-table-page { display: block !important; }
+#quickCalc.show-result .tool-stepper,
+#quickCalc.show-table .tool-stepper { max-width: 540px; }
+
+/* ---------- 輸入頁：左表單 + 右即時卡（與 #toolA 相同比例） ---------- */
 #quickCalc .a-mortgage-grid,
 #quickCalc .a-safety-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
   gap: 22px;
   align-items: start;
 }
-#quickCalc .quick-live-card {
-  position: sticky;
-  top: 22px;
-  min-height: 360px;
-  padding: 24px;
-  border-radius: 24px;
-}
-#quickCalc .quick-live-card h3 {
-  margin: 10px 0 18px;
-  color: #fff;
-  font-size: clamp(25px, 2.3vw, 34px);
-  line-height: 1.22;
-  letter-spacing: 0;
-}
-#quickCalc .quick-live-card .live-metrics {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-#quickCalc .quick-live-card .live-metrics div {
-  min-height: 74px;
-  padding: 14px 16px;
-  border-radius: 18px;
-}
-#quickCalc .quick-live-card .live-metrics b {
-  margin-top: 6px;
-  font-size: clamp(26px, 2.3vw, 36px);
-  text-align: right;
-}
+#quickCalc .compact-subtitle { margin-top: 12px; }
 #quickCalc .quick-rule-box {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3658,7 +3669,7 @@ body {
   margin-top: 10px;
 }
 #quickCalc .quick-rule-box div {
-  min-height: 74px;
+  min-height: 68px;
   padding: 12px 14px;
   border-radius: 16px;
   border: 1px solid rgba(18,29,25,.08);
@@ -3666,137 +3677,298 @@ body {
 }
 #quickCalc .quick-rule-box b,
 #quickCalc .quick-rule-box span { display: block; }
-#quickCalc .quick-rule-box b {
-  color: #203228;
-  font-size: 15px;
-}
+#quickCalc .quick-rule-box b { color: #203228; font-size: 14px; }
 #quickCalc .quick-rule-box span {
   margin-top: 5px;
   color: #6f7882;
   font-size: 12px;
   line-height: 1.45;
 }
+
+/* 即時卡：完全沿用 .a-live-card / .live-metrics 的 #toolA 字級 */
+#quickCalc .quick-live-card h3 {
+  color: #fff;
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+#quickCalc .quick-live-card .live-metrics { grid-template-columns: 1fr; }
+#quickCalc .quick-live-card .live-metrics b { margin-top: 0; }
+
+/* ---------- 結果頁：baseline-strip → 方案卡 → 按鈕 → 註記（同 #toolA） ---------- */
 #quickCalc .quick-result-page,
 #quickCalc .quick-table-page {
-  display: none;
   padding: 0;
   border: 0;
   background: transparent;
   box-shadow: none;
 }
-#quickCalc.show-result .quick-tool-layout,
-#quickCalc.show-table .quick-tool-layout,
-#quickCalc.show-table .quick-result-page { display: none !important; }
-#quickCalc.show-result .quick-result-page,
-#quickCalc.show-table .quick-table-page { display: block !important; }
 #quickCalc .quick-advisor-result,
 #quickCalc .quick-table-card {
-  padding: 18px;
-  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
-#quickCalc .advisor-title-row { margin-bottom: 12px; }
-#quickCalc .advisor-title-row h3 {
-  font-size: clamp(22px, 1.7vw, 28px);
-  line-height: 1.2;
-  letter-spacing: 0;
+#quickCalc .quick-payoff-strip { display: none !important; }
+#quickCalc .baseline-strip { order: 0; margin-top: 0; }
+#quickCalc .quick-advisor-result .final-judge-card { order: -1; }
+#quickCalc .quick-plans-compare { order: 1; margin-top: 0; }
+#quickCalc .quick-advisor-result .proposal-actions { order: 3; margin-top: 0; }
+/* 結論卡已承載判讀文字，結果頁不再重複一次（保留節點供 PDF 讀取） */
+#quickCalc .quick-advisor-result .advisor-note { display: none; }
+#quickCalc .advisor-note {
+  order: 4;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(47,118,86,.07);
+  border: 1px solid rgba(31,109,82,.12);
+  color: #4c5753;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.6;
 }
+
+/* 方案卡：與 #toolA 的 .plan-card 完全相同（僅多了可點擊行為） */
 #quickCalc .quick-plans-compare {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
 }
 #quickCalc .quick-plan-select {
   appearance: none;
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
   min-height: 0;
   padding: 0;
   overflow: hidden;
-  border: 1px solid rgba(18,29,25,.09);
-  border-radius: 22px;
-  background: #fff;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  box-shadow: 0 16px 38px rgba(20,32,28,.06);
+  transition: transform .18s ease, box-shadow .18s ease;
 }
-#quickCalc .quick-plan-select.plan-a { border-color: rgba(147,63,58,.17); }
-#quickCalc .quick-plan-select.plan-b {
-  border-color: rgba(47,118,86,.22);
-  background: linear-gradient(135deg, rgba(47,118,86,.07), rgba(255,255,255,.96) 45%);
+#quickCalc .quick-plan-select:hover { transform: translateY(-2px); }
+#quickCalc .quick-plan-select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(31,109,82,.24);
 }
-#quickCalc .quick-plan-select .plan-head {
-  min-height: 110px;
-  padding: 18px 20px 12px;
+#quickCalc .quick-plan-select .plan-lines { flex: 1; }
+#quickCalc .quick-plan-select .plan-net { align-items: end; }
+#quickCalc .quick-plan-select .plan-net strong {
+  color: var(--red);
+  white-space: nowrap;
 }
-#quickCalc .quick-plan-select .plan-head h3 {
-  font-size: clamp(17px, 1.35vw, 22px);
-  line-height: 1.28;
+#quickCalc .quick-plan-select.plan-b .plan-net strong { color: var(--green); }
+
+/* 每月現金流：正值綠、負值紅，並讓即時卡的副標可放結清年度 */
+#quickCalc .live-metrics span small {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255,255,255,.40);
+  font-size: 11px;
+  font-weight: 800;
 }
-#quickCalc .quick-plan-select .plan-head strong {
-  min-width: 136px;
-  color: var(--green);
-  font-size: clamp(26px, 2.8vw, 44px);
-  line-height: 1;
-  text-align: right;
+#quickCalc .live-metrics span small i {
+  font-style: normal;
+  color: rgba(255,255,255,.62);
 }
-#quickCalc .quick-plan-select .compare-lines {
-  padding: 8px 20px 12px;
+#quickCalc .live-metrics b.flow-pos { color: #9fe0ad; }
+#quickCalc .live-metrics b.flow-neg { color: #f0a5a2; }
+#quickCalc .plan-lines b.green { color: var(--green); }
+#quickCalc .plan-lines b.red { color: var(--red); }
+#quickCalc .plan-lines span small {
+  display: block;
+  margin-top: 2px;
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 800;
 }
-#quickCalc .quick-plan-select .compare-lines div { min-height: 30px; }
-#quickCalc .quick-plan-select .plan-footer {
-  min-height: 66px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px;
-  align-items: end;
-  padding: 12px 20px 16px;
-  border-top: 1px solid rgba(18,29,25,.08);
+#quickCalc .plan-relief-note b.is-positive { color: var(--green); }
+#quickCalc .plan-relief-note b.is-negative { color: var(--red); }
+#quickCalc .baseline-strip.is-quad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+#quickCalc .baseline-strip.is-quad b { font-size: clamp(19px, 1.6vw, 26px); }
+#quickCalc .baseline-strip b.flow-pos { color: var(--green); }
+#quickCalc .baseline-strip b.flow-neg { color: var(--red); }
+#quickCalc .baseline-strip div:has(b.flow-neg) {
+  background: linear-gradient(135deg, rgba(163,58,56,.10), rgba(214,184,143,.10));
+  border-color: rgba(163,58,56,.18);
 }
-#quickCalc .quick-plan-select .plan-footer span {
-  color: #7b8792;
-  font-size: 13px;
+
+/* 方案卡底部的「看年度試算表」提示 */
+#quickCalc .plan-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--line);
+  color: var(--text3);
+  font-size: 12px;
   font-weight: 900;
 }
-#quickCalc .quick-plan-select .plan-footer b {
-  color: var(--green);
-  font-size: clamp(24px, 2.3vw, 36px);
-  line-height: 1;
+#quickCalc .plan-cta i {
+  font-style: normal;
+  transition: transform .18s ease;
 }
-#quickCalc .quick-payoff-strip {
-  min-height: 62px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
+#quickCalc .quick-plan-select:hover .plan-cta i { transform: translateX(4px); }
+#quickCalc .quick-plan-select.plan-a .plan-cta { color: #8f3e3b; }
+#quickCalc .quick-plan-select.plan-b .plan-cta { color: var(--green); }
+#quickCalc .quick-plan-select .plan-net { margin-top: 0; }
+
+/* 方案卡主數字＝每月淨現金流，依正負著色（不隨方案別固定紅綠） */
+#quickCalc .plan-net strong.flow-pos { color: var(--green); }
+#quickCalc .plan-net strong.flow-neg { color: var(--red); }
+#quickCalc .plan-net .plan-relief-note b { color: var(--text); }
+
+/* 覆蓋率長條（方案 B） */
+#quickCalc .quick-flow-table th.th-meter { text-align: left; }
+#quickCalc .quick-flow-table th.th-meter small {
+  display: block;
+  margin-top: 2px;
+  color: #96a0aa;
+  font-size: 10px;
+  font-weight: 750;
+}
+#quickCalc .quick-flow-table td.meter-cell {
+  display: flex;
   align-items: center;
-  margin-top: 14px;
-  padding: 12px 18px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #07110d, #211a12);
-  color: #fff;
+  gap: 10px;
+  min-width: 190px;
 }
-#quickCalc .quick-payoff-strip span {
-  color: rgba(255,255,255,.66);
+#quickCalc .quick-flow-table .meter {
+  flex: 1;
+  height: 8px;
+  min-width: 70px;
+  border-radius: 999px;
+  background: rgba(16,20,24,.08);
+  overflow: hidden;
+}
+#quickCalc .quick-flow-table .meter i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--gold);
+  transition: width .35s var(--ease);
+}
+#quickCalc .quick-flow-table .meter i.ok { background: var(--green); }
+#quickCalc .quick-flow-table td.meter-cell b {
+  min-width: 46px;
+  text-align: right;
+  font-weight: 900;
+}
+#quickCalc .quick-flow-table .muted-cell { color: #7b8490; }
+
+/* 結論句：方案卡與試算表共用同一句「可以在第 N 年結清貸款，每月多 $X 現金流」 */
+#quickCalc .plan-conclusion,
+#quickCalc .table-conclusion {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+#quickCalc .plan-conclusion {
+  margin: 0 16px 12px;
+  font-size: 13.5px;
+}
+#quickCalc .table-conclusion {
+  padding: 16px 18px;
+  font-size: clamp(16px, 1.4vw, 20px);
+}
+#quickCalc .plan-conclusion.is-ok,
+#quickCalc .table-conclusion.is-ok {
+  background: rgba(31,109,82,.10);
+  border: 1px solid rgba(31,109,82,.20);
+  color: #14523d;
+}
+#quickCalc .plan-conclusion.is-mixed,
+#quickCalc .table-conclusion.is-mixed {
+  background: rgba(167,125,79,.12);
+  border: 1px solid rgba(167,125,79,.26);
+  color: #6f5028;
+}
+#quickCalc .plan-conclusion.is-warn,
+#quickCalc .table-conclusion.is-warn {
+  background: rgba(163,58,56,.08);
+  border: 1px solid rgba(163,58,56,.18);
+  color: #8a3230;
+}
+
+/* 完整明細收合 */
+#quickCalc .quick-table-fold { margin: 0; }
+#quickCalc .quick-table-fold summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(16,20,24,.04);
+  color: var(--text2);
   font-size: 13px;
-  line-height: 1.55;
+  font-weight: 900;
+  cursor: pointer;
+  list-style: none;
 }
-#quickCalc .quick-payoff-strip b {
-  color: #98d7a5;
-  font-size: clamp(28px, 3vw, 46px);
-  line-height: 1;
+#quickCalc .quick-table-fold summary::-webkit-details-marker { display: none; }
+#quickCalc .quick-table-fold summary i {
+  font-style: normal;
+  transition: transform .2s var(--ease);
 }
-#quickCalc .advisor-note {
-  margin: 12px 4px 0;
-  color: #6d7680;
+#quickCalc .quick-table-fold[open] summary i { transform: rotate(180deg); }
+
+/* ---------- 年度試算表頁（快速試算專屬，卡片外框沿用 .advisor-result） ---------- */
+#quickCalc .quick-table-card .advisor-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 0;
+  padding: 0 0 14px;
+  border-bottom: 1px solid var(--line2);
+  border-radius: 0;
+  background: none;
+  color: inherit;
+}
+#quickCalc .quick-table-card .advisor-title-row > div { min-width: 0; }
+#quickCalc .quick-table-card .advisor-title-row .btn {
+  flex-shrink: 0;
+  min-height: 42px;
+  min-width: 148px;
+  padding: 10px 18px;
+}
+#quickCalc .quick-table-card .advisor-title-row small {
+  display: block;
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+#quickCalc .quick-table-card .advisor-title-row h3 {
+  margin-top: 4px;
+  color: #18231f;
+  font-size: 20px;
+  font-weight: 900;
+}
+#quickCalc .quick-table-card .advisor-title-row p {
+  margin-top: 4px;
+  color: var(--text3);
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 #quickCalc .quick-table-wrap.is-full {
   max-height: min(430px, calc(100dvh - 390px));
   overflow: auto;
   border: 1px solid rgba(18,29,25,.08);
-  border-radius: 16px;
+  border-radius: 18px;
   background: rgba(255,255,255,.92);
 }
 #quickCalc .quick-flow-table {
@@ -3831,75 +4003,143 @@ body {
 #quickCalc .quick-flow-table .good-cell { color: #1f6d52; }
 #quickCalc .quick-flow-table .bad-cell { color: #a33a38; }
 #quickCalc .quick-table-summary {
-  margin-top: 12px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: rgba(47,118,86,.08);
-  color: #50605a;
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1.55;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(47,118,86,.07);
+  border: 1px solid rgba(31,109,82,.12);
+  color: #4c5753;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.6;
 }
 
-@media (orientation: landscape) and (max-height: 850px) {
-  #quickCalc .tool-title h2 { font-size: 34px; }
-  #quickCalc .quick-stepper { margin-bottom: 14px; }
-  #quickCalc .quick-input-panel,
-  #quickCalc .quick-advisor-result,
-  #quickCalc .quick-table-card {
+/* ---------- 桌機密集版：逐項對齊 #toolA 的 @media (min-width: 900px) ---------- */
+@media (min-width: 900px) {
+  #quickCalc.slide { padding-top: 16px; padding-bottom: 16px; }
+  #quickCalc .slide-inner { gap: 10px; }
+  #quickCalc .topline { display: none; }
+  #quickCalc .tool-title {
+    align-items: center;
+    margin: 0;
+    padding: 0 2px;
+  }
+  #quickCalc .tool-title h2 { font-size: clamp(24px, 2.2vw, 32px); }
+  #quickCalc .tool-title p { font-size: 13px; }
+  #quickCalc .tool-stepper {
+    margin: 0 0 8px;
+    max-width: 680px;
+    padding: 5px;
+    border-radius: 18px;
+  }
+  #quickCalc .tool-stepper button {
+    min-height: 38px;
+    font-size: 15px;
+  }
+  #quickCalc .input-panel,
+  #quickCalc .advisor-output {
     padding: 16px;
     border-radius: 24px;
   }
   #quickCalc .a-mortgage-grid,
   #quickCalc .a-safety-grid {
-    grid-template-columns: minmax(0, 1fr) 330px;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
     gap: 16px;
   }
-  #quickCalc .field { margin-bottom: 12px; }
+  #quickCalc .panel-title {
+    min-height: 42px;
+    margin-bottom: 10px;
+    padding: 0 12px;
+    border-radius: 16px;
+  }
+  #quickCalc .field { margin-bottom: 9px; padding: 8px 10px; }
+  #quickCalc .field label { margin-bottom: 4px; }
+  #quickCalc .input-wrap { border-radius: 12px; }
   #quickCalc .input-wrap input,
-  #quickCalc .input-wrap select { height: 48px; }
-  #quickCalc .quick-live-card {
+  #quickCalc .input-wrap select { padding: 8px 10px; font-size: 15px; }
+  #quickCalc .quick { margin-top: 6px; gap: 6px; }
+  #quickCalc .chip { padding: 5px 9px; }
+  #quickCalc .seg { margin-bottom: 8px; }
+  #quickCalc .seg button { min-height: 36px; padding: 7px 8px; }
+  #quickCalc .step-actions { margin-top: 10px; }
+  #quickCalc .step-actions .btn { min-height: 44px; padding: 10px 14px; }
+  #quickCalc .quick-rule-box { margin-top: 8px; }
+  #quickCalc .quick-rule-box div { min-height: 62px; padding: 10px 12px; }
+  #quickCalc .a-live-card {
+    top: 0;
     min-height: 0;
-    padding: 20px;
+    height: 100%;
+    padding: 18px;
+    border-radius: 22px;
   }
-  #quickCalc .quick-live-card h3 {
-    font-size: 28px;
-    margin-bottom: 14px;
+  #quickCalc .a-live-card h3 {
+    margin: 8px 0 14px;
+    font-size: clamp(20px, 1.8vw, 26px);
   }
-  #quickCalc .quick-live-card .live-metrics div {
-    min-height: 64px;
-    padding: 12px 14px;
-  }
-  #quickCalc .quick-live-card .live-metrics b { font-size: 28px; }
-  #quickCalc .quick-plan-select .plan-head {
-    min-height: 92px;
-    padding: 14px 18px 10px;
-  }
-  #quickCalc .quick-plan-select .plan-head strong { font-size: 34px; }
-  #quickCalc .quick-plan-select .plan-footer {
-    min-height: 56px;
-    padding: 10px 18px 14px;
-  }
-  #quickCalc .quick-table-wrap.is-full { max-height: calc(100dvh - 330px); }
+  #quickCalc .live-metrics { gap: 8px; }
+  #quickCalc .live-metrics div { padding: 12px; border-radius: 16px; }
+  #quickCalc .live-metrics b { font-size: clamp(22px, 2.2vw, 30px); }
+  #quickCalc .live-note { margin-top: 10px; font-size: 12px; line-height: 1.45; }
+  #quickCalc .advisor-result { gap: 12px; padding: 18px; }
+  #quickCalc.show-result .advisor-output,
+  #quickCalc.show-table .advisor-output { padding-top: 12px; }
+  #quickCalc .result-back-row { margin-bottom: 8px; }
+  #quickCalc .result-back-row .btn { min-height: 42px; padding: 10px 14px; }
+  #quickCalc .quick-plans-compare { gap: 12px; }
+  #quickCalc .plan-head { min-height: 56px; padding: 14px 16px; }
+  #quickCalc .plan-lines { padding: 10px 16px 4px; }
+  #quickCalc .plan-lines div { min-height: 27px; padding: 2px 0; }
+  #quickCalc .plan-net { padding: 10px 16px 14px; }
+  #quickCalc .plan-net strong { font-size: clamp(30px, 3vw, 42px); }
+  #quickCalc .advisor-note,
+  #quickCalc .quick-table-summary { padding: 12px 14px; font-size: 14px; }
+  #quickCalc .quick-table-wrap.is-full { max-height: min(430px, calc(100dvh - 330px)); }
 }
 
+@media (min-width: 900px) {
+  #quickCalc .field { padding: 8px 10px; }
+  #quickCalc .panel-title { min-height: 36px; }
+  #quickCalc .a-live-card { height: auto !important; align-self: start; }
+  #quickCalc .a-live-card h3 { font-size: clamp(19px, 1.65vw, 24px); }
+  #quickCalc .live-note { display: none; }
+}
+
+/* ---------- 橫向矮螢幕：對齊 #toolA 的壓縮版 ---------- */
+@media (min-width: 900px) and (orientation: landscape) and (max-height: 880px) {
+  #quickCalc .tool-title { margin: 0; padding: 0 2px; align-items: center; }
+  #quickCalc .field { padding: 6px 10px; }
+  #quickCalc .input-wrap input,
+  #quickCalc .input-wrap select { padding-top: 6px; padding-bottom: 6px; }
+  #quickCalc .panel-title { min-height: 36px; }
+  #quickCalc .a-live-card { height: auto !important; align-self: start; }
+  #quickCalc .a-live-card h3 { font-size: clamp(19px, 1.65vw, 24px); }
+  #quickCalc .live-note { display: none; }
+  #quickCalc .quick-table-wrap.is-full { max-height: calc(100dvh - 320px); }
+}
+
+/* ---------- 窄螢幕 / 直式 ---------- */
 @media (max-width: 1180px) {
+  #quickCalc .baseline-strip.is-quad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   #quickCalc .a-mortgage-grid,
   #quickCalc .a-safety-grid,
   #quickCalc .quick-plans-compare { grid-template-columns: 1fr; }
-  #quickCalc .quick-live-card { position: static; }
+  #quickCalc .quick-live-card { position: static; min-height: 0; }
 }
 
 @media (max-width: 760px) {
   #quickCalc .tool-title {
     align-items: flex-start;
     flex-direction: column;
+    gap: 8px;
   }
   #quickCalc .quick-rule-box,
-  #quickCalc .baseline-strip { grid-template-columns: 1fr; }
-  #quickCalc .quick-plan-select .plan-head,
-  #quickCalc .quick-plan-select .plan-footer,
-  #quickCalc .quick-payoff-strip { grid-template-columns: 1fr; }
-  #quickCalc .quick-plan-select .plan-head strong,
-  #quickCalc .quick-plan-select .plan-footer b { text-align: left; }
+  #quickCalc .baseline-strip,
+  #quickCalc .baseline-strip.is-quad { grid-template-columns: 1fr; }
+  #quickCalc .quick-table-card .advisor-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  #quickCalc .quick-table-card .advisor-title-row .btn { width: 100%; }
+  #quickCalc .result-back-row .btn { width: 100%; }
 }

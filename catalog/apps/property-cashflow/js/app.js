@@ -12,7 +12,7 @@
   function setText(id,v){
     var el=$(id); if(!el) return;
     var text=String(v), numeric=text.replace(/[$,月萬%]/g,'');
-    var isMoney=/^-?\$[\d,]+$/.test(text), isPct=/^-?\d+%$/.test(text);
+    var isMoney=/^[+-]?\$[\d,]+$/.test(text), isPct=/^-?\d+%$/.test(text);
     var target=parseFloat(numeric);
     var shouldAnimate=(isMoney||isPct) && isFinite(target) && (el.tagName==='B'||el.tagName==='STRONG');
     if(!shouldAnimate){el.textContent=text; return;}
@@ -32,6 +32,15 @@
     requestAnimationFrame(step);
   }
   function money(n){var s=n<0?'-':''; n=Math.abs(Math.round(n)); return s+'$'+n.toLocaleString('en-US')}
+  function signedMoney(n){var v=Math.round(n); return (v>=0?'+$':'-$')+Math.abs(v).toLocaleString('en-US')}
+  function setFlow(id,n){
+    var el=$(id); if(!el) return;
+    setText(id,signedMoney(n));
+    var ok=n>=0;
+    el.classList.toggle('flow-pos',ok); el.classList.toggle('flow-neg',!ok);
+    el.classList.toggle('green',ok); el.classList.toggle('red',!ok);
+    el.classList.toggle('is-positive',ok); el.classList.toggle('is-negative',!ok);
+  }
   function wan(n){return Math.round(n).toLocaleString('en-US')+'萬'}
   function wan1(n){return (Math.round(n*10)/10).toLocaleString('en-US')+'萬'}
   function usdWan(n){return Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1})+'萬美元'}
@@ -607,14 +616,21 @@
     return rows;
   }
 
-  function renderQuickPlan(prefix,plan,rows){
+  function renderQuickPlan(prefix,plan,rows,totalPay){
     var payoffLabel=plan.payoffYear?'第 '+plan.payoffYear+' 年':'尚未達成';
     setText(prefix+'-payoff',payoffLabel);
-    setText(prefix+'-payoff-net',payoffLabel);
     setText(prefix+'-live-payoff',payoffLabel);
     setText(prefix+'-invest',wan1(plan.investWan));
     setText(prefix+'-pfk-budget',wan1(plan.pfkBudgetWan));
     setText(prefix+'-income',money(plan.monthlyIncome));
+    var netFlow=plan.monthlyIncome-(totalPay||0)-plan.policyCost;
+    setFlow(prefix+'-netflow',netFlow);
+    var concl=$(prefix+'-conclusion');
+    if(concl){
+      concl.textContent=quickConclusion(plan.payoffYear,netFlow,plan.monthlyIncome);
+      concl.className='plan-conclusion '+quickTone(plan.payoffYear,netFlow);
+    }
+    setText(prefix+'-loanpay','-'+money(totalPay||0));
     if($(prefix+'-surr6')) setText(prefix+'-surr6',wan1(plan.surr6Wan));
     if($(prefix+'-policy-cost')) setText(prefix+'-policy-cost',money(plan.policyCost));
     var body=$(prefix+'-report');
@@ -624,20 +640,49 @@
       var tr=document.createElement('tr');
       if(plan.payoffYear&&r.year===plan.payoffYear) tr.className='is-payoff';
       var isCovered=r.pfkGap>=0;
-      tr.innerHTML='<td>第 '+r.year+' 年</td><td>'+money(r.balance)+'</td><td>'+money(r.surr)+'</td><td class="'+(isCovered?'good-cell':'bad-cell')+'">'+(isCovered?'已超過 ':'尚差 ')+money(Math.abs(r.pfkGap))+'</td><td>'+money(r.cumCash)+'</td><td>'+money(r.redeem)+'</td>';
+      var ratio=r.balance>0?(r.surr/r.balance*100):999;
+      var fill=Math.max(Math.min(ratio,100),0);
+      var ratioLabel=r.balance>0?Math.round(ratio)+'%':'已還清';
+      tr.innerHTML='<td>第 '+r.year+' 年</td><td>'+money(r.balance)+'</td><td>'+money(r.surr)+'</td>'+
+        '<td class="meter-cell"><span class="meter" role="img" aria-label="覆蓋率 '+ratioLabel+'"><i class="'+(isCovered?'ok':'')+'" style="width:'+fill.toFixed(1)+'%"></i></span><b class="'+(isCovered?'good-cell':'muted-cell')+'">'+ratioLabel+'</b></td>'+
+        '<td>'+money(r.cumCash)+'</td><td>'+money(r.redeem)+'</td>';
       body.appendChild(tr);
     });
   }
 
+  var quickPlanCache={};
+  function quickTone(payoffYear,netFlow){
+    if(!payoffYear) return 'is-warn';
+    return netFlow>=0?'is-ok':'is-mixed';
+  }
+  function quickConclusion(payoffYear,netFlow,incomeAfterPayoff){
+    var during=netFlow>=0?'結清前每月多 '+money(netFlow):'結清前每月需自付 '+money(Math.abs(netFlow));
+    if(payoffYear){
+      // 結清後房貸與保單借款都結束，剩下的就是 V 月配息本身的現金流
+      return '可以在第 '+payoffYear+' 年結清貸款，結清後每月有 '+money(incomeAfterPayoff)+' 現金流（'+during+'）';
+    }
+    return '貸款年期內尚無法一次結清，'+(netFlow>=0?'每月多 '+money(netFlow)+' 現金流':'每月需自付 '+money(Math.abs(netFlow)));
+  }
+  function renderQuickMilestones(plan){
+    var host=$('q-table-conclusion'); if(!host) return;
+    if(!plan){host.textContent='尚未試算'; return;}
+    var src=$(plan.kind==='p1'?'q-p1-conclusion':'q-p2-conclusion');
+    host.textContent=src?src.textContent:'尚未試算';
+    host.className='table-conclusion '+(src?(src.className.replace('plan-conclusion','').trim()||'is-warn'):'is-warn');
+  }
   function renderQuickTable(){
     var source=$(qSelectedPlan==='p1'?'q-p1-report':'q-p2-report'), target=$('q-active-report');
     if(!source||!target) return;
     target.innerHTML=source.innerHTML;
+    renderQuickMilestones(quickPlanCache[qSelectedPlan]);
     var planName=qSelectedPlan==='p1'?'方案一':'方案二';
     setText('q-table-title',planName+'年度試算表');
     setText('q-table-subtitle',qSelectedPlan==='p1'?'60% 配息，40% 做 PFK 兩年總預算。':'80% 配息，20% 付首年PFK，第二年保費由保單借款支應。');
     var payoff=reportText(qSelectedPlan==='p1'?'q-p1-payoff':'q-p2-payoff');
-    setText('q-table-summary',payoff==='尚未達成'?planName+'目前在 20 年內 PFK 解約金尚未超過剩餘房貸，可提高可增貸金額或調整配置再比較。':planName+'目前推估 '+payoff+' 的 PFK 解約金會超過剩餘房貸，具備一次結清的觀察點。');
+    var span=(quickPlanCache[qSelectedPlan]&&quickPlanCache[qSelectedPlan].rows.length)||20;
+    setText('q-table-summary',payoff==='尚未達成'?planName+'在 '+span+' 年貸款年期內，PFK 解約金尚未超過剩餘房貸，可提高可增貸金額或調整配置再比較。':planName+'推估 '+payoff+' 的 PFK 解約金會超過剩餘房貸，具備一次結清的觀察點；明細已列到房貸餘額歸零的第 '+span+' 年。');
+    var foldLabel=document.querySelector('#q-table-fold summary span');
+    if(foldLabel) foldLabel.textContent='完整 '+span+' 年明細';
   }
 
   function showQuickReport(kind){
@@ -645,7 +690,7 @@
     setQuickStep('table');
   }
 
-  function buildQuickPlan(kind,budgetWan,totalLoanWan,loanRows){
+  function buildQuickPlan(kind,budgetWan,totalLoanWan,loanRows,horizonYears){
     var investRate=kind==='p1'?0.6:0.8, pfkRate=kind==='p1'?0.4:0.2;
     var investWan=Math.max(budgetWan*investRate,0);
     var pfkBudgetWan=Math.max(budgetWan*pfkRate,0);
@@ -655,7 +700,9 @@
     var policyRate=4, borrowedPremiumWan=kind==='p2'?pfk.annualBudgetWan:0;
     var annualPolicyInterest=kind==='p2'?borrowedPremiumWan*10000*policyRate/100:0;
     var rows=[], cumCash=0, payoffYear=null;
-    for(var i=0;i<20;i++){
+    var span=Math.max(Math.round(horizonYears||20),1);
+    if(pfk.rows&&pfk.rows.length) span=Math.min(span,pfk.rows.length);
+    for(var i=0;i<span;i++){
       var year=i+1, loan=loanRows[i]||loanRows[loanRows.length-1]||{balance:totalLoanWan*10000};
       var pfkRow=pfk.rows[i]||{surr:0};
       var surr=pfkRow.surr*pfk.fx;
@@ -671,10 +718,20 @@
 
   function calcQ(){
     var totalLoan=Math.max(num('q-total-loan'),0), budget=totalLoan;
-    var totalPay=qMethod==='equal'?pay(totalLoan,num('q-extra-rate'),num('q-extra-years')):interestOnly(totalLoan,num('q-extra-rate'));
-    var loanRows=loanBalanceRows(totalLoan,num('q-extra-rate'),num('q-extra-years'),qMethod,20);
-    var p1=buildQuickPlan('p1',budget,totalLoan,loanRows), p2=buildQuickPlan('p2',budget,totalLoan,loanRows);
-    var best=(p1.payoffYear&&p2.payoffYear)?(p1.payoffYear<=p2.payoffYear?p1:p2):(p1.payoffYear?p1:(p2.payoffYear?p2:null));
+    var loanYears=clamp(Math.round(num('q-extra-years'))||20,1,40);
+    var totalPay=qMethod==='equal'?pay(totalLoan,num('q-extra-rate'),loanYears):interestOnly(totalLoan,num('q-extra-rate'));
+    var loanRows=loanBalanceRows(totalLoan,num('q-extra-rate'),loanYears,qMethod,loanYears);
+    var p1=buildQuickPlan('p1',budget,totalLoan,loanRows,loanYears), p2=buildQuickPlan('p2',budget,totalLoan,loanRows,loanYears);
+    var p1Net=p1.monthlyIncome-totalPay-p1.policyCost, p2Net=p2.monthlyIncome-totalPay-p2.policyCost;
+    // 先比結清年度，同年度再比每月現金流，讓結論卡與摘要條永遠指向同一個方案
+    var best;
+    if(p1.payoffYear&&p2.payoffYear) best=(p1.payoffYear<p2.payoffYear)?p1:((p2.payoffYear<p1.payoffYear)?p2:(p2Net>=p1Net?p2:p1));
+    else if(p1.payoffYear) best=p1;
+    else if(p2.payoffYear) best=p2;
+    else best=null;
+    var lead=best||(p2Net>=p1Net?p2:p1);
+    var leadNet=lead.kind==='p1'?p1Net:p2Net;
+    var leadName=lead.kind==='p1'?'方案一':'方案二';
     var bestText=best?'第 '+best.payoffYear+' 年':'尚未達成';
 
     setText('q-total-loan-show',wan(totalLoan));
@@ -684,11 +741,19 @@
     setText('q-safety-p1-invest',wan1(p1.investWan));
     setText('q-safety-p2-invest',wan1(p2.investWan));
     setText('q-safety-policy',money(p2.policyCost));
+    setFlow('q-p1-live-netflow',p1Net);
+    setFlow('q-p2-live-netflow',p2Net);
+    setFlow('q-safety-p1-netflow',p1Net);
+    setFlow('q-safety-p2-netflow',p2Net);
+    setFlow('q-result-netflow',leadNet);
+    setText('q-result-netflow-label',leadName+'每月現金流');
     setText('q-live-note','可增貸金額 '+wan(totalLoan)+' 直接作為兩個方案的配置基準，並以 PFK 解約金是否超過剩餘房貸作為結清觀察點。');
     setText('q-result-total-loan',wan(totalLoan)); setText('q-result-budget',wan1(budget)); setText('q-best-payoff',bestText); setText('q-best-payoff-strip',bestText);
-    renderQuickPlan('q-p1',p1,p1.rows); renderQuickPlan('q-p2',p2,p2.rows);
-    setText('q-payoff-strip-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早讓 PFK 解約金超過剩餘房貸。':'20 年內 PFK 解約金尚未超過剩餘房貸。');
-    setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，PFK 解約金約可在第 '+best.payoffYear+' 年超過剩餘房貸。':'20 年內 PFK 解約金尚未超過剩餘房貸，可提高可增貸金額、拉長配息累積或調整標的再試算。');
+
+    quickPlanCache={p1:p1,p2:p2};
+    renderQuickPlan('q-p1',p1,p1.rows,totalPay); renderQuickPlan('q-p2',p2,p2.rows,totalPay);
+    setText('q-payoff-strip-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早讓 PFK 解約金超過剩餘房貸。':loanYears+' 年內 PFK 解約金尚未超過剩餘房貸。');
+    setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，PFK 解約金約可在第 '+best.payoffYear+' 年超過剩餘房貸。':loanYears+' 年貸款年期內 PFK 解約金尚未超過剩餘房貸，可提高可增貸金額、拉長配息累積或調整標的再試算。');
     renderQuickTable();
   }
 
@@ -920,8 +985,9 @@
     var html=reportHeader('快速試算','用可增貸金額快速比較兩種配置，觀察 PFK 解約金超過剩餘房貸的年度。','較早可能結清：'+reportText('q-best-payoff'));
     html+= '<div class="print-metrics">'+[
       reportMetric('可增貸金額',reportText('q-result-total-loan'),'gold'),
-      reportMetric('方案一可能結清',reportText('q-p1-payoff')),
-      reportMetric('方案二可能結清',reportText('q-p2-payoff'),'good')
+      reportMetric('增貸月付',reportText('q-result-total-pay')),
+      reportMetric('方案一每月現金流',reportText('q-p1-netflow')),
+      reportMetric('方案二每月現金流',reportText('q-p2-netflow'),'good')
     ].join('')+'</div>';
     html+= reportSection('試算條件','<div class="print-facts">'+[
       reportLine('可增貸金額',reportValue('q-total-loan','萬元')),
@@ -936,17 +1002,21 @@
         ['PFK兩年總預算',reportText('q-p1-pfk-budget')],
         ['預估月配息',reportText('q-p1-income')],
         ['第6年PFK現金價值',reportText('q-p1-surr6')],
-        ['PFK解約金超過剩餘房貸',reportText('q-p1-payoff')]
+        ['每月淨現金流（結清前）',reportText('q-p1-netflow')],
+        ['PFK解約金超過剩餘房貸',reportText('q-p1-payoff')],
+        ['結論',reportText('q-p1-conclusion')]
       ],'')+
       reportCard('方案二：80% 配息，20% 首年PFK',[
         ['投入V月配息',reportText('q-p2-invest')],
         ['PFK首年預算',reportText('q-p2-pfk-budget')],
         ['預估月配息',reportText('q-p2-income')],
         ['第二年保單借款月息',reportText('q-p2-policy-cost')],
-        ['PFK解約金超過剩餘房貸',reportText('q-p2-payoff')]
+        ['每月淨現金流（結清前）',reportText('q-p2-netflow')],
+        ['PFK解約金超過剩餘房貸',reportText('q-p2-payoff')],
+        ['結論',reportText('q-p2-conclusion')]
       ],'highlight')+'</div>');
-    html+= reportSection('方案一年度報表',reportTableFrom('q-p1-report',11).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>PFK解約金 > 剩餘房貸</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
-    html+= reportSection('方案二年度報表',reportTableFrom('q-p2-report',11).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>PFK解約金 > 剩餘房貸</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
+    html+= reportSection('方案一年度報表',reportTableFrom('q-p1-report',21).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>覆蓋率</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
+    html+= reportSection('方案二年度報表',reportTableFrom('q-p2-report',21).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>覆蓋率</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
     html+= reportNote('快速判讀',reportText('q-payoff-copy'));
     return html;
   }
@@ -987,7 +1057,7 @@
   var bc=$('b-copy-summary'); if(bc){bc.onclick=function(){copyToClipboard('房產現金流OS【ROUTE B 面談結論】\n判讀：'+$('b-decision').textContent+'\n結論：'+$('b-decision-copy').textContent+'\n規劃：'+$('b-judge').textContent)}}
 
   var dc=$('d-copy-summary'); if(dc){dc.onclick=function(){copyToClipboard('房產現金流OS【傳承安家】\n方案一月套利：'+(($('d-p1-net')||{}).textContent||'')+'\n方案二第6年月套利：'+(($('d-planned-net')||{}).textContent||'')+'\n方案一投入本金：'+(($('d-p1-invest')||{}).textContent||'')+'\n方案二投入本金：'+(($('d-p2-invest')||{}).textContent||''))}}
-  var qc=$('q-copy-summary'); if(qc){qc.onclick=function(){copyToClipboard('房產月收引擎【快速試算】\n可增貸金額：'+(($('q-result-total-loan')||{}).textContent||'')+'\n方案一 PFK解約金超過剩餘房貸：'+(($('q-p1-payoff')||{}).textContent||'')+'\n方案二 PFK解約金超過剩餘房貸：'+(($('q-p2-payoff')||{}).textContent||'')+'\n判讀：'+(($('q-payoff-copy')||{}).textContent||''))}}
+  var qc=$('q-copy-summary'); if(qc){qc.onclick=function(){var t=function(id){return (($(id)||{}).textContent||'').trim()}; copyToClipboard('房產月收引擎【快速試算】\n可增貸金額：'+t('q-result-total-loan')+'\n增貸月付：'+t('q-result-total-pay')+'\n方案一 每月淨現金流：'+t('q-p1-netflow')+'\n  '+t('q-p1-conclusion')+'\n方案二 每月淨現金流：'+t('q-p2-netflow')+'\n  '+t('q-p2-conclusion')+'\n判讀：'+t('q-payoff-copy'))}}
   var qt=$('q-copy-table'); if(qt){qt.onclick=function(){copyToClipboard('房產月收引擎【快速試算年度表】\n'+(($('q-table-title')||{}).textContent||'')+'\n'+(($('q-table-summary')||{}).textContent||''))}}
 
   populateFundSelects(); syncFxFields(); updateDividendNotes();

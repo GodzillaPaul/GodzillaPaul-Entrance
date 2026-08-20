@@ -1043,6 +1043,7 @@ input::placeholder {
 // Google Sheet「發佈到網路」CSV 網址（這個有 CORS header，從 file:// 也能 fetch）
 const GOOGLE_SHEET_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv";
+const FUND_MARKET_API = "/.netlify/functions/fund-market";
 
 const STORAGE_KEY = "monthlyDividendStable.v1";
 const DEFAULT_STATE = {
@@ -1052,6 +1053,7 @@ const DEFAULT_STATE = {
     { name: "NGB2（高盛新興市場債 X 美元）", rate: 0.59, nav: 40.4700, navDate: "2026-04-23", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=ANZA2-NGB2" },
     { name: "FBD6（富邦月月興利 VAKT）", rate: 0.0468, nav: 8.9966, navDate: "2026-04-23", currency: "TWD", url: "https://invest.fubonlife.com.tw/w/wr/cf02.djhtm?a=FBD6" },
     { name: "ACE17（聯博 美國成長 AP 美元）", rate: 0.8322, nav: 74.4800, navDate: "2026-04-29", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=ALBT8-ACE17" },
+    { name: "JFP11（JPM 多重收益美元對沖 A 股穩定月配）", rate: 0.692, nav: 74.8000, navDate: "2026-08-19", rateDate: "2026-08-11", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=JFZN3-JFP11&product=VCCF", rateUrl: "https://invest.fubonlife.com.tw/w/wb/wb05.djhtm?a=JFZN3-JFP11&product=VCCF", dynamicRate: true },
     { name: "DST3（安聯 AI 收益成長 B 美元）", rate: 0.088, nav: 13.4500, navDate: "2026-06-02", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wr/wr01.djhtm?a=ACDD154-DST3" },
     { name: "ACC3（聯博 多元資產收益 AI 美元）", rate: 0.075, nav: 9.5900, navDate: "2026-06-03", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wr/wr02.djhtm?a=ACTI71-ACC3" }
   ],
@@ -1100,6 +1102,7 @@ function sanitizeState() {
     if (code.indexOf("DSP5") >= 0 || code.indexOf("FBD6") >= 0) { min = 5; max = 25; }
     if (code.indexOf("NGB1") >= 0 || code.indexOf("NGB2") >= 0) { min = 20; max = 90; }
     if (code.indexOf("ACE17") >= 0) { min = 30; max = 150; }
+    if (code.indexOf("JFP11") >= 0) { min = 30; max = 150; }
     if (code.indexOf("DST3") >= 0) { min = 5; max = 200; }
     if (code.indexOf("ACC3") >= 0) { min = 5; max = 200; }
 
@@ -1112,10 +1115,9 @@ function sanitizeState() {
       }
     }
 
-    // 提解率永遠以 DEFAULT_STATE 為準（hardcode 在程式裡）
-    // 不從 Sheet 讀，也不採信 localStorage 裡的快取，避免被舊版誤更新
+    // 固定提解標的以 DEFAULT_STATE 為準；JFP11 這類每月調整的標的保留最新快取。
     const defForRate = DEFAULT_STATE.funds.find(d => d.name === f.name);
-    if (defForRate && isFinite(Number(defForRate.rate)) && Number(defForRate.rate) > 0) {
+    if (defForRate && !defForRate.dynamicRate && isFinite(Number(defForRate.rate)) && Number(defForRate.rate) > 0) {
       f.rate = defForRate.rate;
     }
   });
@@ -1554,10 +1556,46 @@ function readSheetNumber(row, keys) {
   return NaN;
 }
 
+function applyFundMarketPayload(payload) {
+  const rows = Array.isArray(payload && payload.funds) ? payload.funds : [];
+  let updated = 0;
+  rows.forEach(item => {
+    const code = String(item.code || "").trim().toUpperCase();
+    if (!code) return;
+    const fund = state.funds.find(f => normalizeCode(f.name).toUpperCase() === code);
+    if (!fund) return;
+    if (isFinite(Number(item.nav)) && Number(item.nav) > 0) {
+      fund.nav = Number(item.nav);
+      fund.navDate = normalizeDate(item.navDate) || fund.navDate || today();
+      updated++;
+    }
+    if (isFinite(Number(item.rate)) && Number(item.rate) > 0) {
+      fund.rate = Number(item.rate);
+      fund.rateDate = normalizeDate(item.rateDate) || fund.rateDate || today();
+    }
+    if (item.currency) fund.currency = item.currency;
+  });
+  return updated;
+}
+
+async function updateFromOfficialFundMarket() {
+  if (location.protocol === "file:") return 0;
+  const res = await fetch(FUND_MARKET_API + "?codes=JFP11&cacheBust=" + Date.now(), { cache: "no-store" });
+  if (!res.ok) throw new Error("官方基金資料讀取失敗 (HTTP " + res.status + ")");
+  return applyFundMarketPayload(await res.json());
+}
+
 async function updateFromGoogleSheet() {
-  setAutoStatus("正在讀取 Google Sheet 最新資料…");
+  setAutoStatus("正在讀取最新淨值與提解資料…");
 
   try {
+    let officialUpdated = 0;
+    try {
+      officialUpdated = await updateFromOfficialFundMarket();
+    } catch (officialErr) {
+      console.log(officialErr);
+    }
+
     const res = await fetch(GOOGLE_SHEET_CSV_URL + "&cacheBust=" + Date.now(), { cache: "no-store" });
     if (!res.ok) throw new Error("Google Sheet 讀取失敗 (HTTP " + res.status + ")");
 
@@ -1575,7 +1613,7 @@ async function updateFromGoogleSheet() {
       const row = findSheetRowForFund(rows, fund);
       if (!row) return;
 
-      // 只抓淨值（提解率 hardcode 在 DEFAULT_STATE 不從 Sheet 讀）
+      // 固定提解標的只抓淨值；dynamicRate 標的可同步更新每單位配息。
       let parsedNav = readSheetNumber(row, ["nav", "淨值", "最新淨值", "即時淨值"]);
 
       // 合併欄「即時淨值/宣告利率」如果是純數字（沒 % 也沒「利率」字樣）才當淨值
@@ -1598,6 +1636,14 @@ async function updateFromGoogleSheet() {
         fund.nav = parsedNav;
         fund.navDate = date || today();
         updated++;
+      }
+
+      if (fund.dynamicRate) {
+        const parsedRate = readSheetNumber(row, ["rate", "dividend", "配息", "每單位配息", "每單位配息金額", "宣告利率", "提解率", "每單位提解"]);
+        if (isFinite(parsedRate) && parsedRate > 0 && parsedRate < 100) {
+          fund.rate = parsedRate;
+          fund.rateDate = date || fund.rateDate || today();
+        }
       }
 
       if (currency) fund.currency = currency;
@@ -1627,8 +1673,9 @@ async function updateFromGoogleSheet() {
     renderRate();
     calculate({ silent: true });
 
-    if (updated > 0 || fxUpdated) {
+    if (updated > 0 || fxUpdated || officialUpdated > 0) {
       const parts = [];
+      if (officialUpdated > 0) parts.push(`官方基金 ${officialUpdated} 檔`);
       if (updated > 0) parts.push(`淨值 ${updated} 檔`);
       if (fxUpdated) parts.push("匯率");
       setAutoStatus("✓ 已更新 " + parts.join("｜") + "（點此重抓）", "ok");

@@ -2,10 +2,12 @@
   var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', qMethod='equal', qSelectedPlan='p2', dLifeBudgetMode='pct';
   var PFK2Y={"1":{"0":[356,11575.68],"1":[370,11573.03],"2":[384,11571.18],"3":[398,11570.15],"4":[413,11570.05],"5":[429,11571.6],"6":[445,11572.38],"7":[461,11573.94],"8":[479,11577.26],"9":[497,11581.24],"10":[515,11585.49],"11":[534,11591.24],"12":[554,11598.12],"13":[574,11603.28],"14":[595,11607.65],"15":[617,11610.42],"16":[640,11613.34],"17":[664,11615.08],"18":[688,11614.92],"19":[714,11616.06],"20":[740,11615.96],"21":[768,11617.28],"22":[796,11616.92],"23":[826,11618.11],"24":[856,11617.88],"25":[888,11619.25],"26":[921,11620.96],"27":[955,11622.7],"28":[990,11624.57],"29":[1027,11626.96],"30":[1064,11627.7],"31":[1103,11628.88],"32":[1142,11629.17],"33":[1183,11630.05],"34":[1226,11631.49],"35":[1270,11632.42],"36":[1316,11634.47],"37":[1363,11635.41],"38":[1412,11636.75],"39":[1463,11638.39],"40":[1516,11641.19],"41":[1573,11646.4],"42":[1632,11651.74],"43":[1693,11657.43],"44":[1757,11663.1],"45":[1823,11669.2],"46":[1891,11674.29],"47":[1962,11680.06],"48":[2035,11684.82],"49":[2111,11690.31],"50":[2190,11697.46],"51":[2269,11701.27],"52":[2352,11705.94],"53":[2437,11710.1],"54":[2526,11715.74],"55":[2617,11719.65],"56":[2712,11725.51],"57":[2811,11731.6],"58":[2913,11736.41],"59":[3018,11741.39],"60":[3128,11748.21],"61":[3254,11764.33],"62":[3386,11780.69],"63":[3523,11796.44],"64":[3665,11811.04],"65":[3814,11825.57],"66":[3968,11832.48],"67":[4129,11836.33],"68":[4296,11831.36],"69":[4470,11819.2],"70":[4650,11793.58],"71":[4764,11746.31],"72":[4881,11692.41],"73":[5000,11629.94],"74":[5000,11433.16],"75":[5000,11367.01],"76":[5000,11300.24],"77":[5000,11258.7],"78":[5000,11261.78]},"2":{"0":[270,11561.79],"1":[280,11558.05],"2":[291,11555.9],"3":[302,11555.19],"4":[313,11552.67],"5":[325,11552.99],"6":[338,11554.09],"7":[350,11553.57],"8":[363,11554.11],"9":[377,11556.36],"10":[391,11558.97],"11":[406,11561.82],"12":[422,11566.55],"13":[438,11570.08],"14":[454,11572.48],"15":[471,11574.3],"16":[489,11576.02],"17":[508,11578.15],"18":[527,11579.65],"19":[547,11580.07],"20":[567,11581.26],"21":[588,11582.19],"22":[610,11583.51],"23":[633,11584.83],"24":[657,11586.96],"25":[682,11588.6],"26":[708,11591.04],"27":[734,11591.37],"28":[762,11592.8],"29":[790,11593.97],"30":[821,11597.11],"31":[852,11598.56],"32":[884,11599.82],"33":[917,11600.96],"34":[951,11601.77],"35":[987,11603.34],"36":[1024,11604.47],"37":[1062,11605.3],"38":[1102,11606.88],"39":[1144,11608.62],"40":[1186,11609.33],"41":[1234,11615.66],"42":[1283,11620.11],"43":[1334,11625.87],"44":[1387,11631.01],"45":[1442,11634.95],"46":[1499,11639.55],"47":[1559,11644.4],"48":[1621,11649.36],"49":[1685,11652.99],"50":[1753,11659.57],"51":[1825,11667.63],"52":[1899,11674.24],"53":[1977,11682.61],"54":[2057,11688.89],"55":[2141,11696.76],"56":[2228,11703.21],"57":[2319,11711.03],"58":[2413,11717.59],"59":[2512,11725.5],"60":[2613,11732.14],"61":[2723,11744.22],"62":[2838,11755.49],"63":[2957,11766.76],"64":[3082,11777.68],"65":[3212,11789.41],"66":[3347,11800.17],"67":[3488,11811.69],"68":[3635,11821.6],"69":[3788,11829.05],"70":[3948,11828.76],"71":[4199,11855.16],"72":[4466,11863.12],"73":[4750,11846.4],"74":[4800,11636.6],"75":[4850,11572.38],"76":[4900,11506.16],"77":[4950,11437.74],"78":[5000,11368.5]}};
   var MARKET_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv';
+  var FUND_MARKET_API='/.netlify/functions/fund-market';
   var market={fxRate:31.6947,fxDate:'2026-06-24',audRate:22.4251,audDate:'2026-05-27',funds:[
     {name:'DSP5（安聯收益成長 AM 美元）',rate:0.055,nav:8.9035,navDate:'2026-06-24',currency:'USD'},
     {name:'NGB1（高盛環球高收益 X 美元）',rate:0.51,nav:38.55,navDate:'2026-06-24',currency:'USD'},
-    {name:'ACE17（聯博 美國成長 AP 美元）',rate:0.8322,nav:73.47,navDate:'2026-06-24',currency:'USD'}
+    {name:'ACE17（聯博 美國成長 AP 美元）',rate:0.8322,nav:73.47,navDate:'2026-06-24',currency:'USD'},
+    {name:'JFP11（JPM 多重收益美元對沖 A 股穩定月配）',rate:0.692,nav:74.8,navDate:'2026-08-19',rateDate:'2026-08-11',currency:'USD',dynamicRate:true}
   ]};
   function $(id){return document.getElementById(id)}
   function num(id){var el=$(id); return el? Number(el.value||0):0}
@@ -96,16 +98,34 @@
       return codeFields.some(function(k){var v=String(r[k]||'').trim().toUpperCase();return v&&v.indexOf(code)>=0})||nameFields.some(function(k){var v=String(r[k]||'').trim().toUpperCase();return v&&v.indexOf(code)>=0});
     });
   }
+  function applyFundMarketPayload(payload){
+    var rows=payload&&Array.isArray(payload.funds)?payload.funds:[], updated=0;
+    rows.forEach(function(item){
+      var code=String(item.code||'').trim().toUpperCase(); if(!code)return;
+      var fund=market.funds.find(function(f){return fundCode(f.name).toUpperCase()===code});
+      if(!fund)return;
+      if(isFinite(Number(item.nav))&&Number(item.nav)>0){fund.nav=Number(item.nav);fund.navDate=normalizeDate(item.navDate)||fund.navDate;updated++}
+      if(isFinite(Number(item.rate))&&Number(item.rate)>0){fund.rate=Number(item.rate);fund.rateDate=normalizeDate(item.rateDate)||fund.rateDate}
+      if(item.currency)fund.currency=item.currency;
+    });
+    return updated;
+  }
+  function refreshOfficialFundMarket(){
+    if(location.protocol==='file:')return Promise.resolve(0);
+    return fetch(FUND_MARKET_API+'?codes=JFP11&cacheBust='+Date.now(),{cache:'no-store'}).then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.json()}).then(applyFundMarketPayload);
+  }
   function refreshMarket(){
     setMarketStatus('更新中...');
+    return refreshOfficialFundMarket().catch(function(){return 0}).then(function(officialUpdated){
     return fetch(MARKET_CSV_URL+'&cacheBust='+Date.now(),{cache:'no-store'}).then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.text()}).then(function(csv){
       var rows=parseCsv(csv), updated=0, fxUpdated=false;
-      market.funds.forEach(function(f){var r=findMarketRow(rows,f); if(!r)return; var nav=parseLoose(readField(r,['nav','淨值','最新淨值','即時淨值'])); if(!isFinite(nav)){['即時淨值/宣告利率','淨值/利率','淨值/宣告利率'].some(function(k){var raw=String(r[k]||''); if(raw.indexOf('%')>=0||raw.indexOf('％')>=0||raw.indexOf('利率')>=0)return false; nav=parseLoose(raw); return isFinite(nav)})} if(isFinite(nav)&&nav>0){f.nav=nav;f.navDate=normalizeDate(readField(r,['date','日期','navDate','更新日期']))||new Date().toISOString().slice(0,10);updated++} var dist=parseLoose(readField(r,['rate','dividend','配息','每單位配息','每單位配息金額','宣告利率'])); if(isFinite(dist)&&dist>0&&dist<100){f.rate=dist;} var cur=readField(r,['currency','幣別']); if(cur)f.currency=cur;});
+      market.funds.forEach(function(f){var r=findMarketRow(rows,f); if(!r)return; var nav=parseLoose(readField(r,['nav','淨值','最新淨值','即時淨值'])); if(!isFinite(nav)){['即時淨值/宣告利率','淨值/利率','淨值/宣告利率'].some(function(k){var raw=String(r[k]||''); if(raw.indexOf('%')>=0||raw.indexOf('％')>=0||raw.indexOf('利率')>=0)return false; nav=parseLoose(raw); return isFinite(nav)})} if(isFinite(nav)&&nav>0){f.nav=nav;f.navDate=normalizeDate(readField(r,['date','日期','navDate','更新日期']))||new Date().toISOString().slice(0,10);updated++} if(f.dynamicRate){var dist=parseLoose(readField(r,['rate','dividend','配息','每單位配息','每單位配息金額','宣告利率','提解率','每單位提解'])); if(isFinite(dist)&&dist>0&&dist<100){f.rate=dist;f.rateDate=normalizeDate(readField(r,['rateDate','配息日','提解日','日期','更新日期']))||f.rateDate;}} var cur=readField(r,['currency','幣別']); if(cur)f.currency=cur;});
       var fxRow=rows.find(function(r){return ['code','基金','基金代碼','基金/保單代碼','保單代碼','代碼'].some(function(k){var v=String(r[k]||'').trim().toUpperCase();return v==='FX'||v==='USD/TWD'||v==='USDTWD'})});
       if(fxRow){var fx=parseLoose(readField(fxRow,['nav','rate','匯率','fxRate','即時淨值','即時淨值/宣告利率']));if(isFinite(fx)&&fx>0&&fx<100){market.fxRate=fx;market.fxDate=normalizeDate(readField(fxRow,['date','日期','更新日期']))||new Date().toISOString().slice(0,10);fxUpdated=true}}
       var audRow=rows.find(function(r){return ['code','基金','基金代碼','基金/保單代碼','保單代碼','代碼'].some(function(k){var v=String(r[k]||'').trim().toUpperCase();return v==='AUD/TWD'||v==='AUDTWD'})});
       if(audRow){var aud=parseLoose(readField(audRow,['nav','rate','匯率','fxRate','即時淨值','即時淨值/宣告利率']));if(isFinite(aud)&&aud>0&&aud<100){market.audRate=aud;market.audDate=normalizeDate(readField(audRow,['date','日期','更新日期']))||new Date().toISOString().slice(0,10);fxUpdated=true}}
-      populateFundSelects(); syncFxFields(); updateDividendNotes(); calcAll(); setMarketStatus((updated||fxUpdated)?'已更新 '+(updated?'淨值'+updated+'檔 ':'')+(fxUpdated?'匯率 ':'')+'｜'+(market.fxDate||new Date().toISOString().slice(0,10)):'已讀取但未對應');
+      populateFundSelects(); syncFxFields(); updateDividendNotes(); calcAll(); setMarketStatus((updated||fxUpdated||officialUpdated)?'已更新 '+(officialUpdated?'官方基金'+officialUpdated+'檔 ':'')+(updated?'淨值'+updated+'檔 ':'')+(fxUpdated?'匯率 ':'')+'｜'+(market.fxDate||new Date().toISOString().slice(0,10)):'已讀取但未對應');
+    });
     }).catch(function(){setMarketStatus('更新失敗，使用內建資料'); updateDividendNotes();});
   }
   function estimateInsurance(coverWan,ageId,sexId,fxId){

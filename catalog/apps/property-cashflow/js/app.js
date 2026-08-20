@@ -285,7 +285,7 @@
     section.classList.toggle('show-result', showResult);
     section.classList.toggle('show-table', showTable);
     calcQ();
-    if(shouldScroll!==false) section.scrollIntoView({behavior:'smooth', block:'start'});
+    if(shouldScroll!==false) section.scrollTop=0;
   }
   
   document.addEventListener('click',function(e){

@@ -106,7 +106,7 @@
         <button class="home-choice-card teal" data-go="quickCalc">
           <span>我想先看大方向</span>
           <b>快速試算</b>
-          <i>用房屋價值額度推估可能結清年度</i>
+          <i>用可增貸金額推估可能結清年度</i>
         </button>
       </div>
       <span id="home-relief" class="system-hidden" data-raw="12099">$12,099</span>
@@ -728,7 +728,7 @@
     <!-- CALCULATOR -->
     <section id="quickCalc" class="slide"><div class="slide-inner quick-slide">
       <div class="topline"><div class="kicker">E · QUICK CHECK</div><button class="ghost" data-go="home">返回總覽</button></div>
-      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入房貸與房屋價值額度，投入預算會自動帶出。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，不用另外填壽險保額或保留預算。</span><span class="quick-result-copy">先比較兩個方案的可能結清年度，再點方案看年度試算表。</span><span class="quick-table-copy">年度試算表顯示本金餘額、PFK保單現金價值與累積配息還款。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入可增貸金額與還款條件，快速看兩種配置的結清年度。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，系統會自動分配配息與 PFK 預算。</span><span class="quick-result-copy">先比較兩個方案的可能結清年度，再點方案看年度試算表。</span><span class="quick-table-copy">年度試算表會標示 PFK 解約金是否已超過剩餘房貸。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
       <div class="tool-stepper quick-stepper" aria-label="快速試算流程">
         <button class="step-mortgage" id="q-step-mortgage" type="button">1 房貸資料</button>
         <button class="step-safety" id="q-step-safety" type="button">2 配息與PFK</button>
@@ -737,17 +737,12 @@
       <div class="quick-form-grid">
         <div class="input-panel quick-input-panel">
           <div class="q-input-page q-mortgage-page">
-            <div class="panel-title"><h3>房貸資料</h3><span class="pill-label">自動算投入預算</span></div>
-            <div class="field"><label>目前房貸金額</label><div class="input-wrap"><input id="q-current-loan" type="number" value="550"><span class="unit">萬元</span></div></div>
-            <div class="grid2">
-              <div class="field"><label>現行利率</label><div class="input-wrap"><input id="q-current-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
-              <div class="field"><label>剩餘年期</label><div class="input-wrap"><input id="q-current-years" type="number" value="27"><span class="unit">年</span></div></div>
-            </div>
-            <div class="field"><label>房屋價值額度</label><div class="input-wrap"><input id="q-total-loan" type="number" value="1000"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="q-total-loan" data-val="800">800萬</button><button class="chip" data-set="q-total-loan" data-val="1000">1000萬</button><button class="chip" data-set="q-total-loan" data-val="1500">1500萬</button></div></div>
-            <div class="panel-title" style="margin-top:12px"><h3>房屋價值額度的成本</h3><span class="pill-label">房貸總額</span></div>
+            <div class="panel-title"><h3>房貸資料</h3><span class="pill-label">快速版</span></div>
+            <div class="field"><label>可增貸金額</label><div class="input-wrap"><input id="q-total-loan" type="number" value="500"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="q-total-loan" data-val="300">300萬</button><button class="chip" data-set="q-total-loan" data-val="500">500萬</button><button class="chip" data-set="q-total-loan" data-val="800">800萬</button></div></div>
+            <div class="panel-title" style="margin-top:12px"><h3>可增貸金額的月成本</h3><span class="pill-label">成本</span></div>
             <div class="seg"><button id="q-method-equal" class="active" data-q-method="equal">一般本息平均</button><button id="q-method-wealth" data-q-method="wealth">理財型循環息</button></div>
             <div class="grid2">
-              <div class="field"><label>房屋價值額度利率</label><div class="input-wrap"><input id="q-extra-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
+              <div class="field"><label>增貸利率</label><div class="input-wrap"><input id="q-extra-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
               <div class="field q-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="q-extra-years" type="number" value="20"><span class="unit">年</span></div></div>
             </div>
             <div class="step-actions"><button class="btn btn-primary" id="q-next-safety" type="button">下一步：配息與PFK</button></div>
@@ -762,22 +757,22 @@
             </div>
             <div class="field"><label>美元匯率 <small id="q-fx-date">USD/TWD 31.423｜2026-04-25｜AUD/TWD 22.425</small></label><div class="input-wrap"><input id="q-fx" type="number" step="0.001" value="31.423"><span class="unit">TWD/USD</span></div></div>
             <div class="quick-rule-box">
-              <div><b>方案一</b><span>投入預算 60% 配息，40% 做 PFK 兩年總預算。</span></div>
-              <div><b>方案二</b><span>投入預算 80% 配息，20% 付 PFK 首年保費，第二年保費改由保單借款。</span></div>
+              <div><b>方案一</b><span>可增貸金額 60% 投入 V 月配息，40% 做 PFK 兩年總預算。</span></div>
+              <div><b>方案二</b><span>可增貸金額 80% 投入 V 月配息，20% 付 PFK 首年保費，第二年保費由保單借款。</span></div>
             </div>
             <div class="step-actions"><button class="btn btn-outline" id="q-back-mortgage" type="button">返回房貸資料</button><button class="btn btn-primary" id="q-show-result" type="button">查看年度結果</button></div>
           </div>
         </div>
         <aside class="a-live-card quick-live-card">
           <small>即時快速試算</small>
-          <h3>先看投入預算，再看年度能否結清房貸。</h3>
+          <h3>先看可增貸金額，再看年度能否結清房貸。</h3>
           <div class="live-metrics">
-            <div><span>房貸總額</span><b id="q-total-loan-show">1000萬</b></div>
-            <div><span>現有房貸</span><b id="q-current-loan-show">550萬</b></div>
-            <div><span>投入預算</span><b id="q-budget-show">450萬</b></div>
-            <div><span>房貸總額月付</span><b id="q-total-pay" data-raw="53479">$53,479</b></div>
+            <div><span>可增貸金額</span><b id="q-total-loan-show">500萬</b></div>
+            <div><span>增貸月付</span><b id="q-total-pay" data-raw="26739">$26,739</b></div>
+            <div><span>方案一可能結清</span><b id="q-p1-live-payoff">尚未達成</b></div>
+            <div><span>方案二可能結清</span><b id="q-p2-live-payoff">尚未達成</b></div>
           </div>
-          <p class="live-note" id="q-live-note">投入預算＝房屋價值額度－目前房貸金額。</p>
+          <p class="live-note" id="q-live-note">可增貸金額會直接作為方案一與方案二的配置基準。</p>
         </aside>
       </div>
 
@@ -786,7 +781,7 @@
           <div class="quick-result-top">
             <span>快速比較</span>
             <h3>先看哪一個方案更早有機會結清房貸。</h3>
-            <p id="q-payoff-copy">快速試算會用 PFK 現金價值加上配息累積，回推可能一次結清房貸的年度。</p>
+            <p id="q-payoff-copy">快速試算會用 PFK 解約金對照剩餘房貸，回推可能一次結清房貸的年度。</p>
           </div>
           <div class="quick-compare-grid">
           <button class="quick-plan-card plan-a" type="button" data-q-report="p1">
@@ -810,7 +805,7 @@
             <span class="quick-card-action">查看方案二年度試算表</span>
           </button>
           </div>
-          <div class="quick-payoff-strip"><span id="q-payoff-strip-copy">目前會先比較哪個方案較早覆蓋房貸本金餘額。</span><b id="q-best-payoff">尚未達成</b></div>
+          <div class="quick-payoff-strip"><span id="q-payoff-strip-copy">目前會先比較哪個方案較早讓 PFK 解約金超過剩餘房貸。</span><b id="q-best-payoff">尚未達成</b></div>
           <div class="proposal-actions compact-actions">
             <button class="btn btn-primary" id="q-copy-summary" type="button">複製結果</button>
             <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
@@ -824,12 +819,12 @@
             <div>
               <small>年度試算表</small>
               <h3 id="q-table-title">方案二年度試算表</h3>
-              <p id="q-table-subtitle">用本金餘額、PFK保單現金價值與累積配息還款，判斷可能結清年度。</p>
+              <p id="q-table-subtitle">用剩餘房貸與 PFK 解約金，判斷哪一年具備一次結清的觀察點。</p>
             </div>
             <button class="btn btn-outline" id="q-back-result" type="button">返回結果比較</button>
           </div>
-          <div class="quick-table-wrap is-full"><table class="quick-flow-table"><thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead><tbody id="q-active-report"></tbody></table></div>
-          <div class="quick-table-summary" id="q-table-summary">目前試算會顯示最早覆蓋房貸本金餘額的年度。</div>
+          <div class="quick-table-wrap is-full"><table class="quick-flow-table"><thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>PFK解約金 &gt; 剩餘房貸</th><th>累積配息還款</th><th>可結清差額</th></tr></thead><tbody id="q-active-report"></tbody></table></div>
+          <div class="quick-table-summary" id="q-table-summary">目前試算會顯示 PFK 解約金超過剩餘房貸的年度。</div>
         </div>
         <div class="proposal-actions compact-actions">
           <button class="btn btn-primary" id="q-copy-table" type="button">複製此方案</button>
@@ -837,8 +832,8 @@
         </div>
       </div>
       <div class="quick-report-cache system-hidden">
-        <span id="q-result-total-loan">1000萬</span>
-        <span id="q-result-budget">450萬</span>
+        <span id="q-result-total-loan">500萬</span>
+        <span id="q-result-budget">500萬</span>
         <table><tbody id="q-p1-report"></tbody></table>
         <table><tbody id="q-p2-report"></tbody></table>
       </div>

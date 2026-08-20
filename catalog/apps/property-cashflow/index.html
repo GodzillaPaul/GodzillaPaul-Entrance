@@ -51,6 +51,7 @@
       <button class="rail-item" data-go="toolB"><span class="rail-num">02</span><span class="rail-label"><b>以房養老</b><small>規劃退休現金流</small></span></button>
       <button class="rail-item" data-go="toolD"><span class="rail-num">03</span><span class="rail-label"><b>傳承安家</b><small>先沿用以房養老流程</small></span></button>
       <button class="rail-item" data-go="calculator"><span class="rail-num">04</span><span class="rail-label"><b>房貸計算機</b><small>快速試算月付</small></span></button>
+      <button class="rail-item" data-go="quickCalc"><span class="rail-num">05</span><span class="rail-label"><b>快速試算</b><small>看可能結清年度</small></span></button>
     </nav>
     <div class="rail-foot">本試算非正式核貸承諾。配息率、保障與借款利率需依各金融機構最終核定為準。</div>
   </aside>
@@ -101,6 +102,11 @@
           <span>我想先快速試算</span>
           <b>房貸成本計算機</b>
           <i>先掌握每月還款壓力</i>
+        </button>
+        <button class="home-choice-card teal" data-go="quickCalc">
+          <span>我想先看大方向</span>
+          <b>快速試算</b>
+          <i>用房屋價值額度推估可能結清年度</i>
         </button>
       </div>
       <span id="home-relief" class="system-hidden" data-raw="12099">$12,099</span>
@@ -720,6 +726,108 @@
 
 
     <!-- CALCULATOR -->
+    <section id="quickCalc" class="slide"><div class="slide-inner quick-slide">
+      <div class="topline"><div class="kicker">E · QUICK CHECK</div><button class="ghost" data-go="home">返回總覽</button></div>
+      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入房貸與房屋價值額度，投入預算會自動帶出。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，不用另外填壽險保額或保留預算。</span><span class="quick-result-copy">比較兩種預算配置，展開年度報表看可能一次結清房貸的時間點。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-stepper quick-stepper" aria-label="快速試算流程">
+        <button class="step-mortgage" id="q-step-mortgage" type="button">1 房貸資料</button>
+        <button class="step-safety" id="q-step-safety" type="button">2 配息與PFK</button>
+        <button class="step-result" id="q-step-result" type="button">3 年度結果</button>
+      </div>
+      <div class="quick-client-lens">
+        <div><span>投入預算</span><b id="q-budget-live">450萬</b></div>
+        <div><span>方案一可能結清</span><b id="q-p1-payoff-live">尚未達成</b></div>
+        <div><span>方案二可能結清</span><b id="q-p2-payoff-live">尚未達成</b></div>
+      </div>
+      <div class="quick-form-grid">
+        <div class="input-panel quick-input-panel">
+          <div class="q-input-page q-mortgage-page">
+            <div class="panel-title"><h3>房貸資料</h3><span class="pill-label">自動算投入預算</span></div>
+            <div class="field"><label>目前房貸金額</label><div class="input-wrap"><input id="q-current-loan" type="number" value="550"><span class="unit">萬元</span></div></div>
+            <div class="grid2">
+              <div class="field"><label>現行利率</label><div class="input-wrap"><input id="q-current-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
+              <div class="field"><label>剩餘年期</label><div class="input-wrap"><input id="q-current-years" type="number" value="27"><span class="unit">年</span></div></div>
+            </div>
+            <div class="field"><label>房屋價值額度</label><div class="input-wrap"><input id="q-total-loan" type="number" value="1000"><span class="unit">萬元</span></div><div class="quick"><button class="chip" data-set="q-total-loan" data-val="800">800萬</button><button class="chip" data-set="q-total-loan" data-val="1000">1000萬</button><button class="chip" data-set="q-total-loan" data-val="1500">1500萬</button></div></div>
+            <div class="panel-title" style="margin-top:12px"><h3>房屋價值額度的成本</h3><span class="pill-label">房貸總額</span></div>
+            <div class="seg"><button id="q-method-equal" class="active" data-q-method="equal">一般本息平均</button><button id="q-method-wealth" data-q-method="wealth">理財型循環息</button></div>
+            <div class="grid2">
+              <div class="field"><label>房屋價值額度利率</label><div class="input-wrap"><input id="q-extra-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
+              <div class="field q-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="q-extra-years" type="number" value="20"><span class="unit">年</span></div></div>
+            </div>
+            <div class="step-actions"><button class="btn btn-primary" id="q-next-safety" type="button">下一步：配息與PFK</button></div>
+          </div>
+
+          <div class="q-input-page q-safety-page">
+            <div class="panel-title"><h3>配息與PFK設定</h3><span class="pill-label">快速版</span></div>
+            <div class="field"><label>月配息標的</label><div class="input-wrap"><select id="q-fund"><option value="DSP5（安聯收益成長 AM 美元）">DSP5｜USD｜淨值 8.5978</option><option value="NGB1（高盛環球高收益 X 美元）">NGB1｜USD｜淨值 39.65</option><option value="ACE17（聯博 美國成長 AP 美元）">ACE17｜USD｜淨值 74.48</option></select></div><div class="quick"><button class="chip" id="market-refresh-q" type="button">更新淨值/匯率</button><span class="pill-label" id="q-market-status">DSP5 年化約 7.29%</span></div></div>
+            <div class="grid2">
+              <div class="field"><label>被保人年齡</label><div class="input-wrap"><input id="q-ins-age" type="number" value="40"><span class="unit">歲</span></div></div>
+              <div class="field"><label>被保人性別</label><div class="input-wrap"><select id="q-ins-sex"><option value="1">男性</option><option value="2">女性</option></select></div></div>
+            </div>
+            <div class="field"><label>美元匯率 <small id="q-fx-date">USD/TWD 31.423｜2026-04-25｜AUD/TWD 22.425</small></label><div class="input-wrap"><input id="q-fx" type="number" step="0.001" value="31.423"><span class="unit">TWD/USD</span></div></div>
+            <div class="quick-rule-box">
+              <div><b>方案一</b><span>投入預算 60% 配息，40% 做 PFK 兩年總預算。</span></div>
+              <div><b>方案二</b><span>投入預算 80% 配息，20% 付 PFK 首年保費，第二年保費改由保單借款。</span></div>
+            </div>
+            <div class="step-actions"><button class="btn btn-outline" id="q-back-mortgage" type="button">返回房貸資料</button><button class="btn btn-primary" id="q-show-result" type="button">查看年度結果</button></div>
+          </div>
+        </div>
+        <aside class="a-live-card quick-live-card">
+          <small>即時快速試算</small>
+          <h3>先看投入預算，再看年度能否結清房貸。</h3>
+          <div class="live-metrics">
+            <div><span>房貸總額</span><b id="q-total-loan-show">1000萬</b></div>
+            <div><span>現有房貸</span><b id="q-current-loan-show">550萬</b></div>
+            <div><span>投入預算</span><b id="q-budget-show">450萬</b></div>
+            <div><span>房貸總額月付</span><b id="q-total-pay" data-raw="53479">$53,479</b></div>
+          </div>
+          <p class="live-note" id="q-live-note">投入預算＝房屋價值額度－目前房貸金額。</p>
+        </aside>
+      </div>
+
+      <div class="quick-result-page">
+        <div class="quick-result-strip">
+          <div><span>房貸總額</span><b id="q-result-total-loan">1000萬</b></div>
+          <div><span>投入預算</span><b id="q-result-budget">450萬</b></div>
+          <div class="is-best"><span>較早可能結清</span><b id="q-best-payoff">尚未達成</b></div>
+        </div>
+        <div class="quick-compare-grid">
+          <div class="quick-plan-card plan-a">
+            <div class="quick-plan-head"><div><small>方案一</small><h3>60% 配息，40% 做 PFK 兩年總預算</h3></div><strong id="q-p1-payoff">尚未達成</strong></div>
+            <div class="compare-lines">
+              <div><span>投入V月配息</span><b id="q-p1-invest">270萬</b></div>
+              <div><span>PFK兩年總預算</span><b class="red" id="q-p1-pfk-budget">180萬</b></div>
+              <div><span>預估月配息</span><b class="green" id="q-p1-income" data-raw="0">$0</b></div>
+              <div><span>第6年PFK現金價值</span><b id="q-p1-surr6">0萬</b></div>
+            </div>
+            <details class="quick-report-details" open>
+              <summary>展開方案一年度數字報表</summary>
+              <div class="quick-table-wrap"><table class="quick-flow-table"><thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead><tbody id="q-p1-report"></tbody></table></div>
+            </details>
+          </div>
+          <div class="quick-plan-card plan-b">
+            <div class="quick-plan-head"><div><small>方案二</small><h3>80% 配息，20% 付首年PFK，第二年保單借款</h3></div><strong id="q-p2-payoff">尚未達成</strong></div>
+            <div class="compare-lines">
+              <div><span>投入V月配息</span><b id="q-p2-invest">360萬</b></div>
+              <div><span>PFK首年預算</span><b class="red" id="q-p2-pfk-budget">90萬</b></div>
+              <div><span>預估月配息</span><b class="green" id="q-p2-income" data-raw="0">$0</b></div>
+              <div><span>第二年保單借款月息</span><b class="red" id="q-p2-policy-cost" data-raw="0">$0</b></div>
+            </div>
+            <details class="quick-report-details" open>
+              <summary>展開方案二年度數字報表</summary>
+              <div class="quick-table-wrap"><table class="quick-flow-table"><thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead><tbody id="q-p2-report"></tbody></table></div>
+            </details>
+          </div>
+        </div>
+        <div class="quick-payoff-strip"><span id="q-payoff-copy">快速試算會用 PFK 現金價值加上配息累積，回推可能一次結清房貸的年度。</span><b id="q-payoff-gap">$0</b></div>
+        <div class="proposal-actions compact-actions">
+          <button class="btn btn-primary" id="q-copy-summary" type="button">複製結果</button>
+          <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
+        </div>
+      </div>
+    </div></section>
+
     <section id="calculator" class="slide"><div class="slide-inner">
       <div class="topline"><div class="kicker">D · CALCULATOR</div><button class="ghost" data-go="home">返回總覽</button></div>
       <div class="tool-title"><h2>精確房貸成本計算機</h2><p>純粹成本精確對標工具。深度兼容本息平均、寬限期前置計息、以及理財型循環複利明細。</p></div>
@@ -763,6 +871,7 @@
 <div class="disclaimer">本引擎產出數據均為初期架構模擬情境；實際核貸成數、融資利率、保費費金與基金配息等確切參數，均須對標金融機構最終正式審查結果。資產配息並非永續固定保證。</div>
 
 <script src="js/pfj-data.js"></script>
+<script src="js/pfk-data.js"></script>
 <script src="js/app.js"></script><div id="copyToast" class="copy-toast">已成功複製規劃結論至剪貼簿</div>
 
 

@@ -1,5 +1,5 @@
 (function(){
-  var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', dLifeBudgetMode='pct';
+  var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', qMethod='equal', dLifeBudgetMode='pct';
   var PFK2Y={"1":{"0":[356,11575.68],"1":[370,11573.03],"2":[384,11571.18],"3":[398,11570.15],"4":[413,11570.05],"5":[429,11571.6],"6":[445,11572.38],"7":[461,11573.94],"8":[479,11577.26],"9":[497,11581.24],"10":[515,11585.49],"11":[534,11591.24],"12":[554,11598.12],"13":[574,11603.28],"14":[595,11607.65],"15":[617,11610.42],"16":[640,11613.34],"17":[664,11615.08],"18":[688,11614.92],"19":[714,11616.06],"20":[740,11615.96],"21":[768,11617.28],"22":[796,11616.92],"23":[826,11618.11],"24":[856,11617.88],"25":[888,11619.25],"26":[921,11620.96],"27":[955,11622.7],"28":[990,11624.57],"29":[1027,11626.96],"30":[1064,11627.7],"31":[1103,11628.88],"32":[1142,11629.17],"33":[1183,11630.05],"34":[1226,11631.49],"35":[1270,11632.42],"36":[1316,11634.47],"37":[1363,11635.41],"38":[1412,11636.75],"39":[1463,11638.39],"40":[1516,11641.19],"41":[1573,11646.4],"42":[1632,11651.74],"43":[1693,11657.43],"44":[1757,11663.1],"45":[1823,11669.2],"46":[1891,11674.29],"47":[1962,11680.06],"48":[2035,11684.82],"49":[2111,11690.31],"50":[2190,11697.46],"51":[2269,11701.27],"52":[2352,11705.94],"53":[2437,11710.1],"54":[2526,11715.74],"55":[2617,11719.65],"56":[2712,11725.51],"57":[2811,11731.6],"58":[2913,11736.41],"59":[3018,11741.39],"60":[3128,11748.21],"61":[3254,11764.33],"62":[3386,11780.69],"63":[3523,11796.44],"64":[3665,11811.04],"65":[3814,11825.57],"66":[3968,11832.48],"67":[4129,11836.33],"68":[4296,11831.36],"69":[4470,11819.2],"70":[4650,11793.58],"71":[4764,11746.31],"72":[4881,11692.41],"73":[5000,11629.94],"74":[5000,11433.16],"75":[5000,11367.01],"76":[5000,11300.24],"77":[5000,11258.7],"78":[5000,11261.78]},"2":{"0":[270,11561.79],"1":[280,11558.05],"2":[291,11555.9],"3":[302,11555.19],"4":[313,11552.67],"5":[325,11552.99],"6":[338,11554.09],"7":[350,11553.57],"8":[363,11554.11],"9":[377,11556.36],"10":[391,11558.97],"11":[406,11561.82],"12":[422,11566.55],"13":[438,11570.08],"14":[454,11572.48],"15":[471,11574.3],"16":[489,11576.02],"17":[508,11578.15],"18":[527,11579.65],"19":[547,11580.07],"20":[567,11581.26],"21":[588,11582.19],"22":[610,11583.51],"23":[633,11584.83],"24":[657,11586.96],"25":[682,11588.6],"26":[708,11591.04],"27":[734,11591.37],"28":[762,11592.8],"29":[790,11593.97],"30":[821,11597.11],"31":[852,11598.56],"32":[884,11599.82],"33":[917,11600.96],"34":[951,11601.77],"35":[987,11603.34],"36":[1024,11604.47],"37":[1062,11605.3],"38":[1102,11606.88],"39":[1144,11608.62],"40":[1186,11609.33],"41":[1234,11615.66],"42":[1283,11620.11],"43":[1334,11625.87],"44":[1387,11631.01],"45":[1442,11634.95],"46":[1499,11639.55],"47":[1559,11644.4],"48":[1621,11649.36],"49":[1685,11652.99],"50":[1753,11659.57],"51":[1825,11667.63],"52":[1899,11674.24],"53":[1977,11682.61],"54":[2057,11688.89],"55":[2141,11696.76],"56":[2228,11703.21],"57":[2319,11711.03],"58":[2413,11717.59],"59":[2512,11725.5],"60":[2613,11732.14],"61":[2723,11744.22],"62":[2838,11755.49],"63":[2957,11766.76],"64":[3082,11777.68],"65":[3212,11789.41],"66":[3347,11800.17],"67":[3488,11811.69],"68":[3635,11821.6],"69":[3788,11829.05],"70":[3948,11828.76],"71":[4199,11855.16],"72":[4466,11863.12],"73":[4750,11846.4],"74":[4800,11636.6],"75":[4850,11572.38],"76":[4900,11506.16],"77":[4950,11437.74],"78":[5000,11368.5]}};
   var MARKET_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv';
   var market={fxRate:31.6947,fxDate:'2026-06-24',audRate:22.4251,audDate:'2026-05-27',funds:[
@@ -55,20 +55,20 @@
     return fund.rate*12/fund.nav*100;
   }
   function populateFundSelects(){
-    ['a-fund','b-fund','d-fund'].forEach(function(id){
+    ['a-fund','b-fund','d-fund','q-fund'].forEach(function(id){
       var sel=$(id); if(!sel) return;
       var old=sel.value; sel.innerHTML='';
       market.funds.forEach(function(f){var o=document.createElement('option');o.value=f.name;o.textContent=fundCode(f.name)+'｜'+f.currency+'｜淨值 '+Number(f.nav).toFixed(4).replace(/\.?0+$/,'');sel.appendChild(o)});
       sel.value=old&&market.funds.some(function(f){return f.name===old})?old:market.funds[0].name;
     });
   }
-  function setMarketStatus(text){['a-market-status','b-market-status','d-market-status'].forEach(function(id){var el=$(id); if(el) el.textContent=text});}
+  function setMarketStatus(text){['a-market-status','b-market-status','d-market-status','q-market-status'].forEach(function(id){var el=$(id); if(el) el.textContent=text});}
   function syncFxFields(){
-    ['a-fx','b-fx','d-fx'].forEach(function(id){var el=$(id); if(el&&!el.dataset.touched) el.value=Number(market.fxRate).toFixed(3)});
-    ['a-fx-date','b-fx-date','d-fx-date'].forEach(function(id){var el=$(id); if(el) el.textContent='USD/TWD '+Number(market.fxRate).toFixed(3)+(market.fxDate?'｜'+market.fxDate:'')+'｜AUD/TWD '+Number(market.audRate).toFixed(3)});
+    ['a-fx','b-fx','d-fx','q-fx'].forEach(function(id){var el=$(id); if(el&&!el.dataset.touched) el.value=Number(market.fxRate).toFixed(3)});
+    ['a-fx-date','b-fx-date','d-fx-date','q-fx-date'].forEach(function(id){var el=$(id); if(el) el.textContent='USD/TWD '+Number(market.fxRate).toFixed(3)+(market.fxDate?'｜'+market.fxDate:'')+'｜AUD/TWD '+Number(market.audRate).toFixed(3)});
   }
   function updateDividendNotes(){
-    [['a','a-fund','a-fx'],['b','b-fund','b-fx'],['d','d-fund','d-fx']].forEach(function(x){
+    [['a','a-fund','a-fx'],['b','b-fund','b-fx'],['d','d-fund','d-fx'],['q','q-fund','q-fx']].forEach(function(x){
       var div=estimateDividend(100,x[1],x[2]), f=div.fund, el=$(x[0]+'-market-status');
       if(el&&f){var gy=fundGrossYield(f); el.textContent=fundCode(f.name)+' 淨值 '+Number(f.nav).toFixed(4).replace(/\.?0+$/,'')+'｜配息率 '+(isFinite(gy)?gy.toFixed(2)+'%':'—');}
     });
@@ -180,6 +180,60 @@
     var r=pfjCompute(sex,age,best), row6=r&&r.rows[5]||{death:0,surr:0};
     return {sumW:r?r.sumW:0,annualBudgetWan:r?r.annualDiscUsd*fx/10000:0,totalBudgetWan:r?r.totalDiscUsd*fx/10000:0,death6Wan:row6.death*fx/10000,surr6Wan:row6.surr*fx/10000,annualUsd:r?r.annualDiscUsd:0,totalUsd:r?r.totalDiscUsd:0,age:age,sex:sex,fx:fx,discountPct:r?r.discountPct:0};
   }
+
+  function pfkPad2(n){return String(parseInt(n,10)).padStart(2,'0')}
+  function pfkKey(period,sex,age){return 'PFK'+pfkPad2(period)+pfkPad2(sex)+pfkPad2(age)}
+  function pfkLookup(T,name,k,idx){var arr=T&&T[name]&&T[name][k]; if(!arr||idx<0||idx>=arr.length)return 0; var v=arr[idx]; return v==null?0:Number(v)||0}
+  function pfkRound(x){return Math.floor(x+0.5)}
+  function pfkCeil(x){return Math.ceil(x-1e-12)}
+  function pfkMaxSum(age){return age<=15?30:200}
+  function pfkClampSum(sumW,age){return clamp(sumW,2,pfkMaxSum(age))}
+  function pfkCalcDiscount(sumW){var pct=2; if(sumW>=20)pct+=1; return Math.min(pct,2)}
+  function pfkAnnualDiscUsd(sex,age,sumW){
+    var T=window.PFK_TABLES, k=pfkKey(2,sex,age), rate=T&&T.GP&&T.GP[k];
+    if(!rate)return 0;
+    var annualOrig=pfkRound(sumW*rate), pct=pfkCalcDiscount(sumW);
+    return pfkRound(annualOrig*(100-pct)/100);
+  }
+  function pfkCompute(sex,age,sumW){
+    var T=window.PFK_TABLES, period=2, base=pfkKey(period,sex,age), rate=T&&T.GP&&T.GP[base];
+    if(!rate)return null;
+    sumW=pfkClampSum(sumW,age);
+    var annualOrig=pfkRound(sumW*rate), discountPct=pfkCalcDiscount(sumW), annualDisc=pfkRound(annualOrig*(100-discountPct)/100), maxY=110-age+1;
+    var bonusKind=2, bonuKey=base+String(bonusKind), Ks=[], Ms=[], Zs=[], z=0;
+    for(var yr=1;yr<=maxY;yr++){
+      var idx=yr-1, bonu=pfkLookup(T,'BONU',bonuKey,idx), K=0, M=0;
+      if(yr!==1){
+        var t1=pfkCeil(sumW*bonu), t2=pfkCeil(z*bonu/10000); K=t1+t2;
+        if(yr<maxY){var pvfbNext=pfkLookup(T,'PVFB',base,yr); M=pvfbNext?pfkRound(K*10000/pvfbNext):0;}
+      }
+      z+=M; Ks.push(K); Ms.push(M); Zs.push(z);
+    }
+    var rows=[], Kmax=Ks[maxY-1]||0;
+    for(var y=1;y<=maxY;y++){
+      var i=y-1;
+      var A=pfkRound(sumW*pfkLookup(T,'DIE',base,i));
+      var B=pfkRound(sumW*pfkLookup(T,'CV',base,i));
+      var D=pfkCeil(sumW*pfkLookup(T,'BONUDIE',bonuKey,i));
+      var E=pfkCeil(sumW*pfkLookup(T,'BONUCV',bonuKey,i));
+      var die2=pfkLookup(T,'_DIE2',base,i), pvfb0=pfkLookup(T,'PVFB0',base,y), Zi=Zs[i];
+      var X=pfkCeil(Zi*die2/10000), Y=pfkCeil(Zi*pvfb0/10000);
+      if(y>=maxY){X+=Kmax;Y+=Kmax;}
+      rows.push({year:y,age:age+y-1,paid_yr:y<=period?annualDisc:0,paid_cum:annualDisc*Math.min(y,period),death:A+D+X,surr:B+E+Y});
+    }
+    return {sumW:Math.round(sumW*10)/10,annualDiscUsd:annualDisc,totalDiscUsd:annualDisc*2,discountPct:discountPct,rows:rows};
+  }
+  function pfkFromAnnualBudget(annualBudgetWan,ageId,sexId,fxId){
+    var age=clamp(Math.round(num(ageId)),0,78), sex=($(sexId)&&$(sexId).value)||'1', fx=Math.max(num(fxId)||32,1), targetUsd=annualBudgetWan*10000/fx;
+    if(!window.PFK_TABLES||targetUsd<=0)return {sumW:0,annualBudgetWan:0,totalBudgetWan:0,death6Wan:0,surr6Wan:0,annualUsd:0,totalUsd:0,age:age,sex:sex,fx:fx,rows:[]};
+    var rate=window.PFK_TABLES.GP&&window.PFK_TABLES.GP[pfkKey(2,sex,age)];
+    if(!rate)return {sumW:0,annualBudgetWan:0,totalBudgetWan:0,death6Wan:0,surr6Wan:0,annualUsd:0,totalUsd:0,age:age,sex:sex,fx:fx,rows:[]};
+    var approx=pfkClampSum(targetUsd/(rate*0.98),age), best=approx, bestDiff=Math.abs(pfkAnnualDiscUsd(sex,age,approx)-targetUsd), candidates=[];
+    for(var d=-30;d<=30;d++){candidates.push(pfkClampSum(Math.round((approx+d*0.1)*10)/10,age));}
+    candidates.forEach(function(c){var diff=Math.abs(pfkAnnualDiscUsd(sex,age,c)-targetUsd); if(diff<bestDiff){best=c;bestDiff=diff;}});
+    var r=pfkCompute(sex,age,best), row6=r&&r.rows[5]||{death:0,surr:0};
+    return {sumW:r?r.sumW:0,annualBudgetWan:r?r.annualDiscUsd*fx/10000:0,totalBudgetWan:r?r.totalDiscUsd*fx/10000:0,death6Wan:row6.death*fx/10000,surr6Wan:row6.surr*fx/10000,annualUsd:r?r.annualDiscUsd:0,totalUsd:r?r.totalDiscUsd:0,age:age,sex:sex,fx:fx,rows:r?r.rows:[]};
+  }
   
   function go(id){
     document.querySelectorAll('.slide').forEach(s=>s.classList.toggle('active',s.id===id));
@@ -188,6 +242,7 @@
     if(id==='toolA') setToolAStep('mortgage', false);
     if(id==='toolB') setToolBStep('property', false);
     if(id==='toolD') setToolDStep('property', false);
+    if(id==='quickCalc') setQuickStep('mortgage', false);
     calcAll();
   }
 
@@ -220,6 +275,16 @@
     calcD();
     if(shouldScroll!==false) section.scrollIntoView({behavior:'smooth', block:'start'});
   }
+
+  function setQuickStep(step, shouldScroll){
+    var section=$('quickCalc'); if(!section) return;
+    var showResult=step==='result';
+    var showSafety=step==='safety';
+    section.classList.toggle('show-safety', showSafety);
+    section.classList.toggle('show-result', showResult);
+    calcQ();
+    if(shouldScroll!==false) section.scrollIntoView({behavior:'smooth', block:'start'});
+  }
   
   document.addEventListener('click',function(e){
     var g=e.target.closest('[data-go]'); if(g){go(g.dataset.go)} 
@@ -250,7 +315,7 @@
   });
 
   document.querySelectorAll('input').forEach(i=>i.addEventListener('input',function(){
-    if(i.id==='a-fx'||i.id==='b-fx'||i.id==='d-fx') i.dataset.touched='1';
+    if(i.id==='a-fx'||i.id==='b-fx'||i.id==='d-fx'||i.id==='q-fx') i.dataset.touched='1';
     if(i.id==='b-active-pct'){
       $('b-active-amount').value=Math.round(num('b-home-value')*num('b-active-pct')/100);
       $('b-drawn').value=$('b-active-amount').value;
@@ -275,13 +340,15 @@
   $('d-method-wealth').onclick=function(){dMethod='wealth';toggleMethods();calcD()};
   $('c-method-equal').onclick=function(){cMethod='equal';toggleMethods();calcC()};
   $('c-method-wealth').onclick=function(){cMethod='wealth';toggleMethods();calcC()};
+  if($('q-method-equal')) $('q-method-equal').onclick=function(){qMethod='equal';toggleMethods();calcQ()};
+  if($('q-method-wealth')) $('q-method-wealth').onclick=function(){qMethod='wealth';toggleMethods();calcQ()};
   
   if($('b-use-required')) $('b-use-required').onclick=function(){
     $('b-active-amount').value=Math.round(num('b-home-value')*num('b-active-pct')/100); 
     $('b-drawn').value=$('b-active-amount').value; 
     calcB();
   }
-  var mra=$('market-refresh-a'), mrb=$('market-refresh-b'), mrd=$('market-refresh-d'); if(mra)mra.onclick=refreshMarket; if(mrb)mrb.onclick=refreshMarket; if(mrd)mrd.onclick=refreshMarket;
+  var mra=$('market-refresh-a'), mrb=$('market-refresh-b'), mrd=$('market-refresh-d'), mrq=$('market-refresh-q'); if(mra)mra.onclick=refreshMarket; if(mrb)mrb.onclick=refreshMarket; if(mrd)mrd.onclick=refreshMarket; if(mrq)mrq.onclick=refreshMarket;
   var showA=$('a-show-result'), backA=$('a-back-input'), nextSafety=$('a-next-safety'), backMortgage=$('a-back-mortgage'), stepMortgage=$('a-step-mortgage'), stepSafety=$('a-step-safety'), stepResult=$('a-step-result');
   if(showA)showA.onclick=function(){setToolAStep('result')};
   if(backA)backA.onclick=function(){setToolAStep('safety')};
@@ -305,12 +372,20 @@
   if(dStepProperty)dStepProperty.onclick=function(){setToolDStep('property')};
   if(dStepSafety)dStepSafety.onclick=function(){setToolDStep('safety')};
   if(dStepResult)dStepResult.onclick=function(){setToolDStep('result')};
+  var qNextSafety=$('q-next-safety'), qBackMortgage=$('q-back-mortgage'), qShowResult=$('q-show-result'), qStepMortgage=$('q-step-mortgage'), qStepSafety=$('q-step-safety'), qStepResult=$('q-step-result');
+  if(qNextSafety)qNextSafety.onclick=function(){setQuickStep('safety')};
+  if(qBackMortgage)qBackMortgage.onclick=function(){setQuickStep('mortgage')};
+  if(qShowResult)qShowResult.onclick=function(){setQuickStep('result')};
+  if(qStepMortgage)qStepMortgage.onclick=function(){setQuickStep('mortgage')};
+  if(qStepSafety)qStepSafety.onclick=function(){setQuickStep('safety')};
+  if(qStepResult)qStepResult.onclick=function(){setQuickStep('result')};
 
   function toggleMethods(){
     $('a-method-equal').classList.toggle('active',aMethod==='equal'); $('a-method-wealth').classList.toggle('active',aMethod==='wealth'); document.querySelectorAll('.a-equal-only').forEach(x=>x.classList.toggle('hidden',aMethod!=='equal')); document.querySelectorAll('.a-wealth-only').forEach(x=>x.classList.toggle('hidden',aMethod!=='wealth'));
     $('b-method-equal').classList.toggle('active',bMethod==='equal'); $('b-method-wealth').classList.toggle('active',bMethod==='wealth'); document.querySelectorAll('.b-equal-only').forEach(x=>x.classList.toggle('hidden',bMethod!=='equal')); document.querySelectorAll('.b-wealth-only').forEach(x=>x.classList.toggle('hidden',bMethod!=='wealth'));
     $('d-method-equal').classList.toggle('active',dMethod==='equal'); $('d-method-wealth').classList.toggle('active',dMethod==='wealth'); document.querySelectorAll('.d-equal-only').forEach(x=>x.classList.toggle('hidden',dMethod!=='equal')); document.querySelectorAll('.d-wealth-only').forEach(x=>x.classList.toggle('hidden',dMethod!=='wealth'));
     $('c-method-equal').classList.toggle('active',cMethod==='equal'); $('c-method-wealth').classList.toggle('active',cMethod==='wealth'); document.querySelectorAll('.c-equal-only').forEach(x=>x.classList.toggle('hidden',cMethod!=='equal')); document.querySelectorAll('.c-wealth-only').forEach(x=>x.classList.toggle('hidden',cMethod!=='wealth'));
+    if($('q-method-equal')){$('q-method-equal').classList.toggle('active',qMethod==='equal'); $('q-method-wealth').classList.toggle('active',qMethod==='wealth'); document.querySelectorAll('.q-equal-only').forEach(x=>x.classList.toggle('hidden',qMethod!=='equal')); document.querySelectorAll('.q-wealth-only').forEach(x=>x.classList.toggle('hidden',qMethod!=='wealth'));}
   }
   
   function setBar(id,val){var el=$(id); if(el) el.style.width=clamp(val,0,100)+'%'}
@@ -505,6 +580,87 @@
     setText('d-client-headline',better+'：第 6 年月套利約 '+money(better==='方案二'?p2Year6:arbitrageP1)+'。');
     setText('d-client-sub','壽險年預算 '+wan1(annualPremium)+'，第 6 年身故金約 '+wan1(pfj.death6Wan)+'；可比較穩健預留與效率借款兩種路徑。');
 
+  }
+
+  function loanBalanceRows(amountWan,ratePct,years,method,maxYears){
+    var rows=[], balance=amountWan*10000, r=ratePct/100/12, yearsToUse=Math.max(Math.round(years||20),1), limit=Math.max(Math.round(maxYears||20),1);
+    if(method==='wealth'){
+      for(var wy=1;wy<=limit;wy++) rows.push({year:wy,balance:balance,annualPay:interestOnly(amountWan,ratePct)*12});
+      return rows;
+    }
+    var monthly=pay(amountWan,ratePct,yearsToUse);
+    for(var y=1;y<=limit;y++){
+      var annualPay=0;
+      for(var m=1;m<=12;m++){
+        if(balance<=0) break;
+        var int=balance*r, prin=Math.min(monthly-int,balance);
+        annualPay+=monthly; balance-=prin; if(balance<1) balance=0;
+      }
+      rows.push({year:y,balance:balance,annualPay:annualPay});
+      if(balance<=0){for(var fill=y+1;fill<=limit;fill++) rows.push({year:fill,balance:0,annualPay:0}); break;}
+    }
+    return rows;
+  }
+
+  function renderQuickPlan(prefix,plan,rows){
+    setText(prefix+'-payoff',plan.payoffYear?'第 '+plan.payoffYear+' 年':'尚未達成');
+    setText(prefix+'-invest',wan1(plan.investWan));
+    setText(prefix+'-pfk-budget',wan1(plan.pfkBudgetWan));
+    setText(prefix+'-income',money(plan.monthlyIncome));
+    if($(prefix+'-surr6')) setText(prefix+'-surr6',wan1(plan.surr6Wan));
+    if($(prefix+'-policy-cost')) setText(prefix+'-policy-cost',money(plan.policyCost));
+    var body=$(prefix+'-report');
+    if(!body) return;
+    body.innerHTML='';
+    rows.forEach(function(r){
+      var tr=document.createElement('tr');
+      if(plan.payoffYear&&r.year===plan.payoffYear) tr.className='is-payoff';
+      tr.innerHTML='<td>第 '+r.year+' 年</td><td>'+money(r.balance)+'</td><td>'+money(r.surr)+'</td><td>'+money(r.gap)+'</td><td>'+money(r.cumCash)+'</td><td>'+money(r.redeem)+'</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  function buildQuickPlan(kind,budgetWan,totalLoanWan,loanRows){
+    var investRate=kind==='p1'?0.6:0.8, pfkRate=kind==='p1'?0.4:0.2;
+    var investWan=Math.max(budgetWan*investRate,0);
+    var pfkBudgetWan=Math.max(budgetWan*pfkRate,0);
+    var annualPfkBudget=kind==='p1'?pfkBudgetWan/2:pfkBudgetWan;
+    var pfk=pfkFromAnnualBudget(annualPfkBudget,'q-ins-age','q-ins-sex','q-fx');
+    var div=estimateDividend(investWan,'q-fund','q-fx');
+    var policyRate=4, borrowedPremiumWan=kind==='p2'?pfk.annualBudgetWan:0;
+    var annualPolicyInterest=kind==='p2'?borrowedPremiumWan*10000*policyRate/100:0;
+    var rows=[], cumCash=0, payoffYear=null;
+    for(var i=0;i<20;i++){
+      var year=i+1, loan=loanRows[i]||loanRows[loanRows.length-1]||{balance:totalLoanWan*10000};
+      var pfkRow=pfk.rows[i]||{surr:0};
+      var surr=pfkRow.surr*pfk.fx;
+      var annualCash=div.monthly*12-(year>=2?annualPolicyInterest:0);
+      cumCash+=annualCash;
+      var gap=loan.balance-surr;
+      var redeem=surr+cumCash-loan.balance;
+      if(!payoffYear&&redeem>=0) payoffYear=year;
+      rows.push({year:year,balance:loan.balance,surr:surr,gap:gap,cumCash:cumCash,redeem:redeem});
+    }
+    return {kind:kind,investWan:investWan,pfkBudgetWan:pfkBudgetWan,annualPfkBudgetWan:pfk.annualBudgetWan,totalPfkBudgetWan:kind==='p1'?pfk.totalBudgetWan:pfk.annualBudgetWan*2,monthlyIncome:div.monthly,annualIncome:div.monthly*12,policyCost:annualPolicyInterest/12,surr6Wan:(pfk.rows[5]?pfk.rows[5].surr*pfk.fx/10000:0),payoffYear:payoffYear,rows:rows,pfk:pfk};
+  }
+
+  function calcQ(){
+    var currentLoan=num('q-current-loan'), totalLoan=Math.max(num('q-total-loan'),currentLoan), budget=Math.max(totalLoan-currentLoan,0);
+    var currentPay=pay(currentLoan,num('q-current-rate'),num('q-current-years'));
+    var totalPay=qMethod==='equal'?pay(totalLoan,num('q-extra-rate'),num('q-extra-years')):interestOnly(totalLoan,num('q-extra-rate'));
+    var loanRows=loanBalanceRows(totalLoan,num('q-extra-rate'),num('q-extra-years'),qMethod,20);
+    var p1=buildQuickPlan('p1',budget,totalLoan,loanRows), p2=buildQuickPlan('p2',budget,totalLoan,loanRows);
+    var best=(p1.payoffYear&&p2.payoffYear)?(p1.payoffYear<=p2.payoffYear?p1:p2):(p1.payoffYear?p1:(p2.payoffYear?p2:null));
+    var bestText=best?'第 '+best.payoffYear+' 年':'尚未達成';
+    var last=best?best.rows[best.payoffYear-1]:(p2.rows[p2.rows.length-1]||p1.rows[p1.rows.length-1]||{redeem:0});
+
+    setText('q-total-loan-show',wan(totalLoan)); setText('q-current-loan-show',wan(currentLoan)); setText('q-budget-show',wan1(budget)); setText('q-budget-live',wan1(budget));
+    setText('q-total-pay',money(totalPay)); setText('q-live-note','投入預算＝房屋價值額度 '+wan(totalLoan)+'－目前房貸 '+wan(currentLoan)+'。目前房貸月付約 '+money(currentPay)+'。');
+    setText('q-result-total-loan',wan(totalLoan)); setText('q-result-budget',wan1(budget)); setText('q-best-payoff',bestText);
+    setText('q-p1-payoff-live',p1.payoffYear?'第 '+p1.payoffYear+' 年':'尚未達成'); setText('q-p2-payoff-live',p2.payoffYear?'第 '+p2.payoffYear+' 年':'尚未達成');
+    renderQuickPlan('q-p1',p1,p1.rows); renderQuickPlan('q-p2',p2,p2.rows);
+    setText('q-payoff-gap',money(last.redeem));
+    setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，PFK保單現金價值加上累積配息約可在第 '+best.payoffYear+' 年覆蓋房貸本金餘額。':'20 年內尚未覆蓋房貸本金餘額，可提高投入額度、拉長配息累積或調整標的再試算。');
   }
 
   function calcC(){
@@ -730,6 +886,43 @@
     html+= reportSection('年度攤還明細',reportTableFrom('c-schedule',11));
     return html;
   }
+  function buildQuickReport(){
+    setQuickStep('result', false); calcQ();
+    var html=reportHeader('快速試算','用房屋價值額度自動推估投入預算，快速比較兩種配置與可能結清年度。','較早可能結清：'+reportText('q-best-payoff'));
+    html+= '<div class="print-metrics">'+[
+      reportMetric('房貸總額',reportText('q-result-total-loan')),
+      reportMetric('投入預算',reportText('q-result-budget'),'gold'),
+      reportMetric('方案一可能結清',reportText('q-p1-payoff')),
+      reportMetric('方案二可能結清',reportText('q-p2-payoff'),'good')
+    ].join('')+'</div>';
+    html+= reportSection('試算條件','<div class="print-facts">'+[
+      reportLine('目前房貸金額',reportValue('q-current-loan','萬元')),
+      reportLine('房屋價值額度',reportValue('q-total-loan','萬元')),
+      reportLine('房屋價值額度利率',reportValue('q-extra-rate','%')),
+      reportLine('本息攤還年期',reportValue('q-extra-years','年')),
+      reportLine('被保人年齡',reportValue('q-ins-age','歲')),
+      reportLine('美元匯率',reportValue('q-fx',''))
+    ].join('')+'</div>');
+    html+= reportSection('方案比較','<div class="print-card-grid">'+
+      reportCard('方案一：60% 配息，40% PFK兩年總預算',[
+        ['投入V月配息',reportText('q-p1-invest')],
+        ['PFK兩年總預算',reportText('q-p1-pfk-budget')],
+        ['預估月配息',reportText('q-p1-income')],
+        ['第6年PFK現金價值',reportText('q-p1-surr6')],
+        ['可能結清年度',reportText('q-p1-payoff')]
+      ],'')+
+      reportCard('方案二：80% 配息，20% 首年PFK',[
+        ['投入V月配息',reportText('q-p2-invest')],
+        ['PFK首年預算',reportText('q-p2-pfk-budget')],
+        ['預估月配息',reportText('q-p2-income')],
+        ['第二年保單借款月息',reportText('q-p2-policy-cost')],
+        ['可能結清年度',reportText('q-p2-payoff')]
+      ],'highlight')+'</div>');
+    html+= reportSection('方案一年度報表',reportTableFrom('q-p1-report',11).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead>'));
+    html+= reportSection('方案二年度報表',reportTableFrom('q-p2-report',11).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>本金餘額</th><th>PFK保單現金價值</th><th>貸款與現價差額</th><th>累積配息還款</th><th>可領回金額</th></tr></thead>'));
+    html+= reportNote('快速判讀',reportText('q-payoff-copy'));
+    return html;
+  }
   function prepareReport(kind){
     var root=$('print-report-root');
     if(!root){
@@ -737,7 +930,7 @@
       root.id='print-report-root';
       document.body.appendChild(root);
     }
-    var map={toolA:buildToolAReport,toolB:buildToolBReport,toolD:buildToolDReport,calculator:buildCalculatorReport};
+    var map={toolA:buildToolAReport,toolB:buildToolBReport,toolD:buildToolDReport,calculator:buildCalculatorReport,quickCalc:buildQuickReport};
     var fn=map[kind]||map[current]||map.toolA;
     root.innerHTML='<article class="print-report">'+fn()+'<footer class="print-footer">本報告為初期試算情境，實際核貸成數、融資利率、保費、配息與稅務結果，仍須以金融機構與正式文件為準。</footer></article>';
     document.body.classList.add('print-report-mode');
@@ -759,7 +952,7 @@
   }
   function fallbackCopy(text){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast();}
   function showToast(){var toast=$('copyToast'); if(!toast) return; toast.classList.add('show'); setTimeout(function(){toast.classList.remove('show')},1600);}
-  function calcAll(){if(current==='toolA'||current==='home'||current==='conceptA')calcA(); if(current==='toolB'||current==='home'||current==='conceptB')calcB(); if(current==='toolD'||current==='home'||current==='conceptD')calcD(); if(current==='calculator'||current==='home')calcC();}
+  function calcAll(){if(current==='toolA'||current==='home'||current==='conceptA')calcA(); if(current==='toolB'||current==='home'||current==='conceptB')calcB(); if(current==='toolD'||current==='home'||current==='conceptD')calcD(); if(current==='calculator'||current==='home')calcC(); if(current==='quickCalc'||current==='home')calcQ();}
 
   var ph=$('portraitHint'), pc=$('portraitClose'); if(pc){pc.onclick=function(){ph&&ph.classList.add('dismissed')}};
   var toast=document.createElement('div'); toast.id='copyToast'; toast.className='copy-toast'; toast.textContent='已成功複製規劃結論至剪貼簿'; document.body.appendChild(toast);
@@ -767,6 +960,7 @@
   var bc=$('b-copy-summary'); if(bc){bc.onclick=function(){copyToClipboard('房產現金流OS【ROUTE B 面談結論】\n判讀：'+$('b-decision').textContent+'\n結論：'+$('b-decision-copy').textContent+'\n規劃：'+$('b-judge').textContent)}}
 
   var dc=$('d-copy-summary'); if(dc){dc.onclick=function(){copyToClipboard('房產現金流OS【傳承安家】\n方案一月套利：'+(($('d-p1-net')||{}).textContent||'')+'\n方案二第6年月套利：'+(($('d-planned-net')||{}).textContent||'')+'\n方案一投入本金：'+(($('d-p1-invest')||{}).textContent||'')+'\n方案二投入本金：'+(($('d-p2-invest')||{}).textContent||''))}}
+  var qc=$('q-copy-summary'); if(qc){qc.onclick=function(){copyToClipboard('房產月收引擎【快速試算】\n房貸總額：'+(($('q-result-total-loan')||{}).textContent||'')+'\n投入預算：'+(($('q-result-budget')||{}).textContent||'')+'\n方案一可能結清：'+(($('q-p1-payoff')||{}).textContent||'')+'\n方案二可能結清：'+(($('q-p2-payoff')||{}).textContent||'')+'\n判讀：'+(($('q-payoff-copy')||{}).textContent||''))}}
 
   populateFundSelects(); syncFxFields(); updateDividendNotes();
   toggleMethods(); calcAll(); refreshMarket();

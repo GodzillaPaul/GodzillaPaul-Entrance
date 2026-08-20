@@ -374,7 +374,7 @@
   if(dStepProperty)dStepProperty.onclick=function(){setToolDStep('property')};
   if(dStepSafety)dStepSafety.onclick=function(){setToolDStep('safety')};
   if(dStepResult)dStepResult.onclick=function(){setToolDStep('result')};
-  var qNextSafety=$('q-next-safety'), qBackMortgage=$('q-back-mortgage'), qShowResult=$('q-show-result'), qStepMortgage=$('q-step-mortgage'), qStepSafety=$('q-step-safety'), qStepResult=$('q-step-result'), qBackResult=$('q-back-result');
+  var qNextSafety=$('q-next-safety'), qBackMortgage=$('q-back-mortgage'), qShowResult=$('q-show-result'), qStepMortgage=$('q-step-mortgage'), qStepSafety=$('q-step-safety'), qStepResult=$('q-step-result'), qBackResult=$('q-back-result'), qEditFromResult=$('q-edit-from-result');
   if(qNextSafety)qNextSafety.onclick=function(){setQuickStep('safety')};
   if(qBackMortgage)qBackMortgage.onclick=function(){setQuickStep('mortgage')};
   if(qShowResult)qShowResult.onclick=function(){setQuickStep('result')};
@@ -382,6 +382,7 @@
   if(qStepSafety)qStepSafety.onclick=function(){setQuickStep('safety')};
   if(qStepResult)qStepResult.onclick=function(){setQuickStep('result')};
   if(qBackResult)qBackResult.onclick=function(){setQuickStep('result')};
+  if(qEditFromResult)qEditFromResult.onclick=function(){setQuickStep('safety')};
   document.querySelectorAll('[data-q-report]').forEach(function(btn){btn.addEventListener('click',function(){showQuickReport(btn.dataset.qReport)})});
 
   function toggleMethods(){
@@ -607,8 +608,10 @@
   }
 
   function renderQuickPlan(prefix,plan,rows){
-    setText(prefix+'-payoff',plan.payoffYear?'第 '+plan.payoffYear+' 年':'尚未達成');
-    setText(prefix+'-live-payoff',plan.payoffYear?'第 '+plan.payoffYear+' 年':'尚未達成');
+    var payoffLabel=plan.payoffYear?'第 '+plan.payoffYear+' 年':'尚未達成';
+    setText(prefix+'-payoff',payoffLabel);
+    setText(prefix+'-payoff-net',payoffLabel);
+    setText(prefix+'-live-payoff',payoffLabel);
     setText(prefix+'-invest',wan1(plan.investWan));
     setText(prefix+'-pfk-budget',wan1(plan.pfkBudgetWan));
     setText(prefix+'-income',money(plan.monthlyIncome));
@@ -676,8 +679,13 @@
 
     setText('q-total-loan-show',wan(totalLoan));
     setText('q-total-pay',money(totalPay));
+    setText('q-result-total-pay',money(totalPay));
+    setText('q-safety-budget',wan(totalLoan));
+    setText('q-safety-p1-invest',wan1(p1.investWan));
+    setText('q-safety-p2-invest',wan1(p2.investWan));
+    setText('q-safety-policy',money(p2.policyCost));
     setText('q-live-note','可增貸金額 '+wan(totalLoan)+' 直接作為兩個方案的配置基準，並以 PFK 解約金是否超過剩餘房貸作為結清觀察點。');
-    setText('q-result-total-loan',wan(totalLoan)); setText('q-result-budget',wan1(budget)); setText('q-best-payoff',bestText);
+    setText('q-result-total-loan',wan(totalLoan)); setText('q-result-budget',wan1(budget)); setText('q-best-payoff',bestText); setText('q-best-payoff-strip',bestText);
     renderQuickPlan('q-p1',p1,p1.rows); renderQuickPlan('q-p2',p2,p2.rows);
     setText('q-payoff-strip-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早讓 PFK 解約金超過剩餘房貸。':'20 年內 PFK 解約金尚未超過剩餘房貸。');
     setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，PFK 解約金約可在第 '+best.payoffYear+' 年超過剩餘房貸。':'20 年內 PFK 解約金尚未超過剩餘房貸，可提高可增貸金額、拉長配息累積或調整標的再試算。');

@@ -277,6 +277,788 @@
   .quick-plan-head strong { text-align: left; }
 }
 
+/* Final Quick Check layout lock: mirror Tool A */
+#quickCalc .topline { min-height: 0; }
+#quickCalc .tool-title {
+  max-width: none;
+  margin: 0 0 8px;
+  padding: 0 0 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(18,29,25,.08);
+}
+#quickCalc .tool-title h2 {
+  margin: 0;
+  font-size: clamp(28px, 2.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+#quickCalc .tool-title p {
+  margin: 4px 0 0;
+  color: #8a94a1;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.45;
+}
+#quickCalc .tool-title p span { display: none !important; }
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .quick-mortgage-copy,
+#quickCalc.show-safety .quick-safety-copy,
+#quickCalc.show-result .quick-result-copy,
+#quickCalc.show-table .quick-table-copy { display: inline !important; }
+#quickCalc .quick-stepper,
+#quickCalc.show-result .quick-stepper,
+#quickCalc.show-table .quick-stepper {
+  width: 100%;
+  max-width: 760px;
+  margin: 4px 0 18px;
+}
+#quickCalc .step-mortgage,
+#quickCalc .step-safety,
+#quickCalc .step-result {
+  background: transparent;
+  color: #66707d;
+  box-shadow: none;
+}
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .step-mortgage,
+#quickCalc.show-safety .step-safety,
+#quickCalc.show-result .step-result,
+#quickCalc.show-table .step-result {
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(31,109,82,.16);
+}
+#quickCalc .quick-tool-layout,
+#quickCalc .quick-result-page,
+#quickCalc .quick-table-page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+#quickCalc .quick-tool-layout { display: block; }
+#quickCalc .quick-input-panel {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(18,29,25,.08);
+  box-shadow: 0 24px 60px rgba(18,29,25,.09);
+}
+#quickCalc .q-input-page { display: none; }
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .q-mortgage-page,
+#quickCalc.show-safety .q-safety-page { display: block; }
+#quickCalc .compact-subtitle { margin-top: 12px; }
+#quickCalc .a-mortgage-grid,
+#quickCalc .a-safety-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 22px;
+  align-items: start;
+}
+#quickCalc .quick-live-card {
+  position: sticky;
+  top: 22px;
+  min-height: 360px;
+  padding: 24px;
+  border-radius: 24px;
+}
+#quickCalc .quick-live-card h3 {
+  margin: 10px 0 18px;
+  color: #fff;
+  font-size: clamp(25px, 2.3vw, 34px);
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+#quickCalc .quick-live-card .live-metrics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+#quickCalc .quick-live-card .live-metrics div {
+  min-height: 74px;
+  padding: 14px 16px;
+  border-radius: 18px;
+}
+#quickCalc .quick-live-card .live-metrics b {
+  margin-top: 6px;
+  font-size: clamp(26px, 2.3vw, 36px);
+  text-align: right;
+}
+#quickCalc .quick-rule-box {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+#quickCalc .quick-rule-box div {
+  min-height: 74px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(18,29,25,.08);
+  background: linear-gradient(135deg, rgba(47,118,86,.08), rgba(156,124,93,.08));
+}
+#quickCalc .quick-rule-box b,
+#quickCalc .quick-rule-box span { display: block; }
+#quickCalc .quick-rule-box b {
+  color: #203228;
+  font-size: 15px;
+}
+#quickCalc .quick-rule-box span {
+  margin-top: 5px;
+  color: #6f7882;
+  font-size: 12px;
+  line-height: 1.45;
+}
+#quickCalc .quick-result-page,
+#quickCalc .quick-table-page {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#quickCalc.show-result .quick-tool-layout,
+#quickCalc.show-table .quick-tool-layout,
+#quickCalc.show-table .quick-result-page { display: none !important; }
+#quickCalc.show-result .quick-result-page,
+#quickCalc.show-table .quick-table-page { display: block !important; }
+#quickCalc .quick-advisor-result,
+#quickCalc .quick-table-card {
+  padding: 18px;
+  border-radius: 28px;
+}
+#quickCalc .advisor-title-row { margin-bottom: 12px; }
+#quickCalc .advisor-title-row h3 {
+  font-size: clamp(22px, 1.7vw, 28px);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+#quickCalc .quick-plans-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+#quickCalc .quick-plan-select {
+  appearance: none;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(18,29,25,.09);
+  border-radius: 22px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 16px 38px rgba(20,32,28,.06);
+}
+#quickCalc .quick-plan-select.plan-a { border-color: rgba(147,63,58,.17); }
+#quickCalc .quick-plan-select.plan-b {
+  border-color: rgba(47,118,86,.22);
+  background: linear-gradient(135deg, rgba(47,118,86,.07), rgba(255,255,255,.96) 45%);
+}
+#quickCalc .quick-plan-select .plan-head {
+  min-height: 110px;
+  padding: 18px 20px 12px;
+}
+#quickCalc .quick-plan-select .plan-head h3 {
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.28;
+}
+#quickCalc .quick-plan-select .plan-head strong {
+  min-width: 136px;
+  color: var(--green);
+  font-size: clamp(26px, 2.8vw, 44px);
+  line-height: 1;
+  text-align: right;
+}
+#quickCalc .quick-plan-select .compare-lines {
+  padding: 8px 20px 12px;
+}
+#quickCalc .quick-plan-select .compare-lines div { min-height: 30px; }
+#quickCalc .quick-plan-select .plan-footer {
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(18,29,25,.08);
+}
+#quickCalc .quick-plan-select .plan-footer span {
+  color: #7b8792;
+  font-size: 13px;
+  font-weight: 900;
+}
+#quickCalc .quick-plan-select .plan-footer b {
+  color: var(--green);
+  font-size: clamp(24px, 2.3vw, 36px);
+  line-height: 1;
+}
+#quickCalc .quick-payoff-strip {
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #07110d, #211a12);
+  color: #fff;
+}
+#quickCalc .quick-payoff-strip span {
+  color: rgba(255,255,255,.66);
+  font-size: 13px;
+  line-height: 1.55;
+}
+#quickCalc .quick-payoff-strip b {
+  color: #98d7a5;
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: 1;
+}
+#quickCalc .advisor-note {
+  margin: 12px 4px 0;
+  color: #6d7680;
+  font-size: 13px;
+  line-height: 1.6;
+}
+#quickCalc .quick-table-wrap.is-full {
+  max-height: min(430px, calc(100dvh - 390px));
+  overflow: auto;
+  border: 1px solid rgba(18,29,25,.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,.92);
+}
+#quickCalc .quick-flow-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+#quickCalc .quick-flow-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 9px 10px;
+  background: #f3f6f4;
+  color: #65707b;
+  font-weight: 900;
+  text-align: right;
+}
+#quickCalc .quick-flow-table th:first-child,
+#quickCalc .quick-flow-table td:first-child { text-align: center; }
+#quickCalc .quick-flow-table td {
+  padding: 8px 10px;
+  border-top: 1px solid rgba(18,29,25,.08);
+  color: #172029;
+  font-weight: 750;
+  text-align: right;
+}
+#quickCalc .quick-flow-table tr.is-payoff td {
+  background: rgba(47,118,86,.1);
+  color: #1f6d52;
+}
+#quickCalc .quick-flow-table .good-cell { color: #1f6d52; }
+#quickCalc .quick-flow-table .bad-cell { color: #a33a38; }
+#quickCalc .quick-table-summary {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(47,118,86,.08);
+  color: #50605a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+@media (orientation: landscape) and (max-height: 850px) {
+  #quickCalc .tool-title h2 { font-size: 34px; }
+  #quickCalc .quick-stepper { margin-bottom: 14px; }
+  #quickCalc .quick-input-panel,
+  #quickCalc .quick-advisor-result,
+  #quickCalc .quick-table-card {
+    padding: 16px;
+    border-radius: 24px;
+  }
+  #quickCalc .a-mortgage-grid,
+  #quickCalc .a-safety-grid {
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 16px;
+  }
+  #quickCalc .field { margin-bottom: 12px; }
+  #quickCalc .input-wrap input,
+  #quickCalc .input-wrap select { height: 48px; }
+  #quickCalc .quick-live-card {
+    min-height: 0;
+    padding: 20px;
+  }
+  #quickCalc .quick-live-card h3 {
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+  #quickCalc .quick-live-card .live-metrics div {
+    min-height: 64px;
+    padding: 12px 14px;
+  }
+  #quickCalc .quick-live-card .live-metrics b { font-size: 28px; }
+  #quickCalc .quick-plan-select .plan-head {
+    min-height: 92px;
+    padding: 14px 18px 10px;
+  }
+  #quickCalc .quick-plan-select .plan-head strong { font-size: 34px; }
+  #quickCalc .quick-plan-select .plan-footer {
+    min-height: 56px;
+    padding: 10px 18px 14px;
+  }
+  #quickCalc .quick-table-wrap.is-full { max-height: calc(100dvh - 330px); }
+}
+
+@media (max-width: 1180px) {
+  #quickCalc .a-mortgage-grid,
+  #quickCalc .a-safety-grid,
+  #quickCalc .quick-plans-compare { grid-template-columns: 1fr; }
+  #quickCalc .quick-live-card { position: static; }
+}
+
+@media (max-width: 760px) {
+  #quickCalc .tool-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  #quickCalc .quick-rule-box,
+  #quickCalc .baseline-strip { grid-template-columns: 1fr; }
+  #quickCalc .quick-plan-select .plan-head,
+  #quickCalc .quick-plan-select .plan-footer,
+  #quickCalc .quick-payoff-strip { grid-template-columns: 1fr; }
+  #quickCalc .quick-plan-select .plan-head strong,
+  #quickCalc .quick-plan-select .plan-footer b { text-align: left; }
+}
+
+/* Quick calculator ToolA layout transplant */
+#quickCalc .topline {
+  min-height: 0;
+}
+#quickCalc .tool-title {
+  max-width: none;
+  margin: 0 0 8px;
+  padding: 0 0 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(18,29,25,.08);
+}
+#quickCalc .tool-title h2 {
+  margin: 0;
+  font-size: clamp(28px, 2.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+#quickCalc .tool-title p {
+  margin: 4px 0 0;
+  color: #8a94a1;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.45;
+}
+#quickCalc .tool-title p span {
+  display: none !important;
+}
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .quick-mortgage-copy,
+#quickCalc.show-safety .quick-safety-copy,
+#quickCalc.show-result .quick-result-copy,
+#quickCalc.show-table .quick-table-copy {
+  display: inline !important;
+}
+#quickCalc .quick-stepper {
+  width: 100%;
+  max-width: 760px;
+  margin: 4px 0 18px;
+}
+#quickCalc.show-result .quick-stepper,
+#quickCalc.show-table .quick-stepper {
+  max-width: 760px;
+}
+#quickCalc .step-mortgage,
+#quickCalc .step-safety,
+#quickCalc .step-result {
+  background: transparent;
+  color: #66707d;
+  box-shadow: none;
+}
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .step-mortgage,
+#quickCalc.show-safety .step-safety,
+#quickCalc.show-result .step-result,
+#quickCalc.show-table .step-result {
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(31,109,82,.16);
+}
+#quickCalc .quick-tool-layout,
+#quickCalc .quick-result-page,
+#quickCalc .quick-table-page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+#quickCalc .quick-tool-layout {
+  display: block;
+}
+#quickCalc .quick-input-panel {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(18,29,25,.08);
+  box-shadow: 0 24px 60px rgba(18,29,25,.09);
+}
+#quickCalc .q-input-page {
+  display: none;
+}
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .q-mortgage-page,
+#quickCalc.show-safety .q-safety-page {
+  display: block;
+}
+#quickCalc .compact-subtitle {
+  margin-top: 12px;
+}
+#quickCalc .a-mortgage-grid,
+#quickCalc .a-safety-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 22px;
+  align-items: start;
+}
+#quickCalc .quick-live-card {
+  position: sticky;
+  top: 22px;
+  min-height: 360px;
+  padding: 24px;
+  border-radius: 24px;
+}
+#quickCalc .quick-live-card h3 {
+  margin: 10px 0 18px;
+  color: #fff;
+  font-size: clamp(25px, 2.3vw, 34px);
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+#quickCalc .quick-live-card .live-metrics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+#quickCalc .quick-live-card .live-metrics div {
+  min-height: 74px;
+  padding: 14px 16px;
+  border-radius: 18px;
+}
+#quickCalc .quick-live-card .live-metrics b {
+  margin-top: 6px;
+  font-size: clamp(26px, 2.3vw, 36px);
+  text-align: right;
+}
+#quickCalc .quick-rule-box {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+#quickCalc .quick-rule-box div {
+  min-height: 74px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(18,29,25,.08);
+  background: linear-gradient(135deg, rgba(47,118,86,.08), rgba(156,124,93,.08));
+}
+#quickCalc .quick-rule-box b,
+#quickCalc .quick-rule-box span {
+  display: block;
+}
+#quickCalc .quick-rule-box b {
+  color: #203228;
+  font-size: 15px;
+}
+#quickCalc .quick-rule-box span {
+  margin-top: 5px;
+  color: #6f7882;
+  font-size: 12px;
+  line-height: 1.45;
+}
+#quickCalc .quick-result-page,
+#quickCalc .quick-table-page {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#quickCalc.show-result .quick-tool-layout,
+#quickCalc.show-table .quick-tool-layout,
+#quickCalc.show-table .quick-result-page {
+  display: none !important;
+}
+#quickCalc.show-result .quick-result-page,
+#quickCalc.show-table .quick-table-page {
+  display: block !important;
+}
+#quickCalc .quick-advisor-result,
+#quickCalc .quick-table-card {
+  padding: 18px;
+  border-radius: 28px;
+}
+#quickCalc .advisor-title-row {
+  margin-bottom: 12px;
+}
+#quickCalc .advisor-title-row h3 {
+  font-size: clamp(22px, 1.7vw, 28px);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+#quickCalc .quick-plans-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+#quickCalc .quick-plan-select {
+  appearance: none;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(18,29,25,.09);
+  border-radius: 22px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 16px 38px rgba(20,32,28,.06);
+}
+#quickCalc .quick-plan-select.plan-a {
+  border-color: rgba(147,63,58,.17);
+}
+#quickCalc .quick-plan-select.plan-b {
+  border-color: rgba(47,118,86,.22);
+  background: linear-gradient(135deg, rgba(47,118,86,.07), rgba(255,255,255,.96) 45%);
+}
+#quickCalc .quick-plan-select .plan-head {
+  min-height: 110px;
+  padding: 18px 20px 12px;
+}
+#quickCalc .quick-plan-select .plan-head h3 {
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.28;
+}
+#quickCalc .quick-plan-select .plan-head strong {
+  min-width: 136px;
+  color: var(--green);
+  font-size: clamp(26px, 2.8vw, 44px);
+  line-height: 1;
+  text-align: right;
+}
+#quickCalc .quick-plan-select .compare-lines {
+  padding: 8px 20px 12px;
+}
+#quickCalc .quick-plan-select .compare-lines div {
+  min-height: 30px;
+}
+#quickCalc .quick-plan-select .plan-footer {
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(18,29,25,.08);
+}
+#quickCalc .quick-plan-select .plan-footer span {
+  color: #7b8792;
+  font-size: 13px;
+  font-weight: 900;
+}
+#quickCalc .quick-plan-select .plan-footer b {
+  color: var(--green);
+  font-size: clamp(24px, 2.3vw, 36px);
+  line-height: 1;
+}
+#quickCalc .quick-payoff-strip {
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #07110d, #211a12);
+  color: #fff;
+}
+#quickCalc .quick-payoff-strip span {
+  color: rgba(255,255,255,.66);
+  font-size: 13px;
+  line-height: 1.55;
+}
+#quickCalc .quick-payoff-strip b {
+  color: #98d7a5;
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: 1;
+}
+#quickCalc .advisor-note {
+  margin: 12px 4px 0;
+  color: #6d7680;
+  font-size: 13px;
+  line-height: 1.6;
+}
+#quickCalc .quick-table-wrap.is-full {
+  max-height: min(430px, calc(100dvh - 390px));
+  overflow: auto;
+  border: 1px solid rgba(18,29,25,.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,.92);
+}
+#quickCalc .quick-flow-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+#quickCalc .quick-flow-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 9px 10px;
+  background: #f3f6f4;
+  color: #65707b;
+  font-weight: 900;
+  text-align: right;
+}
+#quickCalc .quick-flow-table th:first-child,
+#quickCalc .quick-flow-table td:first-child {
+  text-align: center;
+}
+#quickCalc .quick-flow-table td {
+  padding: 8px 10px;
+  border-top: 1px solid rgba(18,29,25,.08);
+  color: #172029;
+  font-weight: 750;
+  text-align: right;
+}
+#quickCalc .quick-flow-table tr.is-payoff td {
+  background: rgba(47,118,86,.1);
+  color: #1f6d52;
+}
+#quickCalc .quick-flow-table .good-cell {
+  color: #1f6d52;
+}
+#quickCalc .quick-flow-table .bad-cell {
+  color: #a33a38;
+}
+#quickCalc .quick-table-summary {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(47,118,86,.08);
+  color: #50605a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+@media (orientation: landscape) and (max-height: 850px) {
+  #quickCalc .tool-title h2 {
+    font-size: 34px;
+  }
+  #quickCalc .quick-stepper {
+    margin-bottom: 14px;
+  }
+  #quickCalc .quick-input-panel,
+  #quickCalc .quick-advisor-result,
+  #quickCalc .quick-table-card {
+    padding: 16px;
+    border-radius: 24px;
+  }
+  #quickCalc .a-mortgage-grid,
+  #quickCalc .a-safety-grid {
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 16px;
+  }
+  #quickCalc .field {
+    margin-bottom: 12px;
+  }
+  #quickCalc .input-wrap input,
+  #quickCalc .input-wrap select {
+    height: 48px;
+  }
+  #quickCalc .quick-live-card {
+    min-height: 0;
+    padding: 20px;
+  }
+  #quickCalc .quick-live-card h3 {
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+  #quickCalc .quick-live-card .live-metrics div {
+    min-height: 64px;
+    padding: 12px 14px;
+  }
+  #quickCalc .quick-live-card .live-metrics b {
+    font-size: 28px;
+  }
+  #quickCalc .quick-plan-select .plan-head {
+    min-height: 92px;
+    padding: 14px 18px 10px;
+  }
+  #quickCalc .quick-plan-select .plan-head strong {
+    font-size: 34px;
+  }
+  #quickCalc .quick-plan-select .plan-footer {
+    min-height: 56px;
+    padding: 10px 18px 14px;
+  }
+  #quickCalc .quick-table-wrap.is-full {
+    max-height: calc(100dvh - 330px);
+  }
+}
+
+@media (max-width: 1180px) {
+  #quickCalc .a-mortgage-grid,
+  #quickCalc .a-safety-grid,
+  #quickCalc .quick-plans-compare {
+    grid-template-columns: 1fr;
+  }
+  #quickCalc .quick-live-card {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  #quickCalc .tool-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  #quickCalc .quick-rule-box,
+  #quickCalc .baseline-strip {
+    grid-template-columns: 1fr;
+  }
+  #quickCalc .quick-plan-select .plan-head,
+  #quickCalc .quick-plan-select .plan-footer,
+  #quickCalc .quick-payoff-strip {
+    grid-template-columns: 1fr;
+  }
+  #quickCalc .quick-plan-select .plan-head strong,
+  #quickCalc .quick-plan-select .plan-footer b {
+    text-align: left;
+  }
+}
+
 /* Quick calculator polish: match the mortgage pressure layout */
 #quickCalc.show-table .quick-mortgage-copy,
 #quickCalc.show-table .quick-safety-copy,
@@ -4226,4 +5008,366 @@ body {
   .quick-rule-box { grid-template-columns: 1fr; }
   .quick-plan-head { grid-template-columns: 1fr; }
   .quick-plan-head strong { text-align: left; }
+}
+
+/* Quick Check final lock: Tool A structure wins over legacy quick styles. */
+#quickCalc .topline { min-height: 0; }
+#quickCalc .tool-title {
+  max-width: none;
+  margin: 0 0 8px;
+  padding: 0 0 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid rgba(18,29,25,.08);
+}
+#quickCalc .tool-title h2 {
+  margin: 0;
+  font-size: clamp(28px, 2.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+#quickCalc .tool-title p {
+  margin: 4px 0 0;
+  color: #8a94a1;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.45;
+}
+#quickCalc .tool-title p span { display: none !important; }
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .quick-mortgage-copy,
+#quickCalc.show-safety .quick-safety-copy,
+#quickCalc.show-result .quick-result-copy,
+#quickCalc.show-table .quick-table-copy { display: inline !important; }
+#quickCalc .quick-stepper,
+#quickCalc.show-result .quick-stepper,
+#quickCalc.show-table .quick-stepper {
+  width: 100%;
+  max-width: 760px;
+  margin: 4px 0 18px;
+}
+#quickCalc .step-mortgage,
+#quickCalc .step-safety,
+#quickCalc .step-result {
+  background: transparent;
+  color: #66707d;
+  box-shadow: none;
+}
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .step-mortgage,
+#quickCalc.show-safety .step-safety,
+#quickCalc.show-result .step-result,
+#quickCalc.show-table .step-result {
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(31,109,82,.16);
+}
+#quickCalc .quick-tool-layout,
+#quickCalc .quick-result-page,
+#quickCalc .quick-table-page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+#quickCalc .quick-tool-layout { display: block; }
+#quickCalc .quick-input-panel {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(18,29,25,.08);
+  box-shadow: 0 24px 60px rgba(18,29,25,.09);
+}
+#quickCalc .q-input-page { display: none; }
+#quickCalc:not(.show-safety):not(.show-result):not(.show-table) .q-mortgage-page,
+#quickCalc.show-safety .q-safety-page { display: block; }
+#quickCalc .compact-subtitle { margin-top: 12px; }
+#quickCalc .a-mortgage-grid,
+#quickCalc .a-safety-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 22px;
+  align-items: start;
+}
+#quickCalc .quick-live-card {
+  position: sticky;
+  top: 22px;
+  min-height: 360px;
+  padding: 24px;
+  border-radius: 24px;
+}
+#quickCalc .quick-live-card h3 {
+  margin: 10px 0 18px;
+  color: #fff;
+  font-size: clamp(25px, 2.3vw, 34px);
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+#quickCalc .quick-live-card .live-metrics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+#quickCalc .quick-live-card .live-metrics div {
+  min-height: 74px;
+  padding: 14px 16px;
+  border-radius: 18px;
+}
+#quickCalc .quick-live-card .live-metrics b {
+  margin-top: 6px;
+  font-size: clamp(26px, 2.3vw, 36px);
+  text-align: right;
+}
+#quickCalc .quick-rule-box {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+#quickCalc .quick-rule-box div {
+  min-height: 74px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(18,29,25,.08);
+  background: linear-gradient(135deg, rgba(47,118,86,.08), rgba(156,124,93,.08));
+}
+#quickCalc .quick-rule-box b,
+#quickCalc .quick-rule-box span { display: block; }
+#quickCalc .quick-rule-box b {
+  color: #203228;
+  font-size: 15px;
+}
+#quickCalc .quick-rule-box span {
+  margin-top: 5px;
+  color: #6f7882;
+  font-size: 12px;
+  line-height: 1.45;
+}
+#quickCalc .quick-result-page,
+#quickCalc .quick-table-page {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#quickCalc.show-result .quick-tool-layout,
+#quickCalc.show-table .quick-tool-layout,
+#quickCalc.show-table .quick-result-page { display: none !important; }
+#quickCalc.show-result .quick-result-page,
+#quickCalc.show-table .quick-table-page { display: block !important; }
+#quickCalc .quick-advisor-result,
+#quickCalc .quick-table-card {
+  padding: 18px;
+  border-radius: 28px;
+}
+#quickCalc .advisor-title-row { margin-bottom: 12px; }
+#quickCalc .advisor-title-row h3 {
+  font-size: clamp(22px, 1.7vw, 28px);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+#quickCalc .quick-plans-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+#quickCalc .quick-plan-select {
+  appearance: none;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(18,29,25,.09);
+  border-radius: 22px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 16px 38px rgba(20,32,28,.06);
+}
+#quickCalc .quick-plan-select.plan-a { border-color: rgba(147,63,58,.17); }
+#quickCalc .quick-plan-select.plan-b {
+  border-color: rgba(47,118,86,.22);
+  background: linear-gradient(135deg, rgba(47,118,86,.07), rgba(255,255,255,.96) 45%);
+}
+#quickCalc .quick-plan-select .plan-head {
+  min-height: 110px;
+  padding: 18px 20px 12px;
+}
+#quickCalc .quick-plan-select .plan-head h3 {
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.28;
+}
+#quickCalc .quick-plan-select .plan-head strong {
+  min-width: 136px;
+  color: var(--green);
+  font-size: clamp(26px, 2.8vw, 44px);
+  line-height: 1;
+  text-align: right;
+}
+#quickCalc .quick-plan-select .compare-lines {
+  padding: 8px 20px 12px;
+}
+#quickCalc .quick-plan-select .compare-lines div { min-height: 30px; }
+#quickCalc .quick-plan-select .plan-footer {
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(18,29,25,.08);
+}
+#quickCalc .quick-plan-select .plan-footer span {
+  color: #7b8792;
+  font-size: 13px;
+  font-weight: 900;
+}
+#quickCalc .quick-plan-select .plan-footer b {
+  color: var(--green);
+  font-size: clamp(24px, 2.3vw, 36px);
+  line-height: 1;
+}
+#quickCalc .quick-payoff-strip {
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #07110d, #211a12);
+  color: #fff;
+}
+#quickCalc .quick-payoff-strip span {
+  color: rgba(255,255,255,.66);
+  font-size: 13px;
+  line-height: 1.55;
+}
+#quickCalc .quick-payoff-strip b {
+  color: #98d7a5;
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: 1;
+}
+#quickCalc .advisor-note {
+  margin: 12px 4px 0;
+  color: #6d7680;
+  font-size: 13px;
+  line-height: 1.6;
+}
+#quickCalc .quick-table-wrap.is-full {
+  max-height: min(430px, calc(100dvh - 390px));
+  overflow: auto;
+  border: 1px solid rgba(18,29,25,.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,.92);
+}
+#quickCalc .quick-flow-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+#quickCalc .quick-flow-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 9px 10px;
+  background: #f3f6f4;
+  color: #65707b;
+  font-weight: 900;
+  text-align: right;
+}
+#quickCalc .quick-flow-table th:first-child,
+#quickCalc .quick-flow-table td:first-child { text-align: center; }
+#quickCalc .quick-flow-table td {
+  padding: 8px 10px;
+  border-top: 1px solid rgba(18,29,25,.08);
+  color: #172029;
+  font-weight: 750;
+  text-align: right;
+}
+#quickCalc .quick-flow-table tr.is-payoff td {
+  background: rgba(47,118,86,.1);
+  color: #1f6d52;
+}
+#quickCalc .quick-flow-table .good-cell { color: #1f6d52; }
+#quickCalc .quick-flow-table .bad-cell { color: #a33a38; }
+#quickCalc .quick-table-summary {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(47,118,86,.08);
+  color: #50605a;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+@media (orientation: landscape) and (max-height: 850px) {
+  #quickCalc .tool-title h2 { font-size: 34px; }
+  #quickCalc .quick-stepper { margin-bottom: 14px; }
+  #quickCalc .quick-input-panel,
+  #quickCalc .quick-advisor-result,
+  #quickCalc .quick-table-card {
+    padding: 16px;
+    border-radius: 24px;
+  }
+  #quickCalc .a-mortgage-grid,
+  #quickCalc .a-safety-grid {
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 16px;
+  }
+  #quickCalc .field { margin-bottom: 12px; }
+  #quickCalc .input-wrap input,
+  #quickCalc .input-wrap select { height: 48px; }
+  #quickCalc .quick-live-card {
+    min-height: 0;
+    padding: 20px;
+  }
+  #quickCalc .quick-live-card h3 {
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+  #quickCalc .quick-live-card .live-metrics div {
+    min-height: 64px;
+    padding: 12px 14px;
+  }
+  #quickCalc .quick-live-card .live-metrics b { font-size: 28px; }
+  #quickCalc .quick-plan-select .plan-head {
+    min-height: 92px;
+    padding: 14px 18px 10px;
+  }
+  #quickCalc .quick-plan-select .plan-head strong { font-size: 34px; }
+  #quickCalc .quick-plan-select .plan-footer {
+    min-height: 56px;
+    padding: 10px 18px 14px;
+  }
+  #quickCalc .quick-table-wrap.is-full { max-height: calc(100dvh - 330px); }
+}
+
+@media (max-width: 1180px) {
+  #quickCalc .a-mortgage-grid,
+  #quickCalc .a-safety-grid,
+  #quickCalc .quick-plans-compare { grid-template-columns: 1fr; }
+  #quickCalc .quick-live-card { position: static; }
+}
+
+@media (max-width: 760px) {
+  #quickCalc .tool-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  #quickCalc .quick-rule-box,
+  #quickCalc .baseline-strip { grid-template-columns: 1fr; }
+  #quickCalc .quick-plan-select .plan-head,
+  #quickCalc .quick-plan-select .plan-footer,
+  #quickCalc .quick-payoff-strip { grid-template-columns: 1fr; }
+  #quickCalc .quick-plan-select .plan-head strong,
+  #quickCalc .quick-plan-select .plan-footer b { text-align: left; }
 }

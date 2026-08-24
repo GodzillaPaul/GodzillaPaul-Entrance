@@ -1,0 +1,88 @@
+.welcome-main{
+  font-size:72px !important;
+  line-height:1 !important;
+  letter-spacing:-1.4px !important;
+  max-width:1000px;
+  margin:0 auto 12px !important;
+}
+.welcome-sub{
+  order:-1;
+  display:block !important;
+  background:none !important;
+  border:none !important;
+  padding:0 !important;
+  margin:0 0 20px !important;
+  color:var(--app-gold) !important;
+  font-size:18px !important;
+  letter-spacing:4px !important;
+  font-weight:900 !important;
+}
+.welcome-desc{
+  max-width:920px;
+  margin:0 auto 34px !important;
+  font-size:18px !important;
+}
+.app-choice-card{
+  min-height:190px !important;
+  padding:26px 22px 22px !important;
+}
+.choice-title{
+  font-size:28px !important;
+  margin-bottom:12px !important;
+}
+.choice-desc{
+  font-size:15px !important;
+  line-height:1.85 !important;
+}
+.hero-cta{
+  min-width:320px !important;
+  padding:20px 34px !important;
+}
+
+.breakdown-section, .compare-table{
+  background:
+    radial-gradient(circle at 100% 0%, rgba(115,184,255,.10), transparent 24%),
+    linear-gradient(180deg, rgba(255,255,255,.82), rgba(247,250,255,.98)) !important;
+}
+.breakdown-item{
+  margin-bottom:12px;
+  padding:20px 18px !important;
+  background:rgba(255,255,255,.56);
+  border:1px solid rgba(220,231,255,.96);
+  border-radius:22px;
+  box-shadow:0 10px 24px rgba(33,74,146,.05);
+}
+.breakdown-item:last-child{ margin-bottom:0; }
+.breakdown-name{
+  font-size:20px !important;
+  margin-bottom:8px;
+}
+.breakdown-amt{
+  font-size:30px !important;
+}
+
+.compare-line{
+  margin-bottom:14px;
+  padding:16px 0 !important;
+}
+.compare-item-name{
+  display:flex;
+  align-items:center;
+  min-height:100%;
+  font-size:20px !important;
+}
+.compare-card{
+  box-shadow:0 10px 24px rgba(33,74,146,.05);
+}
+.compare-card.before{
+  background:linear-gradient(180deg, rgba(255,245,244,.95), rgba(255,239,237,.98)) !important;
+}
+.compare-card.after{
+  background:linear-gradient(180deg, rgba(244,248,255,.95), rgba(238,244,255,.98)) !important;
+}
+.compare-money{
+  font-size:30px !important;
+}
+.compare-detail{
+  white-space:pre-line;
+}

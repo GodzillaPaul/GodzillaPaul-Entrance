@@ -292,11 +292,90 @@ const CLX_RATES = {
       48:435,49:450,50:470}
 };
 
+const CLZ_RATES = {
+  10:{18:420,19:430,20:439,21:450,22:461,23:472,24:483,25:494,26:504,27:515,
+      28:526,29:537,30:548,31:562,32:576,33:590,34:604,35:618,36:632,37:646,
+      38:660,39:674,40:688,41:705,42:721,43:738,44:755,45:772,46:788,47:805,
+      48:822,49:838,50:855,51:888,52:922,53:955,54:988,55:1022,56:1055,
+      57:1088,58:1121,59:1155,60:1188},
+  20:{18:222,19:228,20:233,21:239,22:246,23:252,24:258,25:265,26:271,27:277,
+      28:283,29:290,30:296,31:306,32:315,33:325,34:334,35:344,36:354,37:363,
+      38:373,39:382,40:392,41:412,42:433,43:453,44:473,45:494,46:514,47:534,
+      48:554,49:575,50:595}
+};
+
+const CALC_PRODUCTS = {
+  CLX:{
+    chip:'CLX 官方費率・女性專屬', label:'女性特定癌症加碼', summary:'乳癌、子宮頸癌等女性11項',
+    disease:'紅斑性狼瘡腎病變／類風濕關節炎，保額 10%', surgery:'尿失禁、骨盆底等女性 14 項，保額 2%',
+    source:'＊依富邦人壽 CLX 官方費率表（女性），實際保費以核保結果為準。保險年齡：足歲餘數超過6個月加計1歲。投保年齡：10年繳18～60歲，20年繳18～50歲。',
+    kicker:'CLX｜女性專屬',
+    cancers:[['C43','皮膚惡性黑色素瘤'],['C44','皮膚之其他及未明示惡性腫瘤'],['C50','乳房惡性腫瘤'],['C51','外陰惡性腫瘤'],['C52','陰道惡性腫瘤'],['C53','子宮頸惡性腫瘤'],['C54','子宮體惡性腫瘤'],['C55','未明示部位子宮惡性腫瘤'],['C56','卵巢惡性腫瘤'],['C57','其他及未明示女性生殖器官惡性腫瘤'],['C58','胎盤惡性腫瘤']]
+  },
+  CLZ:{
+    chip:'CLZ 官方費率・男性專屬', label:'男性特定癌症加碼', summary:'攝護腺、大腸等男性9項',
+    disease:'主動脈手術／嚴重肝硬化，保額 10%，第 2 年起', surgery:'攝護腺等男性 8 項手術，保額 2%，限一次',
+    source:'＊依富邦人壽 CLZ 官方費率表（男性），實際保費以核保結果為準。保險年齡：足歲餘數超過6個月加計1歲。投保年齡：10年繳18～60歲，20年繳18～50歲。',
+    kicker:'CLZ｜男性專屬',
+    cancers:[['C18','結腸惡性腫瘤'],['C19','直腸乙狀結腸連接處惡性腫瘤'],['C20','直腸惡性腫瘤'],['C21','肛門及肛門管惡性腫瘤'],['C60','陰莖惡性腫瘤'],['C61','攝護腺惡性腫瘤'],['C62','睪丸惡性腫瘤'],['C63','其他及未明示男性生殖器官惡性腫瘤'],['C67','膀胱惡性腫瘤']]
+  }
+};
+
 const FREQ_FACTOR = {annual:1, semi:0.52, quarter:0.262, month:0.088};
 const FREQ_LABEL  = {annual:'年繳', semi:'半年繳每期', quarter:'季繳每期', month:'月繳每期'};
 const FREQ_TIMES  = {annual:1, semi:2, quarter:4, month:12};
 
-const _cc = {per:10, freq:'annual'};
+const _cc = {product:'CLX', per:10, freq:'annual'};
+
+function setCalcProduct(product){
+  if(!CALC_PRODUCTS[product]) return;
+  _cc.product = product;
+  const data = CALC_PRODUCTS[product];
+  document.querySelectorAll('.cc-product-btn').forEach(btn => {
+    const active = btn.dataset.product === product;
+    btn.classList.toggle('on', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+  const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+  setText('cc-product-chip', data.chip);
+  setText('cc-specific-prefix', product === 'CLX' ? '女性特定癌症最高：' : '男性特定癌症最高：');
+  setText('cc-specific-label', data.label);
+  setText('cc-disease-note', data.disease);
+  setText('cc-surgery-note', data.surgery);
+  setText('cc-source-note', data.source);
+  const specificNote = document.getElementById('cc-specific-note');
+  if(specificNote) specificNote.innerHTML = `${data.summary}，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">—</span> 萬`;
+  const payWrap = document.getElementById('cc-pay-discount-wrap');
+  if(payWrap) payWrap.style.display = product === 'CLX' ? '' : 'none';
+  const listBtn = document.querySelector('.cc-cancer-list-btn');
+  if(listBtn) listBtn.textContent = `查看完整 ${data.cancers.length} 項`;
+  closeCancerList();
+  clzCalc();
+}
+
+function openCancerList(){
+  const data = CALC_PRODUCTS[_cc.product];
+  const modal = document.getElementById('cc-cancer-modal');
+  const grid = document.getElementById('cc-cancer-grid');
+  if(!modal || !grid) return;
+  document.getElementById('cc-cancer-kicker').textContent = data.kicker;
+  document.getElementById('cc-cancer-title').textContent = `多 50% 的 ${data.cancers.length} 項特定癌症`;
+  grid.replaceChildren(...data.cancers.map(([code,name]) => {
+    const item = document.createElement('div');
+    item.className = 'cc-cancer-item';
+    const badge = document.createElement('b'); badge.textContent = code;
+    const label = document.createElement('span'); label.textContent = name;
+    item.append(badge,label);
+    return item;
+  }));
+  modal.hidden = false;
+  modal.querySelector('.cc-cancer-close')?.focus();
+}
+
+function closeCancerList(){
+  const modal = document.getElementById('cc-cancer-modal');
+  if(modal) modal.hidden = true;
+}
 
 function clzSet(key, val, btn){
   _cc[key] = val;
@@ -383,7 +462,8 @@ function clzCalc(){
 
   const per = _cc.per;
   const freq = _cc.freq;
-  const rate = CLX_RATES[per] && CLX_RATES[per][age];
+  const rateTable = _cc.product === 'CLX' ? CLX_RATES : CLZ_RATES;
+  const rate = rateTable[per] && rateTable[per][age];
   if(!rate) return;
 
   const cov = parseInt(document.getElementById('cc-cov-num').value) || 100;
@@ -393,7 +473,7 @@ function clzCalc(){
   const total = annual * per;
   const maturity = Math.round(total * 1.06);
   const hasDisc = document.getElementById('cc-discount').checked;
-  const hasPayDisc = document.getElementById('cc-pay-discount')?.checked && _cc.freq === 'annual';
+  const hasPayDisc = _cc.product === 'CLX' && document.getElementById('cc-pay-discount')?.checked && _cc.freq === 'annual';
   const discFactor = (hasDisc ? 0.99 : 1) * (hasPayDisc ? 0.99 : 1);
   const discounted = Math.round(annual * discFactor);
 
@@ -410,6 +490,9 @@ function clzCalc(){
   setText('cc-maturity', fmtMoney(maturity));
   setText('cc-cov-display', cov);
   setText('cc-specific-display', fmtWan(cov * 1.5));
+  const productData = CALC_PRODUCTS[_cc.product];
+  const specificNote = document.getElementById('cc-specific-note');
+  if(specificNote) specificNote.innerHTML = `${productData.summary}，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">${fmtWan(cov * 1.5)}</span> 萬`;
 
   const freqCol = document.getElementById('cc-freq-col');
   if(freqCol){
@@ -424,7 +507,7 @@ function clzCalc(){
 
   const discCol = document.getElementById('cc-disc-col');
   if(discCol){
-    if(hasDisc){
+    if(hasDisc || hasPayDisc){
       discCol.style.display = '';
       setText('cc-discounted', fmtMoney(discounted));
     } else {
@@ -442,7 +525,7 @@ function clzCalc(){
   setText('b-maturity2', (maturity/10000).toFixed(1).replace(/\.0$/,''));
 
   setText('cc-sales-line',
-    `以基本保額 ${fmtWan(cov)} 萬規劃，首次重度癌症可準備 ${fmtWan(cov)} 萬；若屬女性特定癌症，最高可達 ${fmtWan(cov * 1.5)} 萬。年繳約 ${fmtMoney(annual)} 元，等於每月約 ${fmtMoney(monthly)} 元。`
+    `以基本保額 ${fmtWan(cov)} 萬規劃，首次重度癌症可準備 ${fmtWan(cov)} 萬；若屬${_cc.product === 'CLX' ? '女性' : '男性'}特定癌症，最高可達 ${fmtWan(cov * 1.5)} 萬。年繳約 ${fmtMoney(annual)} 元，等於每月約 ${fmtMoney(monthly)} 元。`
   );
 }
 

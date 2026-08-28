@@ -891,3 +891,32 @@ html:not(.scroll-mode):not(.grid-mode) .slide{width:100%;height:100%;}
 }
 .p10-image-slide{padding:0!important;background:#fff!important;overflow:hidden!important;}
 .p10-image-slide>.p10-timeline-image{display:block;width:100%;height:100%;object-fit:contain;}
+
+/* Slide 14 · shared CLX / CLZ switch and full cancer list */
+.cc-product-switch{display:inline-flex;align-items:center;padding:.18em;background:rgba(255,255,255,.82);border:1px solid rgba(0,93,142,.15);border-radius:999px;box-shadow:0 6px 18px rgba(1,72,101,.08)}
+.cc-product-btn{appearance:none;border:0;background:transparent;color:#587383;border-radius:999px;padding:.34em .82em;font:inherit;font-size:.75em;font-weight:900;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
+.cc-product-btn.on{background:linear-gradient(135deg,var(--fubon-blue),#005d8e);color:#fff;box-shadow:0 4px 12px rgba(0,93,142,.25)}
+.cc-product-btn:focus-visible,.cc-cancer-list-btn:focus-visible,.cc-cancer-close:focus-visible{outline:3px solid rgba(0,147,193,.35);outline-offset:2px}
+.cc-cancer-list-btn{position:relative;z-index:2;align-self:flex-start;margin-top:.42em;border:1px solid rgba(212,48,80,.24);background:rgba(255,255,255,.72);color:#b92845;border-radius:999px;padding:.27em .72em;font:inherit;font-size:.66em;font-weight:900;cursor:pointer}
+.cc-cancer-list-btn:hover{background:#fff;border-color:rgba(212,48,80,.42)}
+.cc-cancer-modal[hidden]{display:none}
+.cc-cancer-modal{position:absolute;inset:0;z-index:80;display:grid;place-items:center;padding:3.2em;background:rgba(7,24,39,.68);backdrop-filter:blur(9px)}
+.cc-cancer-dialog{position:relative;width:min(61em,100%);max-height:calc(100% - 1.2em);overflow:auto;background:linear-gradient(155deg,#fff,#f3fafc);border:1px solid rgba(255,255,255,.85);border-radius:1.35em;padding:1.45em 1.65em 1.25em;box-shadow:0 32px 90px rgba(0,0,0,.3)}
+.cc-cancer-close{position:absolute;right:.8em;top:.7em;width:1.75em;height:1.75em;border:0;border-radius:50%;background:#e8f2f6;color:#274858;font-size:1.25em;font-weight:900;line-height:1;cursor:pointer}
+.cc-cancer-kicker{color:var(--fubon-blue);font-size:.74em;font-weight:950;letter-spacing:.12em}
+.cc-cancer-dialog h3{margin:.18em 2em .22em 0;font-size:1.65em;color:#102b3b;line-height:1.18}
+.cc-cancer-dialog>p{margin:0 0 .8em;color:#55707f;font-size:.82em;font-weight:750;line-height:1.55}
+.cc-cancer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45em}
+.cc-cancer-item{display:grid;grid-template-columns:3.5em 1fr;align-items:center;gap:.55em;background:#fff;border:1px solid rgba(0,93,142,.12);border-radius:.72em;padding:.48em .62em;box-shadow:0 5px 14px rgba(1,72,101,.05)}
+.cc-cancer-item b{display:inline-flex;align-items:center;justify-content:center;border-radius:.45em;background:rgba(0,147,193,.11);color:#006f96;font-family:var(--font-en);font-size:.78em;padding:.35em .42em}
+.cc-cancer-item span{color:#294758;font-size:.78em;font-weight:850;line-height:1.28}
+.cc-cancer-dialog>small{display:block;margin-top:.72em;color:#78909c;font-size:.66em;font-weight:750}
+@media(max-width:900px){.cc-top{flex-wrap:wrap}.cc-chip{order:3}.cc-product-switch{margin-left:auto}.cc-cancer-modal{padding:1.1em}.cc-cancer-dialog{padding:1.1em}.cc-cancer-grid{grid-template-columns:1fr}}
+@media(max-width:900px){
+  html.scroll-mode .clz-calc-slide{height:auto!important;min-height:0!important;overflow:visible!important;padding:1.25em 1em 4em!important}
+  html.scroll-mode .clz-calc-slide::before{display:none}
+  html.scroll-mode .clz-calc-slide .cc-body{grid-template-columns:1fr;height:auto}
+  html.scroll-mode .clz-calc-slide .cc-hero-row{grid-template-columns:1fr}
+  html.scroll-mode .clz-calc-slide .cc-bene-grid{grid-template-columns:1fr}
+  html.scroll-mode .clz-calc-slide .cc-card.green{grid-column:auto}
+}

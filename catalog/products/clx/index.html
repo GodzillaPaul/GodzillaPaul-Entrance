@@ -389,7 +389,11 @@ requestAnimationFrame(triggerActiveChart);
 <section class="slide clz-calc-slide">
 <div class="cc-top">
   <h2>保費試算</h2>
-  <span class="cc-chip">CLX 官方費率・女性專屬</span>
+  <div class="cc-product-switch" role="group" aria-label="切換試算商品">
+    <button type="button" class="cc-product-btn on" data-product="CLX" onclick="setCalcProduct('CLX')">女性 CLX</button>
+    <button type="button" class="cc-product-btn" data-product="CLZ" onclick="setCalcProduct('CLZ')">男性 CLZ</button>
+  </div>
+  <span class="cc-chip" id="cc-product-chip">CLX 官方費率・女性專屬</span>
 </div>
 
 <div class="cc-body">
@@ -424,7 +428,7 @@ requestAnimationFrame(triggerActiveChart);
           <span>萬</span>
         </div>
         <div class="cc-age-tag vis" style="background:rgba(0,165,155,.11);color:#00897b;display:block!important;margin-top:.3em;">
-          女性特定癌症最高：<span id="cc-specific-display">150</span> 萬
+          <span id="cc-specific-prefix">女性特定癌症最高：</span><span id="cc-specific-display">150</span> 萬
         </div>
         <span id="cc-cov-display" style="display:none">100</span>
       </div>
@@ -452,7 +456,7 @@ requestAnimationFrame(triggerActiveChart);
           <input type="checkbox" id="cc-discount" onchange="clzCalc()">
           <span>健康管理折扣（每年健康檢查享續年度 1% 折扣）</span>
         </label>
-        <label class="cc-chk-label" style="margin-top:.35em;">
+        <label class="cc-chk-label" id="cc-pay-discount-wrap" style="margin-top:.35em;">
           <input type="checkbox" id="cc-pay-discount" checked onchange="clzCalc()">
           <span>繳費方式折扣（年繳 −1%，預設勾選）</span>
         </label>
@@ -520,8 +524,9 @@ requestAnimationFrame(triggerActiveChart);
 
         <div class="cc-card red2">
           <div>
-            <div class="cc-card-label">女性特定癌症加碼</div>
-            <div class="cc-card-note">乳癌、子宮頸癌等11項，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">—</span> 萬</div>
+            <div class="cc-card-label" id="cc-specific-label">女性特定癌症加碼</div>
+            <div class="cc-card-note" id="cc-specific-note">乳癌、子宮頸癌等11項，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">—</span> 萬</div>
+            <button type="button" class="cc-cancer-list-btn" onclick="openCancerList()">查看完整 11 項</button>
           </div>
           <div class="cc-card-bottom">
             <div>
@@ -547,7 +552,7 @@ requestAnimationFrame(triggerActiveChart);
         <div class="cc-card teal">
           <div>
             <div class="cc-card-label">特定傷病保險金</div>
-            <div class="cc-card-note">紅斑性狼瘡腎病變／類風濕關節炎，保額 10%</div>
+            <div class="cc-card-note" id="cc-disease-note">紅斑性狼瘡腎病變／類風濕關節炎，保額 10%</div>
           </div>
           <div class="cc-card-bottom">
             <div>
@@ -560,7 +565,7 @@ requestAnimationFrame(triggerActiveChart);
         <div class="cc-card blue">
           <div>
             <div class="cc-card-label">特定手術保險金</div>
-            <div class="cc-card-note">尿失禁、骨盆底等女性 14 項，保額 2%</div>
+            <div class="cc-card-note" id="cc-surgery-note">尿失禁、骨盆底等女性 14 項，保額 2%</div>
           </div>
           <div class="cc-card-bottom">
             <div>
@@ -583,13 +588,23 @@ requestAnimationFrame(triggerActiveChart);
       </div>
     </div>
 
-    <div class="cc-note-s">
+    <div class="cc-note-s" id="cc-source-note">
       ＊依富邦人壽 CLX 官方費率表（女性），實際保費以核保結果為準。保險年齡：足歲餘數超過6個月加計1歲。投保年齡：10年繳18～60歲，20年繳18～50歲。
     </div>
     <!-- JS compat: hidden IDs -->
     <span id="b-maturity2" style="display:none"></span>
   </div>
 
+</div>
+<div class="cc-cancer-modal" id="cc-cancer-modal" hidden>
+  <div class="cc-cancer-dialog" role="dialog" aria-modal="true" aria-labelledby="cc-cancer-title">
+    <button type="button" class="cc-cancer-close" onclick="closeCancerList()" aria-label="關閉完整清單">×</button>
+    <div class="cc-cancer-kicker" id="cc-cancer-kicker">CLX｜女性專屬</div>
+    <h3 id="cc-cancer-title">多 50% 的 11 項特定癌症</h3>
+    <p>第 6 保單年度起，首次罹患下列癌症（重度），除基本保額外再給付 50% 基本保額。</p>
+    <div class="cc-cancer-grid" id="cc-cancer-grid"></div>
+    <small>正式認定仍以保單條款與 ICD-10-CM 編碼為準。</small>
+  </div>
 </div>
 <div class="slide-pg">14 / 14</div>
 </section>

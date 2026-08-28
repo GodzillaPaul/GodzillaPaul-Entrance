@@ -292,10 +292,82 @@ const CLZ_RATES = {
       38:373,39:382,40:392,41:412,42:433,43:453,44:473,45:494,46:514,47:534,
       48:554,49:575,50:595}
 };
+const CLX_RATES = {
+  10:{18:435,19:440,20:445,21:450,22:455,23:460,24:465,25:470,26:480,27:490,
+      28:500,29:510,30:515,31:525,32:535,33:545,34:555,35:565,36:575,37:580,
+      38:590,39:600,40:610,41:620,42:630,43:640,44:650,45:660,46:670,47:680,
+      48:690,49:700,50:710,51:720,52:730,53:740,54:755,55:765,56:780,57:795,
+      58:825,59:845,60:880},
+  20:{18:230,19:235,20:240,21:245,22:250,23:255,24:260,25:265,26:270,27:275,
+      28:280,29:285,30:290,31:295,32:300,33:310,34:315,35:325,36:330,37:335,
+      38:345,39:350,40:355,41:365,42:370,43:380,44:390,45:400,46:410,47:420,
+      48:435,49:450,50:470}
+};
+const CALC_PRODUCTS = {
+  CLX:{
+    chip:'CLX 官方費率・女性專屬', label:'女性特定癌症加碼', summary:'乳癌、子宮頸癌等女性11項',
+    disease:'紅斑性狼瘡腎病變／類風濕關節炎，保額 10%', surgery:'尿失禁、骨盆底等女性 14 項，保額 2%',
+    source:'＊依富邦人壽 CLX 官方費率表（女性），實際保費以核保結果為準。保險年齡：足歲餘數超過6個月加計1歲。投保年齡：10年繳18～60歲，20年繳18～50歲。',
+    kicker:'CLX｜女性專屬',
+    cancers:[['C43','皮膚惡性黑色素瘤'],['C44','皮膚之其他及未明示惡性腫瘤'],['C50','乳房惡性腫瘤'],['C51','外陰惡性腫瘤'],['C52','陰道惡性腫瘤'],['C53','子宮頸惡性腫瘤'],['C54','子宮體惡性腫瘤'],['C55','未明示部位子宮惡性腫瘤'],['C56','卵巢惡性腫瘤'],['C57','其他及未明示女性生殖器官惡性腫瘤'],['C58','胎盤惡性腫瘤']]
+  },
+  CLZ:{
+    chip:'CLZ 官方費率・男性專屬', label:'男性特定癌症加碼', summary:'攝護腺、大腸等男性9項',
+    disease:'主動脈手術／嚴重肝硬化，保額 10%，第 2 年起', surgery:'攝護腺等男性 8 項手術，保額 2%，限一次',
+    source:'＊依富邦人壽 CLZ 官方費率表（男性），實際保費以核保結果為準。保險年齡：足歲餘數超過6個月加計1歲。投保年齡：10年繳18～60歲，20年繳18～50歲。',
+    kicker:'CLZ｜男性專屬',
+    cancers:[['C18','結腸惡性腫瘤'],['C19','直腸乙狀結腸連接處惡性腫瘤'],['C20','直腸惡性腫瘤'],['C21','肛門及肛門管惡性腫瘤'],['C60','陰莖惡性腫瘤'],['C61','攝護腺惡性腫瘤'],['C62','睪丸惡性腫瘤'],['C63','其他及未明示男性生殖器官惡性腫瘤'],['C67','膀胱惡性腫瘤']]
+  }
+};
 const FREQ_FACTOR = {annual:1,semi:0.52,quarter:0.262,month:0.088};
 const FREQ_LABEL  = {annual:'年繳',semi:'半年繳',quarter:'季繳',month:'月繳'};
 const FREQ_TIMES  = {annual:1,semi:2,quarter:4,month:12};
-const _cc = {per:10,freq:'annual'};
+const _cc = {product:'CLZ',per:10,freq:'annual'};
+
+function setCalcProduct(product){
+  if(!CALC_PRODUCTS[product]) return;
+  _cc.product=product;
+  const data=CALC_PRODUCTS[product];
+  document.querySelectorAll('.cc-product-btn').forEach(btn=>{
+    const active=btn.dataset.product===product;
+    btn.classList.toggle('on',active);
+    btn.setAttribute('aria-pressed',String(active));
+  });
+  const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+  setText('cc-product-chip',data.chip);
+  setText('cc-specific-label',data.label);
+  setText('cc-disease-note',data.disease);
+  setText('cc-surgery-note',data.surgery);
+  setText('cc-source-note',data.source);
+  const specificNote=document.getElementById('cc-specific-note');
+  if(specificNote)specificNote.innerHTML=`${data.summary}，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">—</span> 萬`;
+  const payWrap=document.getElementById('cc-pay-discount-wrap');
+  if(payWrap)payWrap.style.display=product==='CLX'?'':'none';
+  const listBtn=document.querySelector('.cc-cancer-list-btn');
+  if(listBtn)listBtn.textContent=`查看完整 ${data.cancers.length} 項`;
+  closeCancerList();
+  clzCalc();
+}
+function openCancerList(){
+  const data=CALC_PRODUCTS[_cc.product];
+  const modal=document.getElementById('cc-cancer-modal');
+  const grid=document.getElementById('cc-cancer-grid');
+  if(!modal||!grid)return;
+  document.getElementById('cc-cancer-kicker').textContent=data.kicker;
+  document.getElementById('cc-cancer-title').textContent=`多 50% 的 ${data.cancers.length} 項特定癌症`;
+  grid.replaceChildren(...data.cancers.map(([code,name])=>{
+    const item=document.createElement('div');item.className='cc-cancer-item';
+    const badge=document.createElement('b');badge.textContent=code;
+    const label=document.createElement('span');label.textContent=name;
+    item.append(badge,label);return item;
+  }));
+  modal.hidden=false;
+  modal.querySelector('.cc-cancer-close')?.focus();
+}
+function closeCancerList(){
+  const modal=document.getElementById('cc-cancer-modal');
+  if(modal)modal.hidden=true;
+}
 
 function clzSet(key,val,btn){
   _cc[key]=val;
@@ -353,7 +425,8 @@ function clzCalc(){
   const halfBday=new Date(lastBdayYr,dob.getMonth()+6,dob.getDate());
   const age=ay+(now>halfBday?1:0);
   const per=_cc.per,freq=_cc.freq;
-  const rate=CLZ_RATES[per]&&CLZ_RATES[per][age];
+  const rateTable=_cc.product==='CLX'?CLX_RATES:CLZ_RATES;
+  const rate=rateTable[per]&&rateTable[per][age];
   if(!rate)return;
   const cov=parseInt(document.getElementById('cc-cov-num').value)||100;
   const annual=rate*cov;
@@ -361,7 +434,8 @@ function clzCalc(){
   const total=annual*per;
   const maturity=Math.round(total*1.06);
   const hasDisc=document.getElementById('cc-discount').checked;
-  const discounted=Math.round(annual*0.99);
+  const hasPayDisc=_cc.product==='CLX'&&document.getElementById('cc-pay-discount')?.checked&&freq==='annual';
+  const discounted=Math.round(annual*(hasDisc?0.99:1)*(hasPayDisc?0.99:1));
   const daily=Math.ceil(annual/365);
 
   // Show hero
@@ -384,15 +458,18 @@ function clzCalc(){
 
   // Discount note
   const dn=document.getElementById('cc-disc-note');
-  if(hasDisc){
+  if(hasDisc||hasPayDisc){
     dn.style.display='block';
-    dn.textContent='健康管理折扣後年繳 '+f(discounted)+' 元（第2保單年度起）';
+    dn.textContent=(hasDisc?'健康管理折扣':'年繳折扣')+'後年繳 '+f(discounted)+' 元'+(hasDisc?'（第2保單年度起）':'');
   } else {dn.style.display='none';}
 
   // Benefits — all integers, clean display
   document.getElementById('bene-cov').textContent=cov;
   document.getElementById('b-heavy').textContent=cov;
   document.getElementById('b-specific').textContent=Math.round(cov*0.5);
+  const productData=CALC_PRODUCTS[_cc.product];
+  const specificNote=document.getElementById('cc-specific-note');
+  if(specificNote)specificNote.innerHTML=`${productData.summary}，第6年起最高 <span id="b-specific-total" style="color:#d43050;font-weight:900;">${Math.round(cov*1.5)}</span> 萬`;
   document.getElementById('b-light').textContent=Math.round(cov*0.1);
   document.getElementById('b-disease').textContent=Math.round(cov*0.1);
   document.getElementById('b-surgery').textContent=(cov*0.02%1===0)?cov*0.02:(cov*0.02).toFixed(1);

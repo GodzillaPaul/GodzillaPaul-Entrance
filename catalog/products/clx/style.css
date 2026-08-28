@@ -892,13 +892,53 @@ html:not(.scroll-mode):not(.grid-mode) .slide{width:100%;height:100%;}
 .p10-image-slide{padding:0!important;background:#fff!important;overflow:hidden!important;}
 .p10-image-slide>.p10-timeline-image{display:block;width:100%;height:100%;object-fit:contain;}
 
-/* Slide 14 · shared CLX / CLZ switch and full cancer list */
+/* Slide 14 · specific cancers +50% comparison */
+.cc-plus-slide{position:relative;overflow:hidden;padding:1.45em 2.25em 1.5em!important;background:linear-gradient(145deg,#fff 0%,#fff7fa 47%,#f1f9fc 100%);color:#163447}
+.cc-plus-slide::before,.cc-plus-slide::after{content:'';position:absolute;border-radius:50%;pointer-events:none}
+.cc-plus-slide::before{width:24em;height:24em;right:-10em;top:-11em;background:radial-gradient(circle,rgba(0,147,193,.14),transparent 68%)}
+.cc-plus-slide::after{width:20em;height:20em;left:-9em;bottom:-10em;background:radial-gradient(circle,rgba(226,48,103,.12),transparent 68%)}
+.cc-plus-kicker{position:relative;z-index:1;color:#087da2;font-size:.68em;font-weight:950;letter-spacing:.16em;text-transform:uppercase}
+.cc-plus-hero{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:1.2em;margin-top:.25em}
+.cc-plus-hero h2{margin:0!important;color:#102f42!important;font-size:2.25em!important;font-weight:950!important;line-height:1.08!important;letter-spacing:-.035em}
+.cc-plus-hero h2 span{display:inline-block;color:#fff;background:linear-gradient(135deg,#e12f68,#b81f50);border-radius:.28em;padding:.05em .2em;margin-left:.12em;box-shadow:0 8px 22px rgba(184,31,80,.22)}
+.cc-plus-hero p{margin:.35em 0 0;max-width:63em;color:#557282;font-size:.72em;font-weight:750;line-height:1.5}
+.cc-plus-seal{width:5.7em;height:5.7em;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;background:linear-gradient(145deg,#ef4b7f,#bc2052);border:.3em solid rgba(255,255,255,.9);box-shadow:0 12px 30px rgba(184,31,80,.28),0 0 0 .12em rgba(225,47,104,.16);transform:rotate(3deg)}
+.cc-plus-seal strong{font-family:var(--font-en);font-size:1.65em;line-height:1;font-weight:950;letter-spacing:-.06em}
+.cc-plus-seal span{margin-top:.2em;font-size:.63em;font-weight:900;letter-spacing:.08em}
+.cc-plus-panels{position:relative;z-index:1;display:grid;grid-template-columns:1.08fr .92fr;gap:.9em;margin-top:.72em;min-height:20em}
+.cc-plus-panel{display:flex;flex-direction:column;border-radius:1em;padding:.88em;background:rgba(255,255,255,.9);box-shadow:0 12px 32px rgba(20,55,73,.1);border:1px solid rgba(20,55,73,.1)}
+.cc-plus-panel.female{border-top:.32em solid #df3a70}
+.cc-plus-panel.male{border-top:.32em solid #078ab4}
+.cc-plus-panel header{display:flex;align-items:center;justify-content:space-between;gap:.6em;margin-bottom:.55em;padding:0 .08em}
+.cc-plus-panel header>div{display:flex;align-items:center;gap:.55em;min-width:0}
+.cc-plus-gender{display:inline-flex;align-items:center;border-radius:999px;padding:.28em .72em;color:#fff;font-size:.72em;font-weight:950;white-space:nowrap}
+.female .cc-plus-gender{background:linear-gradient(135deg,#ec4b81,#c52359)}
+.male .cc-plus-gender{background:linear-gradient(135deg,#13a3c8,#05739b)}
+.cc-plus-panel header strong{font-size:.88em;color:#17384a;white-space:nowrap}
+.cc-plus-panel header>b{border-radius:999px;padding:.24em .58em;background:#fff2c9;color:#9a6100;font-size:.6em;font-weight:950;white-space:nowrap}
+.cc-plus-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:.4em;flex:1}
+.cc-plus-list>div{display:grid;grid-template-columns:3em minmax(0,1fr);align-items:center;gap:.45em;min-height:3em;border-radius:.62em;padding:.4em .52em;background:#f8fbfc;border:1px solid rgba(22,74,97,.08)}
+.cc-plus-list b{display:flex;align-items:center;justify-content:center;align-self:stretch;border-radius:.4em;font-family:var(--font-en);font-size:.76em;font-weight:950}
+.female .cc-plus-list b{background:#ffe1eb;color:#b51d50}
+.male .cc-plus-list b{background:#dff5fb;color:#006d94}
+.cc-plus-list span{color:#2c4d5d;font-size:.69em;font-weight:850;line-height:1.28;overflow-wrap:anywhere}
+.cc-plus-note{position:relative;z-index:1;margin-top:.6em;border-radius:.62em;padding:.42em .78em;background:#fff8df;border:1px solid #efdaa0;color:#705a24;font-size:.63em;font-weight:750;line-height:1.4}
+.cc-plus-note b{color:#bd2f55}
+
+/* Calculator emphasis for the +50% benefit */
+.cc-card.red2{border-width:2px;box-shadow:0 8px 24px rgba(212,48,80,.16)}
+.cc-specific-head{position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:.55em}
+.cc-extra50-tag{display:inline-flex;align-items:center;gap:.32em;border-radius:.55em;padding:.2em .48em;color:#fff;background:linear-gradient(135deg,#e23b6d,#b82050);box-shadow:0 5px 14px rgba(184,32,80,.22);white-space:nowrap}
+.cc-extra50-tag strong{font-family:var(--font-en);font-size:1.08em;line-height:1;font-weight:950}
+.cc-extra50-tag small{font-size:.54em;font-weight:900;letter-spacing:.03em}
+
+/* Slide 15 · shared CLX / CLZ switch and full cancer list */
 .cc-product-switch{display:inline-flex;align-items:center;padding:.18em;background:rgba(255,255,255,.82);border:1px solid rgba(0,93,142,.15);border-radius:999px;box-shadow:0 6px 18px rgba(1,72,101,.08)}
 .cc-product-btn{appearance:none;border:0;background:transparent;color:#587383;border-radius:999px;padding:.34em .82em;font:inherit;font-size:.75em;font-weight:900;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
 .cc-product-btn.on{background:linear-gradient(135deg,var(--fubon-blue),#005d8e);color:#fff;box-shadow:0 4px 12px rgba(0,93,142,.25)}
 .cc-product-btn:focus-visible,.cc-cancer-list-btn:focus-visible,.cc-cancer-close:focus-visible{outline:3px solid rgba(0,147,193,.35);outline-offset:2px}
-.cc-cancer-list-btn{position:relative;z-index:2;align-self:flex-start;margin-top:.42em;border:1px solid rgba(212,48,80,.24);background:rgba(255,255,255,.72);color:#b92845;border-radius:999px;padding:.27em .72em;font:inherit;font-size:.66em;font-weight:900;cursor:pointer}
-.cc-cancer-list-btn:hover{background:#fff;border-color:rgba(212,48,80,.42)}
+.cc-cancer-list-btn{position:relative;z-index:2;align-self:flex-start;margin-top:.42em;border:0;background:linear-gradient(135deg,#fff,#ffe7ee);color:#b5234d;border-radius:999px;padding:.34em .78em;font:inherit;font-size:.64em;font-weight:950;cursor:pointer;box-shadow:0 4px 12px rgba(184,32,80,.13);transition:transform .16s,box-shadow .16s}
+.cc-cancer-list-btn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(184,32,80,.2)}
 .cc-cancer-modal[hidden]{display:none}
 .cc-cancer-modal{position:absolute;inset:0;z-index:80;display:grid;place-items:center;padding:3.2em;background:rgba(7,24,39,.68);backdrop-filter:blur(9px)}
 .cc-cancer-dialog{position:relative;width:min(61em,100%);max-height:calc(100% - 1.2em);overflow:auto;background:linear-gradient(155deg,#fff,#f3fafc);border:1px solid rgba(255,255,255,.85);border-radius:1.35em;padding:1.45em 1.65em 1.25em;box-shadow:0 32px 90px rgba(0,0,0,.3)}
@@ -913,6 +953,13 @@ html:not(.scroll-mode):not(.grid-mode) .slide{width:100%;height:100%;}
 .cc-cancer-dialog>small{display:block;margin-top:.72em;color:#78909c;font-size:.66em;font-weight:750}
 @media(max-width:900px){.cc-top{flex-wrap:wrap}.cc-chip{order:3}.cc-product-switch{margin-left:auto}.cc-cancer-modal{padding:1.1em}.cc-cancer-dialog{padding:1.1em}.cc-cancer-grid{grid-template-columns:1fr}}
 @media(max-width:900px){
+  html.scroll-mode .cc-plus-slide{height:auto!important;min-height:0!important;overflow:visible!important;padding:1.25em 1em 4em!important}
+  html.scroll-mode .cc-plus-hero{grid-template-columns:1fr}
+  html.scroll-mode .cc-plus-seal{width:5em;height:5em;position:absolute;right:.15em;top:-.25em}
+  html.scroll-mode .cc-plus-hero h2{padding-right:2.5em}
+  html.scroll-mode .cc-plus-panels{grid-template-columns:1fr}
+  html.scroll-mode .cc-plus-panels{min-height:0}
+  html.scroll-mode .cc-plus-list{grid-template-columns:1fr}
   html.scroll-mode .clz-calc-slide{height:auto!important;min-height:0!important;overflow:visible!important;padding:1.25em 1em 4em!important}
   html.scroll-mode .clz-calc-slide::before{display:none}
   html.scroll-mode .clz-calc-slide .cc-body{grid-template-columns:1fr;height:auto}

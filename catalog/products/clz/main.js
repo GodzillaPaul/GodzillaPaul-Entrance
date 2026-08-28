@@ -344,7 +344,7 @@ function setCalcProduct(product){
   const payWrap=document.getElementById('cc-pay-discount-wrap');
   if(payWrap)payWrap.style.display=product==='CLX'?'':'none';
   const listBtn=document.querySelector('.cc-cancer-list-btn');
-  if(listBtn)listBtn.textContent=`查看完整 ${data.cancers.length} 項`;
+  if(listBtn)listBtn.textContent=`哪些癌症多 50%｜完整 ${data.cancers.length} 項`;
   closeCancerList();
   clzCalc();
 }

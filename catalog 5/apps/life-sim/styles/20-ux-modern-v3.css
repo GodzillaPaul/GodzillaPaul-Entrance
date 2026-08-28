@@ -1,0 +1,260 @@
+:root {
+    /* ===== 色彩 token（Apple 風降對比、提高精緻度） ===== */
+    --u-bg-0: #fbfcff;
+    --u-bg-1: #f4f7ff;
+    --u-bg-2: #eef3ff;
+    --u-panel: rgba(255,255,255,.96);
+    --u-panel-dim: rgba(255,255,255,.72);
+    --u-line: rgba(198,215,250,.85);
+    --u-line-soft: rgba(198,215,250,.45);
+    --u-text-1: #0e1a36;
+    --u-text-2: #3a4a6e;
+    --u-text-3: #6d7ea4;
+    --u-text-mute: #95a3c2;
+
+    /* 主色（Notion / Apple 風藍） */
+    --u-blue: #0a84ff;
+    --u-blue-deep: #0062cc;
+    --u-blue-soft: #e6f0ff;
+    --u-indigo: #3d5bff;
+
+    /* 強調色（品牌橘） */
+    --u-orange: #ff7a42;
+    --u-orange-deep: #e84b1c;
+
+    /* ===== spacing / radius / shadow ===== */
+    --u-r-sm: 10px;
+    --u-r-md: 14px;
+    --u-r-lg: 20px;
+    --u-r-xl: 28px;
+    --u-r-2xl: 36px;
+    --u-r-full: 999px;
+
+    --u-sh-card: 0 1px 2px rgba(16,40,84,.04), 0 8px 24px rgba(16,40,84,.06), 0 24px 56px rgba(16,40,84,.08);
+    --u-sh-pop:  0 2px 6px rgba(16,40,84,.06), 0 16px 40px rgba(16,40,84,.10), 0 32px 72px rgba(16,40,84,.12);
+    --u-sh-glow: 0 0 0 4px rgba(10,132,255,.15);
+
+    /* ===== motion tokens ===== */
+    --u-ease: cubic-bezier(.2,.8,.2,1);
+    --u-ease-out: cubic-bezier(.16,1,.3,1);
+    --u-ease-in: cubic-bezier(.4,0,.8,.2);
+    --u-dur-fast: .18s;
+    --u-dur-base: .32s;
+    --u-dur-slow: .6s;
+    --u-dur-hero: .9s;
+}
+
+/* ===== 全域 typography 升級 ===== */
+html {
+    scroll-behavior: smooth;
+}
+body {
+    font-family:
+        -apple-system, BlinkMacSystemFont, "SF Pro TC", "SF Pro Text",
+        "Segoe UI", "PingFang TC", "Heiti TC",
+        "Microsoft JhengHei", "微軟正黑體", "Noto Sans TC",
+        sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "tnum" 1, "palt" 1;
+    letter-spacing: 0 !important;
+}
+/* 數字用 tabular，不晃 */
+.num, [data-countup], .countup, .big-num,
+.welcome-main, .card-title,
+.s6-gap-amount, .s6-ret-highlight-amount,
+.s6-income-table td, .s6-income-table th,
+.fb-sal-hero-num, .fb-career-cta-big {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+}
+
+/* ===== 卡片升級（Apple / Notion 風細邊 + 分層陰影） ===== */
+.card {
+    border-radius: var(--u-r-2xl) !important;
+    box-shadow: var(--u-sh-card) !important;
+    transition:
+        transform var(--u-dur-base) var(--u-ease),
+        box-shadow var(--u-dur-base) var(--u-ease) !important;
+}
+.card:hover {
+    box-shadow: var(--u-sh-pop) !important;
+}
+
+/* ===== 按鈕升級（更 Apple 風的 press + focus） ===== */
+.btn-primary {
+    transition:
+        transform var(--u-dur-fast) var(--u-ease),
+        box-shadow var(--u-dur-base) var(--u-ease),
+        filter var(--u-dur-fast) var(--u-ease) !important;
+    letter-spacing: .5px !important;
+    position: relative;
+    overflow: hidden;
+}
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.25), transparent 40%);
+    opacity: 0;
+    transition: opacity var(--u-dur-base) var(--u-ease);
+    pointer-events: none;
+}
+.btn-primary:hover::after { opacity: 1; }
+.btn-primary:active {
+    transform: translateY(1px) scale(.985) !important;
+    filter: brightness(.96);
+}
+.btn-primary:focus-visible {
+    outline: none !important;
+    box-shadow: var(--u-sh-glow), 0 14px 30px rgba(47,99,255,.30) !important;
+}
+.btn-secondary:focus-visible {
+    outline: none;
+    box-shadow: var(--u-sh-glow);
+    border-color: var(--u-blue) !important;
+}
+
+/* ===== 輸入框升級（Notion-style focus glow） ===== */
+.form-input, .form-select, .s6-ret-input {
+    transition:
+        border-color var(--u-dur-fast) var(--u-ease),
+        box-shadow var(--u-dur-base) var(--u-ease),
+        background var(--u-dur-fast) var(--u-ease) !important;
+}
+.form-input:focus, .form-select:focus, .s6-ret-input:focus {
+    box-shadow: var(--u-sh-glow) !important;
+    border-color: var(--u-blue) !important;
+}
+
+/* ===== 進度條升級（動畫光暈） ===== */
+.progress-bar {
+    overflow: hidden;
+    position: relative;
+}
+.progress-fill {
+    position: relative;
+    transition: width .8s var(--u-ease-out) !important;
+}
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 40px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+    animation: uShimmer 2s ease-in-out infinite;
+}
+@keyframes uShimmer {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(-20px); }
+}
+
+/* ===== 性別按鈕升級 ===== */
+.gender-btn {
+    transition:
+        transform var(--u-dur-fast) var(--u-ease),
+        box-shadow var(--u-dur-base) var(--u-ease),
+        border-color var(--u-dur-fast) var(--u-ease),
+        background var(--u-dur-fast) var(--u-ease) !important;
+}
+.gender-btn:hover {
+    transform: translateY(-2px);
+}
+.gender-btn.active {
+    box-shadow: 0 8px 24px rgba(71,109,255,.20) !important;
+}
+
+/* ===== scroll-triggered reveal 動畫系統 ===== */
+.u-reveal {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition: opacity var(--u-dur-slow) var(--u-ease-out), transform var(--u-dur-slow) var(--u-ease-out);
+    will-change: opacity, transform;
+}
+.u-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+}
+.u-reveal-left {
+    opacity: 0;
+    transform: translate3d(-32px, 0, 0);
+    transition: opacity var(--u-dur-slow) var(--u-ease-out), transform var(--u-dur-slow) var(--u-ease-out);
+}
+.u-reveal-left.is-visible { opacity: 1; transform: translate3d(0,0,0); }
+.u-reveal-right {
+    opacity: 0;
+    transform: translate3d(32px, 0, 0);
+    transition: opacity var(--u-dur-slow) var(--u-ease-out), transform var(--u-dur-slow) var(--u-ease-out);
+}
+.u-reveal-right.is-visible { opacity: 1; transform: translate3d(0,0,0); }
+.u-reveal-scale {
+    opacity: 0;
+    transform: scale(.94);
+    transition: opacity var(--u-dur-slow) var(--u-ease-out), transform var(--u-dur-slow) var(--u-ease-out);
+}
+.u-reveal-scale.is-visible { opacity: 1; transform: scale(1); }
+
+/* stagger：子項目依序延遲進場 */
+.u-stagger > *:nth-child(1) { transition-delay: .05s; }
+.u-stagger > *:nth-child(2) { transition-delay: .12s; }
+.u-stagger > *:nth-child(3) { transition-delay: .19s; }
+.u-stagger > *:nth-child(4) { transition-delay: .26s; }
+.u-stagger > *:nth-child(5) { transition-delay: .33s; }
+.u-stagger > *:nth-child(6) { transition-delay: .40s; }
+.u-stagger > *:nth-child(7) { transition-delay: .47s; }
+.u-stagger > *:nth-child(8) { transition-delay: .54s; }
+
+/* ===== parallax 視差層（裝飾用 blob） ===== */
+.u-parallax-wrap {
+    position: relative;
+    overflow: hidden;
+}
+.u-parallax-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .5;
+    pointer-events: none;
+    transition: transform .4s linear;
+    z-index: 0;
+}
+
+/* ===== Apple-style focus ring 全域 ===== */
+*:focus-visible {
+    outline: none;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+    box-shadow: 0 0 0 4px rgba(10,132,255,.25);
+    border-radius: 8px;
+}
+
+/* ===== 滑動條（sidebar / select options） ===== */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: rgba(100,130,190,.28);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(100,130,190,.45); background-clip: padding-box; }
+
+/* ===== 對深色步驟（step1/2）focus ring 調亮 ===== */
+body[data-step="1"] *:focus-visible,
+body[data-step="2"] *:focus-visible {
+    box-shadow: 0 0 0 4px rgba(118,183,255,.38) !important;
+}
+
+/* ===== 降低動畫強度（尊重使用者無障礙偏好） ===== */
+@media (prefers-reduced-motion: reduce) {
+    .u-reveal, .u-reveal-left, .u-reveal-right, .u-reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    * { animation-duration: .01s !important; transition-duration: .01s !important; }
+}

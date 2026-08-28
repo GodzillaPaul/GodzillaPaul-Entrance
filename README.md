@@ -1,0 +1,49 @@
+# Catalog_GodzillaPaul｜Netlify 會員版
+
+此版本將登入入口與原 Catalog 分開：
+
+```text
+index.html              公開登入入口
+login.css / login.js    登入頁樣式與 Identity 流程
+login-assets/           登入頁公開品牌素材
+catalog/                受 member 角色保護的會員區
+catalog/apps/           已整合的五個工具頁
+catalog/products/       已整合的商品試算與商品內容頁
+netlify.toml            Netlify CDN 權限、標頭與 Functions 設定
+netlify/functions/      新使用者自動加入 member 角色
+package.json            Netlify Identity 伺服器驗證套件
+```
+
+## Netlify 後台設定
+
+1. 將整個資料夾推送到 Private GitHub repo，並在 Netlify 建立專案。
+2. 到 `Project configuration > Identity` 啟用 Identity。
+3. 到 `Identity > Registration preferences` 設為 `Invite only`。
+4. 到 `Identity > Users` 邀請會員。
+5. 新接受邀請的使用者會由 `identity.mts` 自動取得 `member` 角色。
+6. 若帳號是在此功能部署前建立，請進入該使用者明細頁，手動加入 `member` 角色，再登出、重新登入。
+7. 入口的「申請使用權」會送到 Netlify `Forms > access-request`；收到申請後，依本名與 Email 確認身分，再到 Identity 寄出邀請。
+8. 如需收到新申請通知，可在 Netlify 的 Forms 通知設定中加入你的管理信箱。
+9. 「忘記密碼」會寄送 Netlify Identity 重設信；使用者點信件連結設定新密碼後，回入口以新密碼登入。
+
+## 權限行為
+
+- `/`：任何人都能看到登入頁，但看不到 Catalog 內容。
+- 登入使用受邀 Email＋密碼；顯示帳號只供管理辨識，不作為登入憑證。
+- `/catalog/*`：只有 JWT 包含 `member` 角色的使用者可讀取。
+- 未登入者直接輸入 `/catalog/`、子頁、CSS、JS、JSON 或圖片網址，均會回到登入入口。
+- 五個工具已搬入 `/catalog/apps/`，包含現實人生、退休規劃、月配息、資產加速器、房產現金流。
+- 退休規劃已替換為 `retirement-planning-main-u-sa-fixed` 版本，返回連結指向正式 Netlify 會員目錄。
+- 商品解方庫已搬入 `/catalog/products/`，包含 PFW、PF566、PFA、PFJ、PFK、UND、CLZ、CLX、PFN。
+- PFW、PF566、PFA、PFJ、PFK、PFN 商品試算支援 A4 單頁 PDF 匯出；PDF 套件使用本地檔案，不依賴 CDN。
+- 馬上幸福與富邦錢包活動回饋已下架，相關回饋列已在商品頁隱藏。
+- 理賠案例庫的 12 組案例均已放在 `/catalog/claims/` 內；身故理賠、國外收據、產險與其他四個尚無內容的分類會明確標示「建置中」。
+- 商品、工具與案例頁的 Logo／返回連結均採相對路徑，不會因更換網域或本機預覽而跳回舊站。
+- 專案只保留唯一的 `/catalog/` 會員區；請勿再放入未受角色規則保護的目錄副本。
+- 全站已加入 Content Security Policy 與 Permissions Policy；Chart.js 暫時固定使用指定版本 CDN，其餘既有 PDF 套件優先使用本機檔案。
+- PFW、PF566、PFA、PFJ、PFK、PFN 六個美元商品的美元／台幣匯率，統一優先由 `netlify/functions/exchange-rate.mjs` 伺服器端抓取三個獨立來源，成功結果於 Netlify CDN 快取 30 分鐘；若 Function 暫時失效，瀏覽器會再嘗試直接來源、最近 7 天成功值，最後才使用預設 32。
+- 六個美元商品的匯率統一顯示到小數點後一位，並保留「更新最新匯率」按鈕；更新期間按鈕會鎖定，避免重複送出請求。
+
+## 測試提醒
+
+Netlify Identity 需要 HTTPS 與已啟用的 Netlify 專案。一般本機伺服器與 `file://` 會顯示「本機預覽」並略過會員驗證，方便檢查版面；正式部署仍由 Netlify CDN 的 `/catalog/*` 角色規則保護。完整邀請、登入與 CDN 角色規則仍應在 Netlify 部署網址測試。

@@ -1,0 +1,8 @@
+{
+  "name": "catalog-godzillapaul-private",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@netlify/identity": "1.2.0"
+  }
+}

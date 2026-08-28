@@ -1,0 +1,864 @@
+/* ===== 第七頁：轉換工作 · 品牌官網質感 ===== */
+
+/* ── Brand Tokens ──
+   橘紅 primary : #E84B1C  dark: #C93F15
+   青藍 teal    : #009DB5  dark: #00647A
+   bg light     : #F4F6F8
+   text dark    : #1A2B3C
+*/
+
+body[data-step="6"] {
+    background:
+        radial-gradient(circle at 15% 0%, rgba(232,75,28,.07), transparent 28%),
+        radial-gradient(circle at 88% 6%, rgba(0,157,181,.06), transparent 24%),
+        linear-gradient(180deg, #F4F6F8 0%, #EEF2F5 55%, #F4F6F8 100%) !important;
+    color: #1A2B3C !important;
+}
+body[data-step="6"] header {
+    background: rgba(255,255,255,.92) !important;
+    border-color: rgba(0,100,122,.14) !important;
+    box-shadow: 0 2px 16px rgba(0,100,122,.07) !important;
+    backdrop-filter: blur(14px) !important;
+}
+body[data-step="6"] .logo,
+body[data-step="6"] .header-tag { color: #1A2B3C !important; }
+body[data-step="6"] .header-tag {
+    background: rgba(0,157,181,.08) !important;
+    border-color: rgba(0,157,181,.22) !important;
+    color: #00647A !important;
+}
+body[data-step="6"] .progress-bar { background: rgba(0,157,181,.15) !important; }
+body[data-step="6"] .progress-fill {
+    background: linear-gradient(90deg, #E84B1C, #009DB5) !important;
+}
+body[data-step="6"] .progress-label { color: #6B8090 !important; }
+
+/* Wrap */
+.s6-wrap { padding: 36px 0 80px; }
+
+/* Kicker */
+.s6-kicker {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #009DB5;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+/* ── Question screen ── */
+.s6-question-screen { text-align: center; max-width: 780px; margin: 0 auto; }
+.s6-big-q {
+    font-size: clamp(52px, 5vw, 72px);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: #1A2B3C;
+    margin-bottom: 18px;
+}
+.s6-q-sub {
+    font-size: 17px;
+    color: #5A7080;
+    line-height: 1.8;
+    margin-bottom: 44px;
+}
+.s6-choice-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.s6-choice-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 36px 24px;
+    border-radius: 28px;
+    border: 1.5px solid;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.22s ease;
+    text-align: center;
+    background: white;
+}
+/* 願意：橘紅+青藍雙色品牌按鈕 */
+.s6-choice-btn.yes {
+    background: linear-gradient(135deg, #fff5f2 0%, #f0fafc 100%);
+    border-color: #E84B1C;
+    color: #1A2B3C;
+    box-shadow: 0 8px 28px rgba(232,75,28,.12);
+    position: relative;
+    overflow: hidden;
+}
+.s6-choice-btn.yes::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E84B1C, #009DB5);
+    border-radius: 28px 28px 0 0;
+}
+.s6-choice-btn.no {
+    background: linear-gradient(180deg, #f4f8fa, #eef4f7);
+    border-color: rgba(0,100,122,.28);
+    color: #1A2B3C;
+}
+.s6-choice-btn:hover { transform: translateY(-4px); }
+.s6-choice-btn.yes:hover {
+    box-shadow: 0 20px 44px rgba(232,75,28,.18);
+    border-color: #C93F15;
+}
+.s6-choice-btn.no:hover {
+    box-shadow: 0 20px 44px rgba(0,100,122,.12);
+    border-color: rgba(0,157,181,.55);
+}
+.s6-choice-icon { font-size: 40px; }
+.s6-choice-label { font-size: 28px; font-weight: 900; letter-spacing: -0.3px; color: #1A2B3C; }
+.s6-choice-btn.yes .s6-choice-label { color: #C93F15; }
+.s6-choice-sub { font-size: 13px; color: #6B8090; line-height: 1.5; }
+.s6-back-btn {
+    background: white !important;
+    border-color: rgba(0,100,122,.22) !important;
+    color: #5A7080 !important;
+}
+
+/* ── Yes screen ── */
+.s6-yes-screen, .s6-no-screen { max-width: 1200px; margin: 0 auto; }
+.s6-yes-title {
+    font-size: clamp(44px, 4.5vw, 64px);
+    font-weight: 900;
+    color: #1A2B3C;
+    line-height: 1.08;
+    letter-spacing: -1.2px;
+    text-align: center;
+    margin-bottom: 14px;
+}
+.s6-yes-sub {
+    font-size: 16px;
+    color: #5A7080;
+    text-align: center;
+    line-height: 1.85;
+    margin-bottom: 36px;
+}
+
+/* Gap row */
+.s6-gap-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+.s6-gap-card {
+    border-radius: 24px;
+    padding: 26px 24px;
+    border: 1.5px solid;
+    background: white;
+}
+.s6-gap-card.ideal {
+    background: linear-gradient(180deg, #fff5f2, #fff9f7);
+    border-color: rgba(232,75,28,.28);
+}
+.s6-gap-card.adjust {
+    background: linear-gradient(180deg, #f0fafc, #e8f6f9);
+    border-color: rgba(0,157,181,.28);
+}
+.s6-gap-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #8AACB8;
+    margin-bottom: 10px;
+}
+.s6-gap-amount {
+    font-size: 38px;
+    font-weight: 900;
+    color: #1A2B3C;
+    letter-spacing: -0.8px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+.s6-gap-card.ideal .s6-gap-amount { color: #C93F15; }
+.s6-gap-card.adjust .s6-gap-amount { color: #00647A; }
+.s6-gap-sub { font-size: 13px; color: #6B8090; line-height: 1.6; }
+
+/* Bridge */
+.s6-bridge {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(90deg, rgba(232,75,28,.06), rgba(0,157,181,.05));
+    border: 1.5px solid rgba(232,75,28,.18);
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+}
+.s6-bridge-icon { font-size: 32px; flex-shrink: 0; }
+.s6-bridge-text { font-size: 16px; color: #3A5060; line-height: 1.75; }
+.s6-bridge-text strong { color: #E84B1C; font-size: 20px; }
+
+/* ── Salary section · 淺白底雙色官網質感 ── */
+.s6-salary-section {
+    background: white;
+    border: 1.5px solid rgba(0,157,181,.18);
+    border-radius: 28px;
+    padding: 32px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 32px rgba(0,100,122,.07);
+}
+.s6-salary-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #1A2B3C;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+.s6-salary-subtitle {
+    font-size: 12px;
+    color: #8AACB8;
+    margin-bottom: 26px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+.s6-salary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+}
+@media (max-width: 1400px) {
+    .s6-salary-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.s6-rank-card {
+    background: #F4F8FA;
+    border: 1.5px solid rgba(0,157,181,.15);
+    border-radius: 18px;
+    padding: 18px 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.s6-rank-card:hover {
+    border-color: rgba(232,75,28,.40);
+    box-shadow: 0 6px 20px rgba(232,75,28,.09);
+}
+.s6-rank-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: #1A2B3C;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.s6-rank-code {
+    font-size: 11px;
+    background: rgba(0,157,181,.12);
+    color: #00647A;
+    border: 1px solid rgba(0,157,181,.25);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+.s6-rank-bars { display: flex; flex-direction: column; gap: 7px; }
+.s6-bar-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 70px;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+}
+.s6-bar-row.highlight .s6-bar-val { color: #E84B1C; font-weight: 900; }
+.s6-bar-row.highlight .s6-bar-fill {
+    background: linear-gradient(90deg, #E84B1C, #009DB5) !important;
+}
+.s6-bar-pct { color: #8AACB8; font-size: 10px; text-align: right; }
+.s6-bar-track {
+    height: 6px;
+    background: rgba(0,157,181,.10);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.s6-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: rgba(0,157,181,.38);
+    transition: width 1s ease;
+}
+.s6-bar-val { color: #3A6070; font-size: 11px; font-weight: 700; text-align: right; font-family: 'Courier New', monospace; }
+.s6-data-note { font-size: 11px; color: #A0B8C0; font-family: 'Courier New', monospace; margin-top: 4px; }
+
+/* Industry strip */
+.s6-industry-strip {
+    background: white;
+    border: 1.5px solid rgba(0,157,181,.18);
+    border-radius: 28px;
+    padding: 28px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 32px rgba(0,100,122,.07);
+}
+.s6-industry-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: #1A2B3C;
+    margin-bottom: 6px;
+}
+.s6-industry-sub {
+    font-size: 13px;
+    color: #5A7080;
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+.s6-industry-sub strong { color: #E84B1C; }
+.s6-industry-bars { display: flex; flex-direction: column; gap: 9px; }
+.s6-ind-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 64px;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+.s6-ind-row.top .s6-ind-name { color: #C93F15; font-weight: 900; }
+.s6-ind-row.dim .s6-ind-name { color: #A0B8C0; }
+.s6-ind-name { color: #3A6070; font-weight: 700; }
+.s6-ind-track { height: 8px; background: rgba(0,157,181,.08); border-radius: 4px; overflow: hidden; }
+.s6-ind-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: rgba(0,157,181,.35);
+}
+.s6-ind-fill.top { background: linear-gradient(90deg, #E84B1C, #009DB5); }
+.s6-ind-fill.dim { background: rgba(0,100,122,.12); }
+.s6-ind-val { color: #3A6070; font-weight: 900; text-align: right; font-family: 'Courier New', monospace; font-size: 12px; }
+
+/* CTA */
+.s6-cta-block {
+    text-align: center;
+    padding: 40px 24px;
+    background: linear-gradient(135deg, rgba(232,75,28,.06) 0%, rgba(0,157,181,.06) 100%);
+    border: 1.5px solid rgba(232,75,28,.18);
+    border-radius: 28px;
+    margin-bottom: 28px;
+}
+.s6-cta-title {
+    font-size: clamp(32px, 3vw, 44px);
+    font-weight: 900;
+    color: #1A2B3C;
+    line-height: 1.15;
+    letter-spacing: -0.8px;
+    margin-bottom: 14px;
+}
+.s6-cta-sub {
+    font-size: 15px;
+    color: #5A7080;
+    line-height: 1.85;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Nav */
+.s6-nav-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+.s6-nav-row .btn-primary {
+    background: linear-gradient(135deg, #E84B1C, #009DB5) !important;
+    color: white !important;
+    font-weight: 900 !important;
+    box-shadow: 0 18px 36px rgba(232,75,28,.22) !important;
+}
+
+/* ══════════════════════════════════════
+   四大區塊共用樣式
+══════════════════════════════════════ */
+
+/* 區塊容器 */
+.fb-block {
+    background: white;
+    border-radius: 28px;
+    padding: 32px 32px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 28px rgba(0,100,122,.07);
+    border: 1.5px solid rgba(0,157,181,.14);
+}
+.fb-block-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid rgba(0,157,181,.12);
+}
+.fb-block-num {
+    font-size: 11px;
+    font-weight: 900;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    color: white;
+    background: linear-gradient(135deg, #E84B1C, #009DB5);
+    border-radius: 10px;
+    padding: 5px 10px;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+.fb-block-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #1A2B3C;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+}
+.fb-block-subtitle {
+    font-size: 13px;
+    color: #6B8090;
+    line-height: 1.6;
+}
+
+/* ── 01 就業市場 ── */
+.fb-market-bars { display: flex; flex-direction: column; gap: 10px; }
+.fb-mbar-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 72px;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+}
+.fb-mbar-name { color: #3A6070; font-weight: 700; }
+.fb-mbar-row.top .fb-mbar-name { color: #C93F15; font-weight: 900; font-size: 14px; }
+.fb-mbar-row.dim .fb-mbar-name { color: #A8B8C0; }
+.fb-mbar-track { height: 10px; background: rgba(0,157,181,.08); border-radius: 5px; overflow: hidden; }
+.fb-mbar-fill { height: 100%; border-radius: 5px; background: rgba(0,157,181,.35); transition: width 1s ease; }
+.fb-mbar-fill.top { background: linear-gradient(90deg, #E84B1C, #009DB5); }
+.fb-mbar-fill.dim { background: rgba(0,100,122,.10); }
+.fb-mbar-val { font-weight: 900; color: #3A6070; text-align: right; font-family: 'Courier New', monospace; font-size: 12px; }
+.fb-mbar-row.top .fb-mbar-val { color: #C93F15; font-size: 14px; }
+.fb-market-note { font-size: 11px; color: #A8B8C0; font-family: 'Courier New', monospace; margin-top: 16px; }
+
+/* ── 02 創業制度 ── */
+.fb-career-track { display: flex; flex-direction: column; gap: 0; }
+.fb-career-phase {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.fb-career-phase.phase2 { margin-bottom: 0; }
+.fb-phase-label {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #009DB5;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 4px;
+}
+.fb-career-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+}
+.fb-step {
+    background: #F4F8FA;
+    border: 1.5px solid rgba(0,157,181,.20);
+    border-radius: 16px;
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 110px;
+    transition: all 0.2s;
+}
+.fb-step:hover { border-color: rgba(0,157,181,.5); box-shadow: 0 4px 14px rgba(0,157,181,.10); }
+.fb-step.entry { border-color: rgba(232,75,28,.30); }
+.fb-step.highlight-step {
+    background: linear-gradient(135deg, #fff5f2, #f0fafc);
+    border-color: rgba(232,75,28,.35);
+    box-shadow: 0 4px 16px rgba(232,75,28,.10);
+}
+.fb-step-title { font-size: 14px; font-weight: 900; color: #1A2B3C; margin-bottom: 5px; }
+.fb-step-code {
+    font-size: 11px;
+    background: rgba(0,157,181,.12);
+    color: #00647A;
+    border: 1px solid rgba(0,157,181,.22);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+.fb-step.highlight-step .fb-step-code {
+    background: rgba(232,75,28,.10);
+    color: #C93F15;
+    border-color: rgba(232,75,28,.22);
+}
+.fb-step-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    gap: 4px;
+    flex-shrink: 0;
+    position: relative;
+}
+/* 隱藏原本的 "→" 文字，改由下面的 badge 取代 */
+.fb-step-arrow { font-size: 0; color: transparent; }
+/* 純文字箭頭（DM → SVP+ 之間）要保留可見 */
+.fb-step-arrow.fb-step-arrow-plain {
+    font-size: 24px;
+    font-weight: 900;
+    color: #E84B1C;
+    padding: 0 10px;
+}
+/* ── 期別標籤列（放大顯示） ── */
+.fb-career-phase-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 0 4px;
+}
+.fb-career-phase {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    white-space: nowrap;
+    position: relative;
+}
+.fb-career-phase.learn {
+    flex: 7;
+    color: #00647A;
+    background: linear-gradient(90deg, rgba(0,157,181,.10), rgba(0,157,181,.04));
+    border: 1.5px dashed rgba(0,157,181,.45);
+}
+.fb-career-phase.grow {
+    flex: 3;
+    color: #C93F15;
+    background: linear-gradient(90deg, rgba(232,75,28,.04), rgba(232,75,28,.12));
+    border: 1.5px dashed rgba(232,75,28,.45);
+}
+.fb-career-phase-tag {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-family: 'Courier New', monospace;
+}
+.fb-career-phase.learn .fb-career-phase-tag {
+    background: #009DB5;
+    color: #fff;
+}
+.fb-career-phase.grow .fb-career-phase-tag {
+    background: #E84B1C;
+    color: #fff;
+}
+/* 突顯月數的大膽 badge：橘色大數字 + 小標 */
+.fb-step-time {
+    font-size: 0;                              /* 重置繼承來的 0，下面重新給子元素字體 */
+    background: linear-gradient(135deg, #E84B1C 0%, #FF7A42 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 10px 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    box-shadow: 0 10px 22px rgba(232,75,28,.28);
+    white-space: nowrap;
+    min-width: 74px;
+    font-family: inherit;
+    letter-spacing: 0;
+    position: relative;
+}
+.fb-step-time::before {
+    content: attr(data-months);
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+}
+.fb-step-time::after {
+    content: '個月';
+    font-size: 11px;
+    font-weight: 800;
+    margin-top: 3px;
+    letter-spacing: 1.5px;
+    opacity: .9;
+}
+/* 第一階段（學習期）用藍色強調 */
+.fb-step-arrow:not(.arrow-cross) .fb-step-time {
+    background: linear-gradient(135deg, #009DB5 0%, #3DCBDE 100%);
+    box-shadow: 0 10px 22px rgba(0,157,181,.26);
+}
+.fb-step-arrow.arrow-cross .fb-step-time { /* 晉升處經理的跨期 */ }
+
+/* Hero 統計：3 年挑戰經理人 */
+.fb-career-cta {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 22px 28px;
+    background: linear-gradient(120deg, #fff5f2 0%, #fff 50%, #eff9fb 100%);
+    border-radius: 20px;
+    border: 1.5px solid rgba(232,75,28,.24);
+    box-shadow: 0 14px 32px rgba(232,75,28,.08);
+    flex-wrap: wrap;
+    text-align: left;
+}
+.fb-career-cta::before {
+    content: '挑戰';
+    font-size: 14px;
+    font-weight: 800;
+    color: #7A8B9A;
+    letter-spacing: 4px;
+}
+.fb-career-cta::after {
+    content: '';
+    display: inline-flex;
+    width: 1px; height: 44px;
+    background: rgba(232,75,28,.22);
+    margin: 0 4px;
+}
+.fb-career-cta-big {
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #E84B1C 0%, #C93F15 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+}
+.fb-career-cta-big small { font-size: 22px; margin-left: 2px; }
+.fb-career-cta-txt {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1A2B3C;
+    letter-spacing: -.3px;
+}
+.fb-career-cta-txt strong { color: #C93F15; }
+
+/* ── 03 薪資卡（重新設計：突顯前25%高薪） ── */
+.fb-salary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+}
+@media (max-width: 1400px) { .fb-salary-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.fb-sal-card {
+    position: relative;
+    background: #fff;
+    border: 1.5px solid rgba(0,157,181,.16);
+    border-radius: 20px;
+    padding: 18px 18px 16px;
+    transition: all 0.25s;
+    box-shadow: 0 6px 18px rgba(15,45,82,.06);
+    overflow: hidden;
+}
+.fb-sal-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #E84B1C 0%, #FF7A42 100%);
+    opacity: .85;
+}
+.fb-sal-card:hover {
+    border-color: rgba(232,75,28,.4);
+    box-shadow: 0 14px 28px rgba(232,75,28,.12);
+    transform: translateY(-2px);
+}
+.fb-sal-card.top-card {
+    background: linear-gradient(160deg, #fff8e9 0%, #fff5f2 45%, #eff9fb 100%);
+    border-color: rgba(212,155,55,.5);
+    box-shadow: 0 14px 36px rgba(212,155,55,.18);
+}
+.fb-sal-card.top-card::before {
+    background: linear-gradient(90deg, #D49B37 0%, #F5C96A 50%, #D49B37 100%);
+    height: 5px;
+    opacity: 1;
+}
+
+/* 卡頭：職級 + 代碼 + 前25%標籤 */
+.fb-sal-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+.fb-sal-rank {
+    font-size: 15px;
+    font-weight: 900;
+    color: #1A2B3C;
+    letter-spacing: -.3px;
+}
+.fb-sal-code {
+    font-size: 10px;
+    background: rgba(0,157,181,.12);
+    color: #00647A;
+    border: 1px solid rgba(0,157,181,.22);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+.fb-sal-pct-tag {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #fff;
+    background: linear-gradient(135deg, #E84B1C 0%, #FF7A42 100%);
+    padding: 3px 9px;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(232,75,28,.28);
+}
+.fb-sal-card.top-card .fb-sal-pct-tag {
+    background: linear-gradient(135deg, #B07820 0%, #D49B37 50%, #F5C96A 100%);
+    box-shadow: 0 4px 10px rgba(176,120,32,.32);
+}
+
+/* Hero 數字：平均月收入（卡片主角），用 clamp 避免切字 */
+.fb-sal-hero {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin: 4px 0 12px;
+    line-height: 1;
+    min-width: 0;
+}
+.fb-sal-hero-num {
+    font-size: clamp(30px, 3.2vw, 46px);
+    font-weight: 900;
+    letter-spacing: -1.8px;
+    background: linear-gradient(135deg, #E84B1C 0%, #C93F15 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    white-space: nowrap;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+.fb-sal-card.top-card .fb-sal-hero-num {
+    font-size: clamp(28px, 3vw, 42px);
+    background: linear-gradient(135deg, #8C5E18 0%, #D49B37 45%, #F5C96A 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.fb-sal-hero-unit {
+    font-size: 12px;
+    font-weight: 800;
+    color: #7A8B9A;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* 其他百分位作為參考資料，三欄並排 */
+.fb-sal-refs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0,157,181,.2);
+}
+.fb-sal-ref {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+}
+.fb-sal-ref-label {
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #8AACB8;
+    letter-spacing: 1px;
+}
+.fb-sal-ref-num {
+    font-size: 12px;
+    font-weight: 800;
+    color: #3A6070;
+    font-family: 'Courier New', monospace;
+    letter-spacing: -.3px;
+}
+.fb-sal-ref.hi .fb-sal-ref-label { color: #E84B1C; }
+.fb-sal-ref.hi .fb-sal-ref-num   { color: #C93F15; font-weight: 900; }
+.fb-sal-note { font-size: 11px; color: #A8B8C0; font-family: 'Courier New', monospace; margin-top: 8px; }
+
+/* ── 04 收入無上限 ── */
+.fb-income-table {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1.5px solid rgba(0,157,181,.16);
+    margin-bottom: 20px;
+}
+.fb-income-head {
+    display: grid;
+    grid-template-columns: 180px 1fr 160px 180px;
+    background: linear-gradient(90deg, rgba(232,75,28,.08), rgba(0,157,181,.08));
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 900;
+    color: #3A6070;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    gap: 12px;
+    border-bottom: 1.5px solid rgba(0,157,181,.14);
+}
+.fb-income-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 160px 180px;
+    padding: 16px 16px;
+    font-size: 13px;
+    color: #3A5060;
+    gap: 12px;
+    border-bottom: 1px solid rgba(0,157,181,.09);
+    align-items: start;
+    line-height: 1.6;
+}
+.fb-income-row:last-child { border-bottom: none; }
+.fb-income-row.fb-income-top {
+    background: linear-gradient(90deg, rgba(232,75,28,.04), rgba(0,157,181,.03));
+}
+.fb-ir-rank { display: block; font-size: 14px; font-weight: 900; color: #1A2B3C; margin-bottom: 4px; }
+.fb-ir-code { font-size: 10px; color: #009DB5; font-family: 'Courier New', monospace; letter-spacing: 0.5px; }
+.fb-income-row strong { color: #C93F15; font-weight: 900; }
+.fb-unlimited-cta {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 900;
+    color: #1A2B3C;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(232,75,28,.06), rgba(0,157,181,.06));
+    border-radius: 16px;
+    letter-spacing: -0.2px;
+}
+
+/* ── Button size boost (no icon = need visual weight) ── */
+.s6-choice-btn .s6-choice-label {
+    font-size: 36px !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.5px !important;
+}
+.s6-choice-btn.yes .s6-choice-label { color: #C93F15 !important; }
+.s6-choice-btn.no .s6-choice-label { color: #00647A !important; }
+

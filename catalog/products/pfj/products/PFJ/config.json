@@ -1,0 +1,159 @@
+{
+  "code": "PFJ",
+  "name": "美富紅盈",
+  "fullName": "富邦人壽美富紅盈外幣分紅終身壽險",
+  "currency": "USD",
+  "engineType": "wholelife_dividend",
+  "keyPrefix": "PFJ",
+  "periodOptions": [
+    6
+  ],
+  "periodLabels": {
+    "6": "6 年期"
+  },
+  "ageRange": {
+    "6": {
+      "min": 0,
+      "max": 76
+    }
+  },
+  "sumLimits": [
+    {
+      "ageMax": 15,
+      "min": 2,
+      "max": 30
+    },
+    {
+      "ageMax": 76,
+      "min": 2,
+      "max": 300
+    }
+  ],
+  "discount": {
+    "6": {
+      "highAmount": [
+        {
+          "minSum": 15,
+          "pct": 1
+        }
+      ],
+      "paymentMethod": 1,
+      "cap": 2
+    }
+  },
+  "modes": {
+    "6": [
+      {
+        "key": "total",
+        "label": "6年總存",
+        "default": 100,
+        "quickPicks": [
+          50,
+          100,
+          300,
+          600,
+          1000
+        ]
+      },
+      {
+        "key": "annual",
+        "label": "年存",
+        "default": 10,
+        "quickPicks": [
+          5,
+          10,
+          20,
+          50,
+          100
+        ]
+      },
+      {
+        "key": "target",
+        "label": "目標壽險金額",
+        "default": 300,
+        "quickPicks": [
+          100,
+          300,
+          500,
+          1000,
+          2000
+        ],
+        "targetField": "death",
+        "targetYear": 6
+      }
+    ]
+  },
+  "columns": [
+    {
+      "key": "year",
+      "label": "年度"
+    },
+    {
+      "key": "age",
+      "label": "年齡"
+    },
+    {
+      "key": "paid_yr",
+      "label": "折扣後保費"
+    },
+    {
+      "key": "paid_cum",
+      "label": "折扣後總保費"
+    },
+    {
+      "key": "surr",
+      "label": "解約金"
+    },
+    {
+      "key": "profit",
+      "label": "解約獲利"
+    },
+    {
+      "key": "death",
+      "label": "身故金",
+      "bold": true
+    }
+  ],
+  "bonus": {
+    "lucky": [
+      {
+        "period": 6,
+        "minAnnualUsd": 12000,
+        "pct": 2
+      }
+    ],
+    "wallet": [
+      {
+        "period": 6,
+        "minAnnualUsd": 24000
+      }
+    ],
+    "walletAmount": 8000,
+    "currencyTable": {
+      "lucky": {
+        "USD": {
+          "lump": null,
+          "shortYr": 24000,
+          "longYr": 12000
+        },
+        "AUD": {
+          "lump": null,
+          "shortYr": 38000,
+          "longYr": 19000
+        }
+      },
+      "wallet": {
+        "USD": {
+          "lump": 60000,
+          "shortYr": 45000,
+          "longYr": 24000
+        },
+        "AUD": {
+          "lump": 95000,
+          "shortYr": 71000,
+          "longYr": 38000
+        }
+      }
+    }
+  }
+}

@@ -647,7 +647,7 @@
     setFlow(prefix+'-netflow',netFlow);
     var concl=$(prefix+'-conclusion');
     if(concl){
-      concl.textContent=quickConclusion(plan.payoffYear,netFlow,plan.monthlyIncome);
+      concl.textContent=quickConclusion(plan.payoffYear,netFlow,plan.monthlyIncome,plan.policyCost);
       concl.className='plan-conclusion '+quickTone(plan.payoffYear,netFlow);
     }
     setText(prefix+'-loanpay','-'+money(totalPay||0));
@@ -675,11 +675,14 @@
     if(!payoffYear) return 'is-warn';
     return netFlow>=0?'is-ok':'is-mixed';
   }
-  function quickConclusion(payoffYear,netFlow,incomeAfterPayoff){
+  function quickConclusion(payoffYear,netFlow,monthlyIncome,policyCost){
     var during=netFlow>=0?'結清前每月多 '+money(netFlow):'結清前每月需自付 '+money(Math.abs(netFlow));
     if(payoffYear){
-      // 結清後房貸與保單借款都結束，剩下的就是 V 月配息本身的現金流
-      return '可以在第 '+payoffYear+' 年結清貸款，結清後每月有 '+money(incomeAfterPayoff)+' 現金流（'+during+'）';
+      // 只有房貸在達標年結清；方案二的保單借款本金未償還，借款利息仍會持續。
+      var remainingPolicyCost=Math.max(policyCost||0,0);
+      var afterPayoff=monthlyIncome-remainingPolicyCost;
+      var policyNote=remainingPolicyCost>0?'，已持續扣除保單借款月息 '+money(remainingPolicyCost):'';
+      return '可以在第 '+payoffYear+' 年結清房貸，結清後每月現金流為 '+money(afterPayoff)+policyNote+'（'+during+'）';
     }
     return '貸款年期內尚無法一次結清，'+(netFlow>=0?'每月多 '+money(netFlow)+' 現金流':'每月需自付 '+money(Math.abs(netFlow)));
   }

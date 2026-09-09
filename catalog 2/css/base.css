@@ -1,0 +1,241 @@
+/* ═══════════════════════════════════════════
+   base.css — GodzillaPaul Portal 共用樣式
+   ═══════════════════════════════════════════ */
+
+/* ── Reset & base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100vw;
+  touch-action: pan-y;
+  color: #fff;
+  font-family: "蘭亭黑-繁", "Lantinghei TC", "PingFang TC", "Noto Sans TC",
+    "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+
+/* ── Design tokens ── */
+:root {
+  --gold:  #d8b45f;
+  --gold2: #f6dc94;
+  --ice:   #b9e7f2;
+  --teal:  #2ed3c2;
+  --high:  #ffffff;
+  --soft-text: rgba(255, 255, 255, .82);
+  --low-text:  rgba(230, 241, 246, .68);
+  --line:  rgba(255, 255, 255, .12);
+  --line2: rgba(255, 255, 255, .20);
+  --shadow: 0 28px 80px rgba(0, 0, 0, .36);
+  --r: clamp(20px, 4vw, 30px);
+}
+
+/* ── Shell (content width) ── */
+.shell {
+  width: min(1180px, calc(100% - clamp(20px, 4vw, 40px)));
+  margin: 0 auto;
+}
+
+/* ── Topbar ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: clamp(10px, 2vw, 16px) 0;
+}
+.topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 10, 18, .88) 0%,
+    rgba(4, 10, 18, .62) 55%,
+    transparent 100%
+  );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  mask-image: linear-gradient(180deg, #000 0%, #000 70%, transparent 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── Brand badge (logo pill) ── */
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-badge {
+  position: relative;
+  width: clamp(44px, 6vw, 58px);
+  height: clamp(44px, 6vw, 58px);
+  border-radius: clamp(14px, 3vw, 21px);
+  padding: 5px;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+  border: 1px solid rgba(246, 220, 148, .38);
+  box-shadow: 0 14px 38px rgba(0,0,0,.32),
+              inset 0 1px 0 rgba(255,255,255,.18),
+              0 0 0 1px rgba(185,231,242,.08);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+.brand-badge::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .96);
+  z-index: 0;
+  box-shadow: inset 0 0 0 1px rgba(8, 21, 34, .08);
+}
+.brand-badge::after {
+  content: "";
+  position: absolute;
+  top: -70%; left: -120%;
+  width: 72%; height: 240%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: rotate(24deg);
+  transition: left .75s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+.brand:hover .brand-badge::after { left: 135%; }
+.brand-badge img {
+  position: relative;
+  z-index: 1;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.16));
+}
+.brand small {
+  display: block;
+  color: var(--gold2);
+  font-size: clamp(9px, 1.4vw, 11px);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  font-weight: 950;
+}
+.brand strong {
+  display: block;
+  margin-top: 1px;
+  color: #fff;
+  font-size: clamp(14px, 2.2vw, 18px);
+  font-weight: 950;
+  letter-spacing: .01em;
+  text-shadow: 0 1px 18px rgba(255,255,255,.12);
+}
+
+/* ── Pill tag ── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .07);
+  color: rgba(255, 255, 255, .82);
+  font-size: 12px;
+  font-weight: 850;
+  backdrop-filter: blur(18px);
+}
+.pulse {
+  width: 7px; height: 7px;
+  border-radius: 999px;
+  background: var(--gold2);
+  box-shadow: 0 0 0 6px rgba(243, 217, 143, .14);
+  flex-shrink: 0;
+}
+
+/* ── Section skeleton ── */
+.section { padding: clamp(16px, 3vw, 26px) 0 clamp(40px, 6vw, 62px); }
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: clamp(14px, 2.5vw, 20px);
+}
+.section-kicker {
+  color: var(--gold2);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.section h2 {
+  margin-top: 6px;
+  color: #fff;
+  font-size: clamp(28px, 4.5vw, 42px);
+  line-height: 1.04;
+  letter-spacing: -.05em;
+}
+
+/* ── Filter tabs ── */
+.seg {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .16);
+  overflow: auto;
+  min-height: 48px;
+}
+.seg button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, .64);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  min-height: 40px;
+}
+.seg button.active {
+  background: linear-gradient(135deg, #fff, #f6dc94);
+  color: #081522;
+}
+
+/* ── Footer card ── */
+.footer-card {
+  margin: 0 0 clamp(28px, 5vw, 44px);
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .12);
+  color: rgba(255, 255, 255, .58);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none; }
+  .brand-badge::after,
+  .logo-circle img,
+  .tool-card,
+  .arrow { transition: none; }
+}

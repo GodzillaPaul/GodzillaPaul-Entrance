@@ -76,7 +76,6 @@ window.PF566_CONFIG =
   "columns": [
     { "key": "year",     "label": "年度" },
     { "key": "age",      "label": "年齡" },
-    { "key": "paid_yr",  "label": "折扣後保費" },
     { "key": "paid_cum", "label": "折扣後總保費" },
     { "key": "surv_yr",  "label": "年度生存金" },
     { "key": "surv_pct", "label": "生存金%" },

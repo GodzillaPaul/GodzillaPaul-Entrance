@@ -141,9 +141,30 @@ input { font-family: inherit; }
 
 .fx-refresh-btn { border: 1px solid var(--border); background: white; padding: 6px 14px; border-radius: 999px; font: inherit; font-size: 12px; color: var(--muted); cursor: pointer; }
 .fx-refresh-btn:hover { color: var(--accent); border-color: var(--accent); }
-.fx-refresh-btn:disabled { opacity: .55; cursor: wait; color: var(--muted); }
 
-.summary-pill { background: var(--accent); color: white; border-radius: 999px; padding: 7px 16px; font-size: 13px; margin: 6px 0 14px 0; display: inline-block; font-weight: 600; }
+.summary-action-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0 14px; }
+.summary-pill { background: var(--accent); color: white; border-radius: 999px; padding: 7px 16px; font-size: 13px; margin: 0; display: inline-block; font-weight: 600; }
+
+/* 減額繳清破解 */
+.paidup-tools { display: inline-flex; margin: 0; }
+.paidup-launch {
+  border: 1px solid #1d1d1f; border-radius: 999px; padding: 6px 14px;
+  background: #1d1d1f; color: white; font: inherit; font-size: 12px;
+  font-weight: 700; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+.paidup-launch:hover, .paidup-launch.active { background: var(--accent); }
+.paidup-panel {
+  display: none; margin: -2px 0 18px; padding: 14px 16px;
+  background: white; border: 1px solid var(--accent-mint); border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+.paidup-panel.show { display: block; }
+.paidup-panel-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.paidup-label { color: var(--ink); font-size: 14px; font-weight: 700; }
+.paidup-years { display: flex; gap: 8px; flex-wrap: wrap; }
+.paidup-year-btn { border: 1px solid var(--border); background: white; color: var(--muted); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.paidup-year-btn:hover { border-color: var(--accent); color: var(--accent); }
+.paidup-year-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
 
 /* ============ INFOGRAPHIC (PFW 獨有對比圖) ============ */
 .info-section { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 18px; }
@@ -302,6 +323,7 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
   table.illu thead th { font-size: 11px; padding: 8px 6px; }
   table.illu td { padding: 7px 6px; }
   .prod-btn { padding: 6px 12px; font-size: 12px; }
+  .paidup-panel { padding: 14px; }
 }
 
 /* ── GP 品牌角落（左上角，絕對定位，不改變 header 高度）── */
@@ -396,18 +418,14 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
   .gp-corner-badge { width: 36px; height: 36px; border-radius: 10px; }
 }
 </style>
-<style>
-/* 已下架活動：隱藏馬上幸福與富邦錢包回饋區 */
-.bonus-row, .bonus-pill, #bonus-lucky-pill, #bonus-wallet-pill { display: none !important; }
-</style>
-<!-- GodzillaPaul favicon / app icons -->
-<link rel="icon" href="../../../login-assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="16x16" href="../../../login-assets/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../../../login-assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="../../../login-assets/favicon-48x48.png">
-<link rel="apple-touch-icon" sizes="180x180" href="../../../login-assets/apple-touch-icon.png">
-<link rel="manifest" href="../../../login-assets/site.webmanifest">
-<meta name="msapplication-config" content="../../../login-assets/browserconfig.xml">
+<link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/icon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/icon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon/icon-512x512.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2e8b7e">
 </head>
 <body>
 
@@ -471,7 +489,7 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
     </div>
     <div class="ctrl-right">
       <div class="pill-toggle" id="ccyToggle">
-        <button class="pill-btn active" data-c="TWD">台幣&nbsp;<input class="exrate-inline" id="exrate" value="32.0" type="number" step="0.1" min="1" onclick="event.stopPropagation()"></button>
+        <button class="pill-btn active" data-c="TWD">台幣&nbsp;<input class="exrate-inline" id="exrate" value="32.00" type="number" step="0.01" min="1" onclick="event.stopPropagation()"></button>
         <button class="pill-btn" data-c="USD">美元</button>
       </div>
       <div class="fx-status" id="fxStatus"></div>
@@ -522,8 +540,19 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
     <span class="quick-unit" id="quick-retire-unit">萬台幣/年</span>
   </div>
 
-  <div class="summary-pill" id="summary-pill" style="display:none"></div>
-  <button class="fx-refresh-btn" id="fxRefresh" style="margin-left:8px" type="button" title="重新抓取最新美元兌台幣匯率">↻ 更新最新匯率</button>
+  <div class="summary-action-row">
+    <div class="summary-pill" id="summary-pill" style="display:none"></div>
+    <button class="fx-refresh-btn" id="fxRefresh">↻ 更新匯率</button>
+    <span class="paidup-tools" id="paidup-tools">
+      <button class="paidup-launch" id="paidup-launch" type="button">🔓 破解減額繳清</button>
+    </span>
+  </div>
+  <div class="paidup-panel" id="paidup-panel">
+    <div class="paidup-panel-row">
+      <span class="paidup-label" id="paidup-label">選擇已繳年數</span>
+      <div class="paidup-years" id="paidup-years"></div>
+    </div>
+  </div>
 
   <!-- INFOGRAPHIC 對比圖 (PFW 獨有) -->
   <div class="info-section" id="info-section" style="display:none">
@@ -591,7 +620,7 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
 
   <!-- 主表格 -->
   <div class="tbl-section" id="tbl-section" style="display:none">
-    <div class="tbl-note">‧ 本保險為分紅保險單,保單紅利為預估值,本公司不保證其給付金額。最可能紅利‧繳清保險金額。</div>
+    <div class="tbl-note" id="tbl-note">‧ 本保險為分紅保險單,保單紅利為預估值,本公司不保證其給付金額。最可能紅利‧繳清保險金額。</div>
     <div class="tbl-wrap">
       <table class="illu">
         <thead><tr id="thead-row">
@@ -665,9 +694,10 @@ table.illu tr.surv-row td { background: var(--milestone) !important; }
 </div>
 
 <!-- 商品設定 + 精算資料 + 引擎 -->
-<script src="products/PF566/config.js"></script>
-<script src="products/PF566/data.js"></script>
-<script src="engines/engine-retirement-income.js"></script>
+<script src="products/PF566/config.js?v=20260909-2"></script>
+<script src="products/PF566/data.js?v=20260909-2"></script>
+<script src="products/PF566/paid-up-data.js?v=20260909-2"></script>
+<script src="engines/engine-retirement-income.js?v=20260909-2"></script>
 
 <script>
 // ============================================================
@@ -686,6 +716,9 @@ let state = {
   mode: 'total', inputAmount: 100,
   directSum: null,
   currency: 'TWD', fxRate: 32.00,
+  paidUpActive: false,
+  paidUpYears: 1,
+  paidUpPanelOpen: false,
 };
 
 function fmt0(n) { return Math.round(n).toLocaleString('en-US'); }
@@ -702,6 +735,7 @@ function maxSumByAge(age) {
 function clampSum(s) { const minS = 0.5, maxS = maxSumByAge(state.insAge); return Math.max(minS, Math.min(maxS, +(Math.round(s * 10) / 10).toFixed(1))); }
 function getPeriod() { return (getVariant(state.prod) || CONFIG.productVariants[0]).period || 6; }
 function discCfg() { return CONFIG.discount[String(getPeriod())]; }
+function maxPaidUpYears() { return Math.max(1, getPeriod() - 1); }
 
 // ── 期間感知反推：N年總存 → 保額 ─────────────────────────────
 function amtWanFromNyrTotal(totalTWD, gender, age, prod, exrate, dCfg) {
@@ -771,6 +805,10 @@ function computePremiumWith(amtWan) {
 }
 
 function recompute() {
+  const paidupTools = document.getElementById('paidup-tools');
+  if (paidupTools) paidupTools.style.display = state.mode === 'retire' ? 'none' : '';
+  state.paidUpYears = Math.min(Math.max(1, state.paidUpYears), maxPaidUpYears());
+
   if (state.insAge < 0) {
     document.getElementById('h-age').textContent = '—';
     document.getElementById('h-age').classList.add('is-empty');
@@ -827,37 +865,73 @@ function recompute() {
 
   updateBonusPills(prem.discUSD);
 
-  document.getElementById('summary-pill').style.display = 'inline-block';
-  document.getElementById('summary-pill').innerHTML = `${getPeriod()} 年期 · <b>${amtWan} 萬</b> · ${variant.label} · 折扣率 ${(prem.discount * 100).toFixed(0)}%`;
+  const normalRows = E.computeBenefitTable(state.prod, state.gender, state.insAge, amtWan, 2);
+  const paidUpResult = state.paidUpActive
+    ? E.computePaidUpBenefitTable(state.prod, state.gender, state.insAge, amtWan, state.paidUpYears, 2)
+    : null;
+  const rows = paidUpResult ? paidUpResult.rows : normalRows;
 
-  const rows = E.computeBenefitTable(state.prod, state.gender, state.insAge, amtWan, 2);
+  document.getElementById('summary-pill').style.display = 'inline-block';
+  document.getElementById('summary-pill').innerHTML = paidUpResult
+    ? `${getPeriod()} 年期 · <b>${amtWan} 萬</b> · 減額繳清：已繳 ${state.paidUpYears} 年`
+    : `${getPeriod()} 年期 · <b>${amtWan} 萬</b> · ${variant.label} · 折扣率 ${(prem.discount * 100).toFixed(0)}%`;
+
+  renderPaidUpControls();
+
   if (rows) {
-    renderTable(rows, prem);
+    renderTable(rows, prem, paidUpResult);
     document.getElementById('tbl-section').style.display = 'block';
-    updateInfographic(amtWan, rows);
+    if (paidUpResult) document.getElementById('info-section').style.display = 'none';
+    else updateInfographic(amtWan, rows);
   }
   document.getElementById('empty-msg').style.display = 'none';
 }
 
-function renderTable(rows, prem) {
+function renderPaidUpControls() {
+  const panel = document.getElementById('paidup-panel');
+  const launch = document.getElementById('paidup-launch');
+  panel.classList.toggle('show', state.paidUpPanelOpen);
+  launch.classList.toggle('active', state.paidUpActive);
+  launch.innerHTML = state.paidUpActive ? `↩ 破解：繳 ${state.paidUpYears} 年｜點此還原` : '🔓 破解減額繳清';
+  document.getElementById('paidup-label').textContent = '選擇已繳年數';
+
+  const yearsEl = document.getElementById('paidup-years');
+  yearsEl.innerHTML = Array.from({ length: maxPaidUpYears() }, (_, i) => i + 1).map(y =>
+    `<button class="paidup-year-btn${state.paidUpActive && state.paidUpYears === y ? ' active' : ''}" type="button" data-years="${y}">繳 ${y} 年</button>`
+  ).join('');
+  yearsEl.querySelectorAll('.paidup-year-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.paidUpYears = parseInt(btn.dataset.years, 10);
+      state.paidUpActive = true;
+      state.paidUpPanelOpen = false;
+      recompute();
+    });
+  });
+
+}
+
+function renderTable(rows, prem, paidUpResult) {
+  const columns = CONFIG.columns;
   const thead = document.getElementById('thead-row');
-  thead.innerHTML = CONFIG.columns.map(c => `<th>${c.label}</th>`).join('');
+  thead.innerHTML = columns.map(c => `<th>${c.label}</th>`).join('');
 
   const annualUSD = prem.discUSD;
-  const period = getPeriod();
+  const payLimit = paidUpResult ? paidUpResult.paidYears : getPeriod();
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = rows.map(r => {
     const yr = r.yr;
-    const paid_yr = yr <= period ? annualUSD : 0;
-    const paid_cum = annualUSD * Math.min(yr, period);
+    const paid_cum = annualUSD * Math.min(yr, payLimit);
     const surv_pct = (r.surv > 0 && paid_cum > 0) ? (r.surv / paid_cum * 100).toFixed(1) + '%' : '—';
     const profit = r.cumSurv + r.surr - paid_cum;
-    const cls = r.surv > 0 ? 'surv-row' : '';
-    const cells = CONFIG.columns.map(c => {
+    const classes = [];
+    if (r.surv > 0) classes.push('surv-row');
+    const cells = columns.map(c => {
+      if (r.isCompressed && !['year', 'age', 'paid_cum'].includes(c.key)) {
+        return '<td class="txt">濃縮</td>';
+      }
       switch (c.key) {
         case 'year':     return `<td class="txt">${yr}</td>`;
         case 'age':      return `<td class="txt">${r.age}</td>`;
-        case 'paid_yr':  return `<td>${paid_yr === 0 ? '—' : fmt0(convert(paid_yr))}</td>`;
         case 'paid_cum': return `<td>${fmt0(convert(paid_cum))}</td>`;
         case 'surv_yr':  return `<td>${r.surv > 0 ? '<b>' + fmt0(convert(r.surv)) + '</b>' : '—'}</td>`;
         case 'surv_pct': return `<td>${r.surv > 0 ? '<b>' + surv_pct + '</b>' : '—'}</td>`;
@@ -868,9 +942,12 @@ function renderTable(rows, prem) {
         default: return '<td>—</td>';
       }
     }).join('');
-    return `<tr class="${cls}">${cells}</tr>`;
+    return `<tr class="${classes.join(' ')}">${cells}</tr>`;
   }).join('');
   document.getElementById('tbl-unit').textContent = state.currency === 'TWD' ? '新台幣元' : '美元';
+  document.getElementById('tbl-note').textContent = paidUpResult
+    ? `※ 於第 ${paidUpResult.paidYears} 保單年度屆滿時辦理減額繳清。${paidUpResult.method === 'paid-up-six-year-screenshot-aligned' ? '六年期第 6 年起列示濃縮後結果。' : ''}繳清後紅利與未來給付為最可能紅利情境推估。`
+    : '‧ 本保險為分紅保險單，保單紅利為預估值，本公司不保證其給付金額。最可能紅利‧繳清保險金額。';
 }
 
 // ====== Retire mode：跨商品比對 ======
@@ -1226,83 +1303,33 @@ function fillWheel(id, items, sel) {
 }
 
 // ====== FX ======
-const FX_DEFAULT_RATE = 32;
-const FX_CACHE_KEY = 'godzillapaul-usd-twd-rate-v1';
-
-function setFxRate(rate, status, meta = {}) {
+function setFxRate(rate, status) {
   state.fxRate = rate;
-  document.getElementById('exrate').value = rate.toFixed(1);
+  document.getElementById('exrate').value = rate.toFixed(2);
   const fxEl = document.getElementById('fxStatus');
-  if (status === 'live') {
-    const stamp = meta.asOf ? new Date(meta.asOf) : new Date();
-    const timeText = Number.isNaN(stamp.getTime()) ? '' : ' ' + stamp.toLocaleString('zh-TW', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
-    const sourceText = meta.source ? ` · ${meta.source}` : '';
-    fxEl.innerHTML = `<span class="live">● 最新匯率</span>${timeText}${sourceText}`;
-    try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify({rate, asOf: meta.asOf || new Date().toISOString(), source: meta.source || ''})); } catch (e) {}
-  }
-  else if (status === 'cached') fxEl.innerHTML = '<span class="failed">● 暫用最近匯率</span>';
+  if (status === 'live') fxEl.innerHTML = '<span class="live">● 即時匯率</span> ' + new Date().toLocaleString('zh-TW', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
   else if (status === 'manual') fxEl.innerHTML = '<span class="failed">● 手動匯率</span>';
-  else if (status === 'failed') fxEl.innerHTML = '<span class="failed">● 暫時無法更新，使用預設 32</span>';
+  else if (status === 'failed') fxEl.innerHTML = '<span class="failed">● 抓取失敗,使用預設 32</span>';
   else fxEl.textContent = '抓取中...';
   recompute();
 }
-
-function validFxRate(value) {
-  const rate = Number(value);
-  return Number.isFinite(rate) && rate >= 20 && rate <= 60 ? Number(rate.toFixed(1)) : null;
-}
-
 async function fetchRate() {
-  const refreshButton = document.getElementById('fxRefresh');
-  if (refreshButton?.disabled) return;
-  if (refreshButton) {
-    refreshButton.disabled = true;
-    refreshButton.setAttribute('aria-busy', 'true');
-    refreshButton.textContent = '↻ 更新中...';
-  }
   document.getElementById('fxStatus').textContent = '抓取中...';
-
-  try {
-    const apis = [
-      {url: '/.netlify/functions/exchange-rate', getRate: d => d?.rate, getMeta: d => ({source: d?.source, asOf: d?.asOf})},
-      {url: 'https://open.er-api.com/v6/latest/USD', getRate: d => d?.rates?.TWD},
-      {url: 'https://api.exchangerate-api.com/v4/latest/USD', getRate: d => d?.rates?.TWD},
-      {url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', getRate: d => d?.usd?.twd}
-    ];
-    for (const api of apis) {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
-        let r;
-        try { r = await fetch(api.url, {cache: 'no-cache', signal: controller.signal}); }
-        finally { clearTimeout(timeout); }
-        if (!r.ok) continue;
-        const d = await r.json();
-        const rate = validFxRate(api.getRate(d));
-        if (rate) {
-          const meta = api.getMeta ? api.getMeta(d) : {source: new URL(api.url).hostname, asOf: new Date().toISOString()};
-          setFxRate(rate, 'live', meta);
-          return;
-        }
-      } catch (e) {}
-    }
+  const apis = [
+    {url: 'https://open.er-api.com/v6/latest/USD', getRate: d => d?.rates?.TWD},
+    {url: 'https://api.exchangerate-api.com/v4/latest/USD', getRate: d => d?.rates?.TWD},
+    {url: 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', getRate: d => d?.usd?.twd}
+  ];
+  for (const api of apis) {
     try {
-      const cached = JSON.parse(localStorage.getItem(FX_CACHE_KEY) || 'null');
-      const cachedRate = validFxRate(cached?.rate);
-      const cachedAge = Date.now() - new Date(cached?.asOf || 0).getTime();
-      if (cachedRate && cachedAge >= 0 && cachedAge <= 7 * 24 * 60 * 60 * 1000) {
-        setFxRate(cachedRate, 'cached');
-        return;
-      }
+      const r = await fetch(api.url, {cache: 'no-cache'});
+      if (!r.ok) continue;
+      const d = await r.json();
+      const rate = api.getRate(d);
+      if (rate && rate > 1 && rate < 100) { setFxRate(parseFloat(rate.toFixed(2)), 'live'); return; }
     } catch (e) {}
-    setFxRate(FX_DEFAULT_RATE, 'failed');
-  } finally {
-    if (refreshButton) {
-      refreshButton.disabled = false;
-      refreshButton.removeAttribute('aria-busy');
-      refreshButton.textContent = '↻ 更新最新匯率';
-    }
   }
+  setFxRate(state.fxRate, 'failed');
 }
 
 // ====== Mode unit labels ======
@@ -1354,6 +1381,16 @@ function bindEvents() {
     if (!isNaN(v) && v >= 1 && v <= 100) setFxRate(v, 'manual');
   });
   document.getElementById('fxRefresh').addEventListener('click', fetchRate);
+  document.getElementById('paidup-launch').addEventListener('click', () => {
+    if (state.insAge < 0) return openAgeModal();
+    if (state.paidUpActive) {
+      state.paidUpActive = false;
+      state.paidUpPanelOpen = false;
+    } else {
+      state.paidUpPanelOpen = !state.paidUpPanelOpen;
+    }
+    recompute();
+  });
 
   document.querySelectorAll('#modeRow .mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1441,7 +1478,5 @@ function init() {
 }
 init();
 </script>
-<script>window.GP_PRODUCT_PDF = { productKind: "income", vendorBase: "../assets/vendor/", logoSrc: "../../../login-assets/icon-512x512.png" };</script>
-<script src="../pdf-export.js"></script>
 </body>
 </html>

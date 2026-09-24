@@ -1038,27 +1038,18 @@ input::placeholder {
 </div>
 
 
+<script src="../shared/monthly-dividend-funds.js"></script>
 <script>
 // ===== 設定 =====
-// Google Sheet「發佈到網路」CSV 網址（這個有 CORS header，從 file:// 也能 fetch）
-const GOOGLE_SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv";
-const FUND_MARKET_API = "/.netlify/functions/fund-market";
+const MONTHLY_FUND_SOURCE = window.GP_MONTHLY_DIVIDEND;
+const GOOGLE_SHEET_CSV_URL = MONTHLY_FUND_SOURCE.googleSheetCsvUrl;
+const FUND_MARKET_API = MONTHLY_FUND_SOURCE.fundMarketApi;
 
 const STORAGE_KEY = "monthlyDividendStable.v1";
 const DEFAULT_STATE = {
-  funds: [
-    { name: "DSP5（安聯收益成長 AM 美元）", rate: 0.055, nav: 8.5978, navDate: "2026-04-23", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=TLZ64-DSP5" },
-    { name: "NGB1（高盛環球高收益 X 美元）", rate: 0.51, nav: 39.6500, navDate: "2026-04-23", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=ANZ89-NGB1" },
-    { name: "NGB2（高盛新興市場債 X 美元）", rate: 0.59, nav: 40.4700, navDate: "2026-04-23", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=ANZA2-NGB2" },
-    { name: "FBD6（富邦月月興利 VAKT）", rate: 0.0468, nav: 8.9966, navDate: "2026-04-23", currency: "TWD", url: "https://invest.fubonlife.com.tw/w/wr/cf02.djhtm?a=FBD6" },
-    { name: "ACE17（聯博 美國成長 AP 美元）", rate: 0.8322, nav: 74.4800, navDate: "2026-04-29", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=ALBT8-ACE17" },
-    { name: "JFP11（JPM 多重收益美元對沖 A 股穩定月配）", rate: 0.692, nav: 74.8000, navDate: "2026-08-19", rateDate: "2026-08-11", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wb/wb02.djhtm?a=JFZN3-JFP11&product=VCCF", rateUrl: "https://invest.fubonlife.com.tw/w/wb/wb05.djhtm?a=JFZN3-JFP11&product=VCCF", dynamicRate: true },
-    { name: "DST3（安聯 AI 收益成長 B 美元）", rate: 0.088, nav: 13.4500, navDate: "2026-06-02", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wr/wr01.djhtm?a=ACDD154-DST3" },
-    { name: "ACC3（聯博 多元資產收益 AI 美元）", rate: 0.075, nav: 9.5900, navDate: "2026-06-03", currency: "USD", url: "https://invest.fubonlife.com.tw/w/wr/wr02.djhtm?a=ACTI71-ACC3" }
-  ],
-  fxRate: 31.423,
-  fxDate: "2026-04-25",
+  funds: MONTHLY_FUND_SOURCE.cloneFunds(),
+  fxRate: MONTHLY_FUND_SOURCE.fxRate,
+  fxDate: MONTHLY_FUND_SOURCE.fxDate,
   selected: "DSP5（安聯收益成長 AM 美元）"
 };
 
@@ -1580,7 +1571,8 @@ function applyFundMarketPayload(payload) {
 
 async function updateFromOfficialFundMarket() {
   if (location.protocol === "file:") return 0;
-  const res = await fetch(FUND_MARKET_API + "?codes=JFP11&cacheBust=" + Date.now(), { cache: "no-store" });
+  const codes = MONTHLY_FUND_SOURCE.officialCodes.join(",");
+  const res = await fetch(FUND_MARKET_API + "?codes=" + encodeURIComponent(codes) + "&cacheBust=" + Date.now(), { cache: "no-store" });
   if (!res.ok) throw new Error("官方基金資料讀取失敗 (HTTP " + res.status + ")");
   return applyFundMarketPayload(await res.json());
 }

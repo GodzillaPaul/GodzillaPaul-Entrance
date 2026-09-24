@@ -2180,6 +2180,7 @@ td.neg { color: #b85a3f; }
 
 </div>
 
+<script src="../shared/monthly-dividend-funds.js"></script>
 <script>
 /* ================================================================
    UND 計算引擎（保額倍數對齊 UND-main-excel-fixed 4）
@@ -2276,14 +2277,12 @@ function runUND(opts) {
 /* ================================================================
    V 系列基金資料
    ================================================================ */
-const FUNDS = {
-  'DSP5':  { code: 'DSP5',  name: '安聯收益成長 AM',     rate: 0.055,  nav: 8.5978, currency: 'USD', navDate: '2026-04-23' },
-  'NGB1':  { code: 'NGB1',  name: '高盛環球高收益 X',     rate: 0.51,   nav: 39.65,  currency: 'USD', navDate: '2026-04-23' },
-  'NGB2':  { code: 'NGB2',  name: '高盛新興市場債 X',     rate: 0.59,   nav: 40.47,  currency: 'USD', navDate: '2026-04-23' },
-  'FBD6':  { code: 'FBD6',  name: '富邦月月興利 VAKT',    rate: 0.0468, nav: 8.9966, currency: 'TWD', navDate: '2026-04-23' },
-  'ACE17': { code: 'ACE17', name: '聯博 美國成長 AP',     rate: 0.8322, nav: 74.48,  currency: 'USD', navDate: '2026-04-29' },
-};
-const FX_DEFAULT = 31.423;
+const MONTHLY_FUND_SOURCE = window.GP_MONTHLY_DIVIDEND;
+const FUNDS = Object.fromEntries(MONTHLY_FUND_SOURCE.cloneFunds().map(fund => [fund.code, {
+  ...fund,
+  name: fund.shortName || fund.name
+}]));
+const FX_DEFAULT = MONTHLY_FUND_SOURCE.fxRate;
 let selectedFundCode = 'DSP5';
 
 function vFeeRate(twd) {
@@ -2460,8 +2459,8 @@ function onFundSelectChange() {
 /* ================================================================
    Google Sheet 自動更新淨值
    ================================================================ */
-const GOOGLE_SHEET_CSV_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv';
+const GOOGLE_SHEET_CSV_URL = MONTHLY_FUND_SOURCE.googleSheetCsvUrl;
+const FUND_MARKET_API = MONTHLY_FUND_SOURCE.fundMarketApi;
 
 function setAutoStatus(text, mode) {
   const el = document.getElementById('autoStatus');
@@ -2556,9 +2555,52 @@ function readSheetNumber(row, keys) {
   return NaN;
 }
 
+function readSheetValue(row, keys) {
+  for (const k of keys) {
+    if (row[k] !== undefined && row[k] !== '') return row[k];
+  }
+  return '';
+}
+
+function applyFundMarketPayload(payload) {
+  const rows = Array.isArray(payload && payload.funds) ? payload.funds : [];
+  let updated = 0;
+  rows.forEach(item => {
+    const code = String(item.code || '').trim().toUpperCase();
+    const fund = FUNDS[code];
+    if (!fund) return;
+    if (isFinite(Number(item.nav)) && Number(item.nav) > 0) {
+      fund.nav = Number(item.nav);
+      fund.navDate = normalizeDate(item.navDate) || fund.navDate;
+      updated++;
+    }
+    if (isFinite(Number(item.rate)) && Number(item.rate) > 0) {
+      fund.rate = Number(item.rate);
+      fund.rateDate = normalizeDate(item.rateDate) || fund.rateDate;
+    }
+    if (item.currency) fund.currency = item.currency;
+  });
+  return updated;
+}
+
+async function updateFromOfficialFundMarket() {
+  if (location.protocol === 'file:') return 0;
+  const codes = MONTHLY_FUND_SOURCE.officialCodes.join(',');
+  const res = await fetch(FUND_MARKET_API + '?codes=' + encodeURIComponent(codes) + '&cacheBust=' + Date.now(), { cache: 'no-store' });
+  if (!res.ok) throw new Error('官方基金資料讀取失敗 (HTTP ' + res.status + ')');
+  return applyFundMarketPayload(await res.json());
+}
+
 async function updateFromGoogleSheet() {
-  setAutoStatus('正在更新最新淨值…', 'loading');
+  setAutoStatus('正在更新最新淨值與提解資料…', 'loading');
   try {
+    let officialUpdated = 0;
+    try {
+      officialUpdated = await updateFromOfficialFundMarket();
+    } catch (officialErr) {
+      console.warn(officialErr);
+    }
+
     const res = await fetch(GOOGLE_SHEET_CSV_URL + '&_=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const csv = await res.text();
@@ -2586,6 +2628,17 @@ async function updateFromGoogleSheet() {
         FUNDS[code].navDate = date || new Date().toISOString().slice(0, 10);
         updated++;
       }
+
+      if (FUNDS[code].dynamicRate) {
+        const rate = readSheetNumber(row, ['rate', 'dividend', '配息', '每單位配息', '每單位配息金額', '宣告利率', '提解率', '每單位提解']);
+        if (isFinite(rate) && rate > 0 && rate < 100) {
+          FUNDS[code].rate = rate;
+          FUNDS[code].rateDate = normalizeDate(readSheetValue(row, ['rateDate', '配息日', '提解日', 'date', '日期', '更新日期'])) || FUNDS[code].rateDate;
+        }
+      }
+
+      const currency = readSheetValue(row, ['currency', '幣別']);
+      if (currency) FUNDS[code].currency = currency;
     });
 
     /* 抓匯率 */
@@ -2608,8 +2661,9 @@ async function updateFromGoogleSheet() {
     applySelectedFund();
     updateInputs();
 
-    if (updated > 0 || fxUpdated) {
+    if (updated > 0 || fxUpdated || officialUpdated > 0) {
       const parts = [];
+      if (officialUpdated > 0) parts.push(`官方基金 ${officialUpdated} 檔`);
       if (updated > 0) parts.push(`淨值 ${updated} 檔`);
       if (fxUpdated) parts.push('匯率');
       setAutoStatus(`✓ 已更新 ${parts.join(' · ')}`, 'ok');

@@ -2574,16 +2574,18 @@ function applyFundMarketPayload(payload) {
       fund.navDate = normalizeDate(item.navDate) || fund.navDate;
       updated++;
     }
-    if (isFinite(Number(item.rate)) && Number(item.rate) > 0) {
+    if (fund.dynamicRate && isFinite(Number(item.rate)) && Number(item.rate) > 0) {
       fund.rate = Number(item.rate);
       fund.rateDate = normalizeDate(item.rateDate) || fund.rateDate;
     }
+    fund._officialUpdated = true;
     if (item.currency) fund.currency = item.currency;
   });
   return updated;
 }
 
 async function updateFromOfficialFundMarket() {
+  Object.values(FUNDS).forEach(fund => { delete fund._officialUpdated; });
   if (location.protocol === 'file:') return 0;
   const codes = MONTHLY_FUND_SOURCE.officialCodes.join(',');
   const res = await fetch(FUND_MARKET_API + '?codes=' + encodeURIComponent(codes) + '&cacheBust=' + Date.now(), { cache: 'no-store' });
@@ -2610,7 +2612,7 @@ async function updateFromGoogleSheet() {
     let updated = 0, fxUpdated = false;
     Object.keys(FUNDS).forEach(code => {
       const row = findSheetRowForFund(rows, code);
-      if (!row) return;
+      if (!row || FUNDS[code]._officialUpdated) return;
       let nav = readSheetNumber(row, ['nav', '淨值', '最新淨值', '即時淨值']);
       if (!isFinite(nav) || nav <= 0) {
         const merged = ['即時淨值/宣告利率', '淨值/利率', '淨值/宣告利率'];
@@ -2623,7 +2625,7 @@ async function updateFromGoogleSheet() {
         }
       }
       const date = normalizeDate(row['date'] || row['日期'] || row['navDate'] || row['更新日期'] || '');
-      if (isFinite(nav) && nav > 0) {
+      if (isFinite(nav) && nav > 0 && date && (!FUNDS[code].navDate || date >= FUNDS[code].navDate)) {
         FUNDS[code].nav = nav;
         FUNDS[code].navDate = date || new Date().toISOString().slice(0, 10);
         updated++;
@@ -2631,7 +2633,8 @@ async function updateFromGoogleSheet() {
 
       if (FUNDS[code].dynamicRate) {
         const rate = readSheetNumber(row, ['rate', 'dividend', '配息', '每單位配息', '每單位配息金額', '宣告利率', '提解率', '每單位提解']);
-        if (isFinite(rate) && rate > 0 && rate < 100) {
+        const rateDate = normalizeDate(readSheetValue(row, ['rateDate', '配息日', '提解日', 'date', '日期', '更新日期']));
+        if (isFinite(rate) && rate > 0 && rate < 100 && rateDate && (!FUNDS[code].rateDate || rateDate >= FUNDS[code].rateDate)) {
           FUNDS[code].rate = rate;
           FUNDS[code].rateDate = normalizeDate(readSheetValue(row, ['rateDate', '配息日', '提解日', 'date', '日期', '更新日期'])) || FUNDS[code].rateDate;
         }
@@ -2820,6 +2823,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* 啟動時自動嘗試從 Google Sheet 抓最新淨值（背景進行） */
   updateFromGoogleSheet();
+  MONTHLY_FUND_SOURCE.startMarketRefresh(updateFromGoogleSheet);
 
   /* rail click */
   document.querySelectorAll('.rail-item').forEach((el, i) => {

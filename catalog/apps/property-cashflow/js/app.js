@@ -101,12 +101,14 @@
       var fund=market.funds.find(function(f){return fundCode(f.name).toUpperCase()===code});
       if(!fund)return;
       if(isFinite(Number(item.nav))&&Number(item.nav)>0){fund.nav=Number(item.nav);fund.navDate=normalizeDate(item.navDate)||fund.navDate;updated++}
-      if(isFinite(Number(item.rate))&&Number(item.rate)>0){fund.rate=Number(item.rate);fund.rateDate=normalizeDate(item.rateDate)||fund.rateDate}
+      if(fund.dynamicRate&&isFinite(Number(item.rate))&&Number(item.rate)>0){fund.rate=Number(item.rate);fund.rateDate=normalizeDate(item.rateDate)||fund.rateDate}
+      fund._officialUpdated=true;
       if(item.currency)fund.currency=item.currency;
     });
     return updated;
   }
   function refreshOfficialFundMarket(){
+    market.funds.forEach(function(f){delete f._officialUpdated;});
     if(location.protocol==='file:')return Promise.resolve(0);
     var codes=MONTHLY_FUND_SOURCE.officialCodes.join(',');
     return fetch(FUND_MARKET_API+'?codes='+encodeURIComponent(codes)+'&cacheBust='+Date.now(),{cache:'no-store'}).then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.json()}).then(applyFundMarketPayload);
@@ -116,7 +118,7 @@
     return refreshOfficialFundMarket().catch(function(){return 0}).then(function(officialUpdated){
     return fetch(MARKET_CSV_URL+'&cacheBust='+Date.now(),{cache:'no-store'}).then(function(res){if(!res.ok)throw new Error('HTTP '+res.status);return res.text()}).then(function(csv){
       var rows=parseCsv(csv), updated=0, fxUpdated=false;
-      market.funds.forEach(function(f){var r=findMarketRow(rows,f); if(!r)return; var nav=parseLoose(readField(r,['nav','淨值','最新淨值','即時淨值'])); if(!isFinite(nav)){['即時淨值/宣告利率','淨值/利率','淨值/宣告利率'].some(function(k){var raw=String(r[k]||''); if(raw.indexOf('%')>=0||raw.indexOf('％')>=0||raw.indexOf('利率')>=0)return false; nav=parseLoose(raw); return isFinite(nav)})} if(isFinite(nav)&&nav>0){f.nav=nav;f.navDate=normalizeDate(readField(r,['date','日期','navDate','更新日期']))||new Date().toISOString().slice(0,10);updated++} if(f.dynamicRate){var dist=parseLoose(readField(r,['rate','dividend','配息','每單位配息','每單位配息金額','宣告利率','提解率','每單位提解'])); if(isFinite(dist)&&dist>0&&dist<100){f.rate=dist;f.rateDate=normalizeDate(readField(r,['rateDate','配息日','提解日','日期','更新日期']))||f.rateDate;}} var cur=readField(r,['currency','幣別']); if(cur)f.currency=cur;});
+      market.funds.forEach(function(f){var r=findMarketRow(rows,f); if(!r||f._officialUpdated)return; var nav=parseLoose(readField(r,['nav','淨值','最新淨值','即時淨值'])); if(!isFinite(nav)){['即時淨值/宣告利率','淨值/利率','淨值/宣告利率'].some(function(k){var raw=String(r[k]||''); if(raw.indexOf('%')>=0||raw.indexOf('％')>=0||raw.indexOf('利率')>=0)return false; nav=parseLoose(raw); return isFinite(nav)})} var navDate=normalizeDate(readField(r,['date','日期','navDate','更新日期'])); if(isFinite(nav)&&nav>0&&navDate&&(!f.navDate||navDate>=f.navDate)){f.nav=nav;f.navDate=normalizeDate(readField(r,['date','日期','navDate','更新日期']))||new Date().toISOString().slice(0,10);updated++} if(f.dynamicRate){var dist=parseLoose(readField(r,['rate','dividend','配息','每單位配息','每單位配息金額','宣告利率','提解率','每單位提解'])); var rateDate=normalizeDate(readField(r,['rateDate','配息日','提解日','日期','更新日期'])); if(isFinite(dist)&&dist>0&&dist<100&&rateDate&&(!f.rateDate||rateDate>=f.rateDate)){f.rate=dist;f.rateDate=normalizeDate(readField(r,['rateDate','配息日','提解日','日期','更新日期']))||f.rateDate;}} var cur=readField(r,['currency','幣別']); if(cur)f.currency=cur;});
       var fxRow=rows.find(function(r){return ['code','基金','基金代碼','基金/保單代碼','保單代碼','代碼'].some(function(k){var v=String(r[k]||'').trim().toUpperCase();return v==='FX'||v==='USD/TWD'||v==='USDTWD'})});
       if(fxRow){var fx=parseLoose(readField(fxRow,['nav','rate','匯率','fxRate','即時淨值','即時淨值/宣告利率']));if(isFinite(fx)&&fx>0&&fx<100){market.fxRate=fx;market.fxDate=normalizeDate(readField(fxRow,['date','日期','更新日期']))||new Date().toISOString().slice(0,10);fxUpdated=true}}
       var audRow=rows.find(function(r){return ['code','基金','基金代碼','基金/保單代碼','保單代碼','代碼'].some(function(k){var v=String(r[k]||'').trim().toUpperCase();return v==='AUD/TWD'||v==='AUDTWD'})});
@@ -1081,5 +1083,5 @@
   var qt=$('q-copy-table'); if(qt){qt.onclick=function(){copyToClipboard('房產月收引擎【快速試算年度表】\n'+(($('q-table-title')||{}).textContent||'')+'\n'+(($('q-table-summary')||{}).textContent||''))}}
 
   populateFundSelects(); syncFxFields(); updateDividendNotes();
-  toggleMethods(); calcAll(); refreshMarket();
+  toggleMethods(); calcAll(); refreshMarket(); MONTHLY_FUND_SOURCE.startMarketRefresh(refreshMarket);
 })();

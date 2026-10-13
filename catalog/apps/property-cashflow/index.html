@@ -745,7 +745,7 @@
                 <div class="seg"><button id="q-method-equal" class="active" data-q-method="equal">一般本息平均</button><button id="q-method-wealth" data-q-method="wealth">理財型循環息</button></div>
                 <div class="grid2">
                   <div class="field"><label>增貸利率</label><div class="input-wrap"><input id="q-extra-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
-                  <div class="field q-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="q-extra-years" type="number" value="20"><span class="unit">年</span></div></div>
+                  <div class="field q-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="q-extra-years" type="number" min="1" max="40" step="1" value="20"><span class="unit">年</span></div></div>
                 </div>
                 <div class="step-actions"><button class="btn btn-primary" id="q-next-safety" type="button">下一步：配息與工具</button></div>
               </div>
@@ -864,7 +864,7 @@
           <p class="advisor-note" id="q-payoff-copy">快速試算會用 <span data-q-tool-name>PFK</span> 解約金對照剩餘房貸，回推可能一次結清房貸的年度。</p>
           <div class="proposal-actions compact-actions">
             <button class="btn btn-primary" id="q-copy-summary" type="button">複製結果</button>
-            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
+            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出提案 PDF</button>
           </div>
         </div>
       </div>
@@ -887,7 +887,7 @@
           <div class="quick-table-summary" id="q-table-summary">目前試算會顯示 <span data-q-tool-name>PFK</span> 解約金超過剩餘房貸的年度。</div>
           <div class="proposal-actions compact-actions">
             <button class="btn btn-primary" id="q-copy-table" type="button">複製此方案</button>
-            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
+            <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出提案 PDF</button>
           </div>
         </div>
       </div>

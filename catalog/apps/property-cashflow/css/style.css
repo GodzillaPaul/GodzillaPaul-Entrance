@@ -4143,3 +4143,21 @@ body {
   #quickCalc .quick-table-card .advisor-title-row .btn { width: 100%; }
   #quickCalc .result-back-row .btn { width: 100%; }
 }
+
+/* Quick calculator tool choice */
+#quickCalc .quick-tool-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:14px;background:#edf1ed;border:1px solid #dce5dc}
+#quickCalc .quick-tool-switch button{min-height:44px;border:0;border-radius:10px;background:transparent;color:#536052;font:inherit;font-weight:700;cursor:pointer}
+#quickCalc .quick-tool-switch button.active{background:#203c30;color:#fff;box-shadow:0 3px 10px #203c3020}
+#quickCalc .quick-tool-switch button:focus-visible{outline:3px solid #b89447;outline-offset:2px}
+#quickCalc [data-q-tool-name]{display:inline}
+#quickCalc #q-tool-hint{font-size:12px;line-height:1.65;margin:9px 0 0}
+#quickCalc .tool-title p [data-q-tool-name],#quickCalc .quick-rule-box [data-q-tool-name]{display:inline !important}
+#quickCalc #q-tool-hint{display:block}
+#quickCalc .a-safety-grid>div,#quickCalc .grid2>.field{min-width:0}
+#quickCalc .quick-tool-switch{grid-template-columns:repeat(2,minmax(0,1fr))}
+#quickCalc .quick-tool-switch button{min-width:0;padding:9px 5px;font-size:14px}
+@media(max-width:899px){
+ #quickCalc .a-safety-grid{grid-template-columns:minmax(0,1fr)}
+ #quickCalc .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #quickCalc .input-wrap input,#quickCalc .input-wrap select{min-width:0;width:100%;box-sizing:border-box}
+}

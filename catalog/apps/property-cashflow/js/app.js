@@ -1,5 +1,5 @@
 (function(){
-  var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', qMethod='equal', qSelectedPlan='p2', dLifeBudgetMode='pct';
+  var current='home', aMethod='wealth', bMethod='equal', dMethod='equal', cMethod='equal', qMethod='equal', qSelectedPlan='p2', qTool='PFK', dLifeBudgetMode='pct';
   var PFK2Y={"1":{"0":[356,11575.68],"1":[370,11573.03],"2":[384,11571.18],"3":[398,11570.15],"4":[413,11570.05],"5":[429,11571.6],"6":[445,11572.38],"7":[461,11573.94],"8":[479,11577.26],"9":[497,11581.24],"10":[515,11585.49],"11":[534,11591.24],"12":[554,11598.12],"13":[574,11603.28],"14":[595,11607.65],"15":[617,11610.42],"16":[640,11613.34],"17":[664,11615.08],"18":[688,11614.92],"19":[714,11616.06],"20":[740,11615.96],"21":[768,11617.28],"22":[796,11616.92],"23":[826,11618.11],"24":[856,11617.88],"25":[888,11619.25],"26":[921,11620.96],"27":[955,11622.7],"28":[990,11624.57],"29":[1027,11626.96],"30":[1064,11627.7],"31":[1103,11628.88],"32":[1142,11629.17],"33":[1183,11630.05],"34":[1226,11631.49],"35":[1270,11632.42],"36":[1316,11634.47],"37":[1363,11635.41],"38":[1412,11636.75],"39":[1463,11638.39],"40":[1516,11641.19],"41":[1573,11646.4],"42":[1632,11651.74],"43":[1693,11657.43],"44":[1757,11663.1],"45":[1823,11669.2],"46":[1891,11674.29],"47":[1962,11680.06],"48":[2035,11684.82],"49":[2111,11690.31],"50":[2190,11697.46],"51":[2269,11701.27],"52":[2352,11705.94],"53":[2437,11710.1],"54":[2526,11715.74],"55":[2617,11719.65],"56":[2712,11725.51],"57":[2811,11731.6],"58":[2913,11736.41],"59":[3018,11741.39],"60":[3128,11748.21],"61":[3254,11764.33],"62":[3386,11780.69],"63":[3523,11796.44],"64":[3665,11811.04],"65":[3814,11825.57],"66":[3968,11832.48],"67":[4129,11836.33],"68":[4296,11831.36],"69":[4470,11819.2],"70":[4650,11793.58],"71":[4764,11746.31],"72":[4881,11692.41],"73":[5000,11629.94],"74":[5000,11433.16],"75":[5000,11367.01],"76":[5000,11300.24],"77":[5000,11258.7],"78":[5000,11261.78]},"2":{"0":[270,11561.79],"1":[280,11558.05],"2":[291,11555.9],"3":[302,11555.19],"4":[313,11552.67],"5":[325,11552.99],"6":[338,11554.09],"7":[350,11553.57],"8":[363,11554.11],"9":[377,11556.36],"10":[391,11558.97],"11":[406,11561.82],"12":[422,11566.55],"13":[438,11570.08],"14":[454,11572.48],"15":[471,11574.3],"16":[489,11576.02],"17":[508,11578.15],"18":[527,11579.65],"19":[547,11580.07],"20":[567,11581.26],"21":[588,11582.19],"22":[610,11583.51],"23":[633,11584.83],"24":[657,11586.96],"25":[682,11588.6],"26":[708,11591.04],"27":[734,11591.37],"28":[762,11592.8],"29":[790,11593.97],"30":[821,11597.11],"31":[852,11598.56],"32":[884,11599.82],"33":[917,11600.96],"34":[951,11601.77],"35":[987,11603.34],"36":[1024,11604.47],"37":[1062,11605.3],"38":[1102,11606.88],"39":[1144,11608.62],"40":[1186,11609.33],"41":[1234,11615.66],"42":[1283,11620.11],"43":[1334,11625.87],"44":[1387,11631.01],"45":[1442,11634.95],"46":[1499,11639.55],"47":[1559,11644.4],"48":[1621,11649.36],"49":[1685,11652.99],"50":[1753,11659.57],"51":[1825,11667.63],"52":[1899,11674.24],"53":[1977,11682.61],"54":[2057,11688.89],"55":[2141,11696.76],"56":[2228,11703.21],"57":[2319,11711.03],"58":[2413,11717.59],"59":[2512,11725.5],"60":[2613,11732.14],"61":[2723,11744.22],"62":[2838,11755.49],"63":[2957,11766.76],"64":[3082,11777.68],"65":[3212,11789.41],"66":[3347,11800.17],"67":[3488,11811.69],"68":[3635,11821.6],"69":[3788,11829.05],"70":[3948,11828.76],"71":[4199,11855.16],"72":[4466,11863.12],"73":[4750,11846.4],"74":[4800,11636.6],"75":[4850,11572.38],"76":[4900,11506.16],"77":[4950,11437.74],"78":[5000,11368.5]}};
   var MONTHLY_FUND_SOURCE=window.GP_MONTHLY_DIVIDEND;
   var MARKET_CSV_URL=MONTHLY_FUND_SOURCE.googleSheetCsvUrl;
@@ -263,6 +263,31 @@
     return {sumW:r?r.sumW:0,annualBudgetWan:r?r.annualDiscUsd*fx/10000:0,totalBudgetWan:r?r.totalDiscUsd*fx/10000:0,death6Wan:row6.death*fx/10000,surr6Wan:row6.surr*fx/10000,annualUsd:r?r.annualDiscUsd:0,totalUsd:r?r.totalDiscUsd:0,age:age,sex:sex,fx:fx,rows:r?r.rows:[]};
   }
   
+  function quickToolLabel(){return qTool==='PF65'?'PF65':'PFK'}
+  function syncQuickTool(){
+    var isPF65=qTool==='PF65', ageInput=$('q-ins-age');
+    if(ageInput){ageInput.min='0';ageInput.max=isPF65?'59':'78';ageInput.value=String(clamp(Math.round(num('q-ins-age')),0,isPF65?59:78));}
+    ['pfk','pf65'].forEach(function(key){var button=$('q-tool-'+key);if(button){var selected=isPF65?key==='pf65':key==='pfk';button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));}});
+    document.querySelectorAll('#quickCalc [data-q-tool-name]').forEach(function(el){el.textContent=quickToolLabel();});
+    setText('q-tool-hint',isPF65?'PF65：65 歲退休、六年期，繳費兩年後減額繳清；後續數值沿用現有最可能紅利情境。第 3～5 年未列示完整解約金，不作結清判斷。':'PFK 沿用原本兩年期保費與年度解約金資料。');
+  }
+  function pf65FromAnnualBudget(annualBudgetWan,ageId,sexId,fxId){
+    var age=clamp(Math.round(num(ageId)),0,59),sex=($(sexId)&&$(sexId).value)||'1',gender=Number(sex),fx=Math.max(num(fxId)||32,1);
+    var engine=window.RetirementIncomeEngine,config=window.PF566_CONFIG,target=annualBudgetWan*10000/fx;
+    var empty={sumW:0,annualBudgetWan:0,totalBudgetWan:0,annualUsd:0,totalUsd:0,age:age,sex:sex,fx:fx,rows:[]};
+    if(!engine||!config||target<=0)return empty;
+    var prod='PF6506',discount=config.discount['6'],max=engine.getMaxAmount(age,config.sumLimits),best=0.5,bestDiff=Infinity,premium;
+    // Match the product's 0.1-wan sum increments and its own premium/discount rules.
+    for(var n=5;n<=Math.round(max*10);n++){
+      var candidate=n/10,p=engine.computePremium(prod,gender,age,candidate,fx,discount),diff=Math.abs(p.discUSD-target);
+      if(diff<bestDiff){bestDiff=diff;best=candidate;premium=p;}
+    }
+    var paid=engine.computePaidUpBenefitTable(prod,gender,age,best,2,2);
+    if(!paid||!premium)return empty;
+    var rows=paid.rows.map(function(row){return Object.assign({},row,{year:row.yr});});
+    return {sumW:best,annualBudgetWan:premium.discUSD*fx/10000,totalBudgetWan:premium.discUSD*fx*2/10000,annualUsd:premium.discUSD,totalUsd:premium.discUSD*2,age:age,sex:sex,fx:fx,rows:rows,paidYears:2,paidUpUSD:paid.paidUpUSD};
+  }
+
   function go(id){
     document.querySelectorAll('.slide').forEach(s=>s.classList.toggle('active',s.id===id));
     document.querySelectorAll('.rail-item').forEach(b=>b.classList.toggle('active',b.dataset.go===id));
@@ -370,6 +395,8 @@
   $('d-method-wealth').onclick=function(){dMethod='wealth';toggleMethods();calcD()};
   $('c-method-equal').onclick=function(){cMethod='equal';toggleMethods();calcC()};
   $('c-method-wealth').onclick=function(){cMethod='wealth';toggleMethods();calcC()};
+  if($('q-tool-pfk')) $('q-tool-pfk').onclick=function(){qTool='PFK';calcQ()};
+  if($('q-tool-pf65')) $('q-tool-pf65').onclick=function(){qTool='PF65';calcQ()};
   if($('q-method-equal')) $('q-method-equal').onclick=function(){qMethod='equal';toggleMethods();calcQ()};
   if($('q-method-wealth')) $('q-method-wealth').onclick=function(){qMethod='wealth';toggleMethods();calcQ()};
   
@@ -664,7 +691,8 @@
       var ratioLabel=r.balance>0?Math.round(ratio)+'%':'已還清';
       tr.innerHTML='<td>第 '+r.year+' 年</td><td>'+money(r.balance)+'</td><td>'+money(r.surr)+'</td>'+
         '<td class="meter-cell"><span class="meter" role="img" aria-label="覆蓋率 '+ratioLabel+'"><i class="'+(isCovered?'ok':'')+'" style="width:'+fill.toFixed(1)+'%"></i></span><b class="'+(isCovered?'good-cell':'muted-cell')+'">'+ratioLabel+'</b></td>'+
-        '<td>'+money(r.cumCash)+'</td><td>'+money(r.redeem)+'</td>';
+        '<td>'+money(r.cumCash)+'</td><td>'+(r.unavailable?'未列示':money(r.redeem))+'</td>';
+      if(r.unavailable) tr.innerHTML='<td>第 '+r.year+' 年</td><td>'+money(r.balance)+'</td><td>未列示</td><td>—</td><td>'+money(r.cumCash)+'</td><td>未列示</td>'; 
       body.appendChild(tr);
     });
   }
@@ -699,10 +727,10 @@
     renderQuickMilestones(quickPlanCache[qSelectedPlan]);
     var planName=qSelectedPlan==='p1'?'方案一':'方案二';
     setText('q-table-title',planName+'年度試算表');
-    setText('q-table-subtitle',qSelectedPlan==='p1'?'60% 配息，40% 做 PFK 兩年總預算。':'80% 配息，20% 付首年PFK，第二年保費由保單借款支應。');
+    setText('q-table-subtitle',qSelectedPlan==='p1'?'60% 配息，40% 做 '+quickToolLabel()+' 兩年總預算。':'80% 配息，20% 付首年'+quickToolLabel()+'，第二年保費由保單借款支應。');
     var payoff=reportText(qSelectedPlan==='p1'?'q-p1-payoff':'q-p2-payoff');
     var span=(quickPlanCache[qSelectedPlan]&&quickPlanCache[qSelectedPlan].rows.length)||20;
-    setText('q-table-summary',payoff==='尚未達成'?planName+'在 '+span+' 年貸款年期內，PFK 解約金尚未超過剩餘房貸，可提高可增貸金額或調整配置再比較。':planName+'推估 '+payoff+' 的 PFK 解約金會超過剩餘房貸，具備一次結清的觀察點；明細已列到房貸餘額歸零的第 '+span+' 年。');
+    setText('q-table-summary',payoff==='尚未達成'?planName+'在 '+span+' 年貸款年期內，'+quickToolLabel()+' 解約金尚未超過剩餘房貸，可提高可增貸金額或調整配置再比較。':planName+'推估 '+payoff+' 的 '+quickToolLabel()+' 解約金會超過剩餘房貸，具備一次結清的觀察點；明細已列到房貸餘額歸零的第 '+span+' 年。');
     var foldLabel=document.querySelector('#q-table-fold summary span');
     if(foldLabel) foldLabel.textContent='完整 '+span+' 年明細';
   }
@@ -717,7 +745,7 @@
     var investWan=Math.max(budgetWan*investRate,0);
     var pfkBudgetWan=Math.max(budgetWan*pfkRate,0);
     var annualPfkBudget=kind==='p1'?pfkBudgetWan/2:pfkBudgetWan;
-    var pfk=pfkFromAnnualBudget(annualPfkBudget,'q-ins-age','q-ins-sex','q-fx');
+    var pfk=(qTool==='PF65'?pf65FromAnnualBudget:pfkFromAnnualBudget)(annualPfkBudget,'q-ins-age','q-ins-sex','q-fx');
     var div=estimateDividend(investWan,'q-fund','q-fx');
     var policyRate=4, borrowedPremiumWan=kind==='p2'?pfk.annualBudgetWan:0;
     var annualPolicyInterest=kind==='p2'?borrowedPremiumWan*10000*policyRate/100:0;
@@ -730,15 +758,17 @@
       var surr=pfkRow.surr*pfk.fx;
       var annualCash=div.monthly*12-(year>=2?annualPolicyInterest:0);
       cumCash+=annualCash;
-      var pfkGap=surr-loan.balance;
+      var unavailable=!!pfkRow.isCompressed;
+      var pfkGap=unavailable?-Infinity:surr-loan.balance;
       var redeem=surr+cumCash-loan.balance;
       if(!payoffYear&&pfkGap>=0) payoffYear=year;
-      rows.push({year:year,balance:loan.balance,surr:surr,pfkGap:pfkGap,cumCash:cumCash,redeem:redeem});
+      rows.push({year:year,balance:loan.balance,surr:surr,pfkGap:pfkGap,cumCash:cumCash,redeem:redeem,unavailable:unavailable});
     }
     return {kind:kind,investWan:investWan,pfkBudgetWan:pfkBudgetWan,annualPfkBudgetWan:pfk.annualBudgetWan,totalPfkBudgetWan:kind==='p1'?pfk.totalBudgetWan:pfk.annualBudgetWan*2,monthlyIncome:div.monthly,annualIncome:div.monthly*12,policyCost:annualPolicyInterest/12,surr6Wan:(pfk.rows[5]?pfk.rows[5].surr*pfk.fx/10000:0),payoffYear:payoffYear,rows:rows,pfk:pfk};
   }
 
   function calcQ(){
+    syncQuickTool();
     var totalLoan=Math.max(num('q-total-loan'),0), budget=totalLoan;
     var loanYears=clamp(Math.round(num('q-extra-years'))||20,1,40);
     var totalPay=qMethod==='equal'?pay(totalLoan,num('q-extra-rate'),loanYears):interestOnly(totalLoan,num('q-extra-rate'));
@@ -769,13 +799,13 @@
     setFlow('q-safety-p2-netflow',p2Net);
     setFlow('q-result-netflow',leadNet);
     setText('q-result-netflow-label',leadName+'每月現金流');
-    setText('q-live-note','可增貸金額 '+wan(totalLoan)+' 直接作為兩個方案的配置基準，並以 PFK 解約金是否超過剩餘房貸作為結清觀察點。');
+    setText('q-live-note','可增貸金額 '+wan(totalLoan)+' 直接作為兩個方案的配置基準，並以 '+quickToolLabel()+' 解約金是否超過剩餘房貸作為結清觀察點。');
     setText('q-result-total-loan',wan(totalLoan)); setText('q-result-budget',wan1(budget)); setText('q-best-payoff',bestText); setText('q-best-payoff-strip',bestText);
 
     quickPlanCache={p1:p1,p2:p2};
     renderQuickPlan('q-p1',p1,p1.rows,totalPay); renderQuickPlan('q-p2',p2,p2.rows,totalPay);
-    setText('q-payoff-strip-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早讓 PFK 解約金超過剩餘房貸。':loanYears+' 年內 PFK 解約金尚未超過剩餘房貸。');
-    setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，PFK 解約金約可在第 '+best.payoffYear+' 年超過剩餘房貸。':loanYears+' 年貸款年期內 PFK 解約金尚未超過剩餘房貸，可提高可增貸金額、拉長配息累積或調整標的再試算。');
+    setText('q-payoff-strip-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早讓 '+quickToolLabel()+' 解約金超過剩餘房貸。':loanYears+' 年內 '+quickToolLabel()+' 解約金尚未超過剩餘房貸。');
+    setText('q-payoff-copy',best?'目前試算以 '+(best.kind==='p1'?'方案一':'方案二')+' 較早達標，'+quickToolLabel()+' 解約金約可在第 '+best.payoffYear+' 年超過剩餘房貸。':loanYears+' 年貸款年期內 '+quickToolLabel()+' 解約金尚未超過剩餘房貸，可提高可增貸金額、拉長配息累積或調整標的再試算。');
     renderQuickTable();
   }
 
@@ -1004,7 +1034,7 @@
   }
   function buildQuickReport(){
     setQuickStep('result', false); calcQ();
-    var html=reportHeader('快速試算','用可增貸金額快速比較兩種配置，觀察 PFK 解約金超過剩餘房貸的年度。','較早可能結清：'+reportText('q-best-payoff'));
+    var html=reportHeader('快速試算','用可增貸金額快速比較兩種配置，觀察 '+quickToolLabel()+' 解約金超過剩餘房貸的年度。','較早可能結清：'+reportText('q-best-payoff'));
     html+= '<div class="print-metrics">'+[
       reportMetric('可增貸金額',reportText('q-result-total-loan'),'gold'),
       reportMetric('增貸月付',reportText('q-result-total-pay')),
@@ -1015,30 +1045,32 @@
       reportLine('可增貸金額',reportValue('q-total-loan','萬元')),
       reportLine('增貸利率',reportValue('q-extra-rate','%')),
       reportLine('本息攤還年期',reportValue('q-extra-years','年')),
+      reportLine('工具',qTool==='PF65'?'PF65（六年期／繳兩年後減額繳清）':'PFK（原兩年期）'),
       reportLine('被保人年齡',reportValue('q-ins-age','歲')),
       reportLine('美元匯率',reportValue('q-fx',''))
     ].join('')+'</div>');
     html+= reportSection('方案比較','<div class="print-card-grid">'+
-      reportCard('方案一：60% 配息，40% PFK兩年總預算',[
+      reportCard('方案一：60% 配息，40% '+quickToolLabel()+'兩年總預算',[
         ['投入V月配息',reportText('q-p1-invest')],
-        ['PFK兩年總預算',reportText('q-p1-pfk-budget')],
+        [''+quickToolLabel()+'兩年總預算',reportText('q-p1-pfk-budget')],
         ['預估月配息',reportText('q-p1-income')],
-        ['第6年PFK現金價值',reportText('q-p1-surr6')],
+        ['第6年'+quickToolLabel()+'現金價值',reportText('q-p1-surr6')],
         ['每月淨現金流（結清前）',reportText('q-p1-netflow')],
-        ['PFK解約金超過剩餘房貸',reportText('q-p1-payoff')],
+        [''+quickToolLabel()+'解約金超過剩餘房貸',reportText('q-p1-payoff')],
         ['結論',reportText('q-p1-conclusion')]
       ],'')+
-      reportCard('方案二：80% 配息，20% 首年PFK',[
+      reportCard('方案二：80% 配息，20% 首年'+quickToolLabel()+'',[
         ['投入V月配息',reportText('q-p2-invest')],
-        ['PFK首年預算',reportText('q-p2-pfk-budget')],
+        [''+quickToolLabel()+'首年預算',reportText('q-p2-pfk-budget')],
         ['預估月配息',reportText('q-p2-income')],
         ['第二年保單借款月息',reportText('q-p2-policy-cost')],
         ['每月淨現金流（結清前）',reportText('q-p2-netflow')],
-        ['PFK解約金超過剩餘房貸',reportText('q-p2-payoff')],
+        [''+quickToolLabel()+'解約金超過剩餘房貸',reportText('q-p2-payoff')],
         ['結論',reportText('q-p2-conclusion')]
       ],'highlight')+'</div>');
-    html+= reportSection('方案一年度報表',reportTableFrom('q-p1-report',21).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>覆蓋率</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
-    html+= reportSection('方案二年度報表',reportTableFrom('q-p2-report',21).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th>覆蓋率</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
+    html+= reportSection('方案一年度報表',reportTableFrom('q-p1-report',21).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>'+quickToolLabel()+'解約金</th><th>覆蓋率</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
+    html+= reportSection('方案二年度報表',reportTableFrom('q-p2-report',21).replace('<thead><tr></tr></thead>','<thead><tr><th>年期</th><th>剩餘房貸</th><th>'+quickToolLabel()+'解約金</th><th>覆蓋率</th><th>累積配息還款</th><th>可結清差額</th></tr></thead>'));
+    html+= reportNote('工具資料說明',reportText('q-tool-hint'));
     html+= reportNote('快速判讀',reportText('q-payoff-copy'));
     return html;
   }

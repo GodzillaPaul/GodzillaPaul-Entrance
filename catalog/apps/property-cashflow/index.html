@@ -728,10 +728,10 @@
     <!-- CALCULATOR -->
     <section id="quickCalc" class="slide"><div class="slide-inner quick-slide">
       <div class="topline"><div class="kicker">E · QUICK CHECK</div><button class="ghost" data-go="home">返回總覽</button></div>
-      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入可增貸金額與還款條件，快速看兩種配置的結清年度。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，系統會自動分配配息與 PFK 預算。</span><span class="quick-result-copy">先比較兩個方案的可能結清年度，再點方案看年度試算表。</span><span class="quick-table-copy">年度試算表會標示 PFK 解約金是否已超過剩餘房貸。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
+      <div class="tool-title"><div><h2>快速試算</h2><p><span class="quick-mortgage-copy">先輸入可增貸金額與還款條件，快速看兩種配置的結清年度。</span><span class="quick-safety-copy">只設定配息標的、年齡、性別與匯率，系統會自動分配配息與 <span data-q-tool-name>PFK</span> 預算。</span><span class="quick-result-copy">先比較兩個方案的可能結清年度，再點方案看年度試算表。</span><span class="quick-table-copy">年度試算表會標示 <span data-q-tool-name>PFK</span> 解約金是否已超過剩餘房貸。</span></p></div><button class="ghost tool-home-btn" data-go="home" type="button">返回首頁</button></div>
       <div class="tool-stepper quick-stepper" aria-label="快速試算流程">
         <button class="step-mortgage" id="q-step-mortgage" type="button">1 房貸資料</button>
-        <button class="step-safety" id="q-step-safety" type="button">2 配息與PFK</button>
+        <button class="step-safety" id="q-step-safety" type="button">2 配息與工具</button>
         <button class="step-result" id="q-step-result" type="button">3 結果比較</button>
       </div>
       <div class="tool-layout quick-tool-layout">
@@ -747,7 +747,7 @@
                   <div class="field"><label>增貸利率</label><div class="input-wrap"><input id="q-extra-rate" type="number" step="0.01" value="2.6"><span class="unit">%</span></div></div>
                   <div class="field q-equal-only"><label>本息攤還年期</label><div class="input-wrap"><input id="q-extra-years" type="number" value="20"><span class="unit">年</span></div></div>
                 </div>
-                <div class="step-actions"><button class="btn btn-primary" id="q-next-safety" type="button">下一步：配息與PFK</button></div>
+                <div class="step-actions"><button class="btn btn-primary" id="q-next-safety" type="button">下一步：配息與工具</button></div>
               </div>
               <aside class="a-live-card quick-live-card">
                 <small>即時快速試算</small>
@@ -766,7 +766,14 @@
           <div class="q-input-page q-safety-page">
             <div class="a-safety-grid">
               <div>
-                <div class="panel-title"><h3>配息與PFK設定</h3><span class="pill-label">快速版</span></div>
+                <div class="panel-title"><h3>配息與工具設定</h3><span class="pill-label">快速版</span></div>
+                <div class="field quick-tool-field"><label id="q-tool-label">工具</label>
+                  <div class="quick-tool-switch" role="group" aria-labelledby="q-tool-label">
+                    <button type="button" id="q-tool-pfk" class="active" aria-pressed="true">PFK</button>
+                    <button type="button" id="q-tool-pf65" aria-pressed="false">PF65（2年）</button>
+                  </div>
+                  <p class="soft-note" id="q-tool-hint">PFK 沿用原本兩年期資料。</p>
+                </div>
                 <div class="field"><label>月配息標的</label><div class="input-wrap"><select id="q-fund"></select></div><div class="quick"><button class="chip" id="market-refresh-q" type="button">更新淨值/提解/匯率</button><span class="pill-label" id="q-market-status">準備同步月配息資料…</span></div></div>
                 <div class="grid2">
                   <div class="field"><label>被保人年齡</label><div class="input-wrap"><input id="q-ins-age" type="number" value="40"><span class="unit">歲</span></div></div>
@@ -774,8 +781,8 @@
                 </div>
                 <div class="field"><label>美元匯率 <small id="q-fx-date">USD/TWD 31.423｜2026-04-25｜AUD/TWD 22.425</small></label><div class="input-wrap"><input id="q-fx" type="number" step="0.001" value="31.423"><span class="unit">TWD/USD</span></div></div>
                 <div class="quick-rule-box">
-                  <div><b>方案一</b><span>可增貸金額 60% 投入 V 月配息，40% 做 PFK 兩年總預算。</span></div>
-                  <div><b>方案二</b><span>可增貸金額 80% 投入 V 月配息，20% 付 PFK 首年保費，第二年保費由保單借款。</span></div>
+                  <div><b>方案一</b><span>可增貸金額 60% 投入 V 月配息，40% 做 <span data-q-tool-name>PFK</span> 兩年總預算。</span></div>
+                  <div><b>方案二</b><span>可增貸金額 80% 投入 V 月配息，20% 付 <span data-q-tool-name>PFK</span> 首年保費，第二年保費由保單借款。</span></div>
                 </div>
                 <div class="step-actions"><button class="btn btn-outline" id="q-back-mortgage" type="button">返回房貸資料</button><button class="btn btn-primary" id="q-show-result" type="button">查看年度結果</button></div>
               </div>
@@ -788,7 +795,7 @@
                   <div><span>方案二保單借款月息 <small>第二年起</small></span><b id="q-safety-policy" data-raw="0">$0</b></div>
                   <div class="system-hidden"><span>可增貸金額</span><b id="q-safety-budget">500萬</b></div>
                 </div>
-                <p class="live-note">方案二投入配息本金較高，但第二年 PFK 保費會用保單借款處理。</p>
+                <p class="live-note">方案二投入配息本金較高，但第二年 <span data-q-tool-name>PFK</span> 保費會用保單借款處理。</p>
               </aside>
             </div>
           </div>
@@ -809,15 +816,15 @@
               <div class="plan-head">
                 <div>
                   <h4>方案一</h4>
-                  <small>60% 配息，40% 做 PFK 兩年總預算</small>
+                  <small>60% 配息，40% 做 <span data-q-tool-name>PFK</span> 兩年總預算</small>
                 </div>
               </div>
               <div class="plan-lines">
                 <div><span>投入V月配息</span><b id="q-p1-invest">300萬</b></div>
-                <div><span>PFK兩年總預算</span><b class="red" id="q-p1-pfk-budget">200萬</b></div>
+                <div><span><span data-q-tool-name>PFK</span>兩年總預算</span><b class="red" id="q-p1-pfk-budget">200萬</b></div>
                 <div><span>預估月配息</span><b class="green" id="q-p1-income" data-raw="0">$0</b></div>
                 <div><span>增貸月付 <small>支出</small></span><b class="red" id="q-p1-loanpay" data-raw="0">-$0</b></div>
-                <div><span>第6年PFK現金價值</span><b id="q-p1-surr6">0萬</b></div>
+                <div><span>第6年<span data-q-tool-name>PFK</span>現金價值</span><b id="q-p1-surr6">0萬</b></div>
               </div>
               <div class="plan-net">
                 <div class="plan-net-labels">
@@ -833,12 +840,12 @@
               <div class="plan-head">
                 <div>
                   <h4>方案二</h4>
-                  <small>80% 配息，20% 付首年PFK，第二年保單借款</small>
+                  <small>80% 配息，20% 付首年<span data-q-tool-name>PFK</span>，第二年保單借款</small>
                 </div>
               </div>
               <div class="plan-lines">
                 <div><span>投入V月配息</span><b id="q-p2-invest">400萬</b></div>
-                <div><span>PFK首年預算</span><b class="red" id="q-p2-pfk-budget">100萬</b></div>
+                <div><span><span data-q-tool-name>PFK</span>首年預算</span><b class="red" id="q-p2-pfk-budget">100萬</b></div>
                 <div><span>預估月配息</span><b class="green" id="q-p2-income" data-raw="0">$0</b></div>
                 <div><span>增貸月付 <small>支出</small></span><b class="red" id="q-p2-loanpay" data-raw="0">-$0</b></div>
                 <div><span>第二年保單借款月息</span><b class="red" id="q-p2-policy-cost" data-raw="0">$0</b></div>
@@ -854,7 +861,7 @@
               <div class="plan-cta"><span>點此看年度試算表</span><i aria-hidden="true">→</i></div>
             </button>
           </div>
-          <p class="advisor-note" id="q-payoff-copy">快速試算會用 PFK 解約金對照剩餘房貸，回推可能一次結清房貸的年度。</p>
+          <p class="advisor-note" id="q-payoff-copy">快速試算會用 <span data-q-tool-name>PFK</span> 解約金對照剩餘房貸，回推可能一次結清房貸的年度。</p>
           <div class="proposal-actions compact-actions">
             <button class="btn btn-primary" id="q-copy-summary" type="button">複製結果</button>
             <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
@@ -868,16 +875,16 @@
             <div>
               <small>年度試算表</small>
               <h3 id="q-table-title">方案二年度試算表</h3>
-              <p id="q-table-subtitle">用剩餘房貸與 PFK 解約金，判斷哪一年具備一次結清的觀察點。</p>
+              <p id="q-table-subtitle">用剩餘房貸與 <span data-q-tool-name>PFK</span> 解約金，判斷哪一年具備一次結清的觀察點。</p>
             </div>
             <button class="btn btn-outline" id="q-back-result" type="button">返回結果比較</button>
           </div>
           <p class="table-conclusion" id="q-table-conclusion">尚未試算</p>
           <details class="quick-table-fold" id="q-table-fold" open>
             <summary><span>完整 20 年明細</span><i aria-hidden="true">▾</i></summary>
-            <div class="quick-table-wrap is-full"><table class="quick-flow-table"><thead><tr><th>年期</th><th>剩餘房貸</th><th>PFK解約金</th><th class="th-meter">覆蓋率 <small>解約金 ÷ 剩餘房貸</small></th><th>累積配息還款</th><th>可結清差額</th></tr></thead><tbody id="q-active-report"></tbody></table></div>
+            <div class="quick-table-wrap is-full"><table class="quick-flow-table"><thead><tr><th>年期</th><th>剩餘房貸</th><th><span data-q-tool-name>PFK</span>解約金</th><th class="th-meter">覆蓋率 <small>解約金 ÷ 剩餘房貸</small></th><th>累積配息還款</th><th>可結清差額</th></tr></thead><tbody id="q-active-report"></tbody></table></div>
           </details>
-          <div class="quick-table-summary" id="q-table-summary">目前試算會顯示 PFK 解約金超過剩餘房貸的年度。</div>
+          <div class="quick-table-summary" id="q-table-summary">目前試算會顯示 <span data-q-tool-name>PFK</span> 解約金超過剩餘房貸的年度。</div>
           <div class="proposal-actions compact-actions">
             <button class="btn btn-primary" id="q-copy-table" type="button">複製此方案</button>
             <button class="btn btn-outline" type="button" onclick="GPPropertyPrint.print('quickCalc')">產出 PDF</button>
@@ -941,6 +948,10 @@
 <script src="js/pfj-data.js"></script>
 <script src="js/pfk-data.js"></script>
 <script src="../shared/monthly-dividend-funds.js"></script>
+<script src="../../products/pf566/products/PF566/config.js"></script>
+<script src="../../products/pf566/products/PF566/data.js"></script>
+<script src="../../products/pf566/products/PF566/paid-up-data.js"></script>
+<script src="../../products/pf566/engines/engine-retirement-income.js"></script>
 <script src="js/app.js"></script><div id="copyToast" class="copy-toast">已成功複製規劃結論至剪貼簿</div>
 
 

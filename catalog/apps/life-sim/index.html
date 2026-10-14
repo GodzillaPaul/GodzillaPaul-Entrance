@@ -58,7 +58,7 @@
     <link rel="stylesheet" href="styles/24-ux-s6yes-v3.css">
 
     <!-- ===== A4 客戶試算摘要（PDF 匯出版型） ===== -->
-    <link rel="stylesheet" href="styles/30-a4-summary.css">
+    <link rel="stylesheet" href="styles/31-life-plan.css?v=20261014-design4">
   <style>
   /* ── GP 品牌角落（只在第一頁，fixed 貼視窗左上）── */
   .gp-corner {
@@ -178,7 +178,7 @@
             <div class="card-desc">先標記你現在的位置，後面才知道你離理想生活有多遠。</div>
 
             <div class="form-group">
-                <label class="form-label">你的暱稱 *</label>
+                <label class="form-label">姓名／稱呼 *</label>
                 <input type="text" class="form-input" id="f-nickname" placeholder="請輸入暱稱">
             </div>
 
@@ -315,6 +315,11 @@
             <div class="card-desc">你不是沒有夢想，只是還沒把夢想換算成每月要承擔的現金流。</div>
 
             <div class="result-note" id="r-note"></div>
+            <div class="retirement-revision">
+                <div><label for="r-retire-age">調整退休年齡</label><p>年齡調整後，退休準備額會同步重算。</p></div>
+                <div class="revision-age-control"><input id="r-retire-age" type="number" min="40" max="80" step="1" value="60" onchange="applyRevisionRetirementAge()"><span>歲</span><button type="button" onclick="applyRevisionRetirementAge()">套用</button></div>
+                <small id="r-retire-error" role="alert"></small>
+            </div>
 
             <div class="result-hero">
                 <div class="result-hero-label">你想要的生活，每月需要</div>
@@ -405,6 +410,7 @@
             <div class="card-title">理想版 / 調整版</div>
             <div class="card-desc">這裡不是對錯，而是你親手做出的選擇。</div>
 
+            <div id="cmp-retirement-ages" class="comparison-age-note"></div>
             <!-- 欄位表格 -->
             <div class="cmp-table-wrap">
 
@@ -585,8 +591,10 @@
 
             </div><!-- /income-col-grid -->
 
+            <details class="life-discussion"><summary>討論紀錄（選填）</summary><label for="life-priority">本次共識</label><textarea id="life-priority" rows="2" maxlength="500" placeholder="例如：先調整退休年齡，保留家庭與旅行預算"></textarea><label for="life-next-action">下一步</label><textarea id="life-next-action" rows="2" maxlength="500" placeholder="填入已討論的行動"></textarea></details>
             <div class="income-nav-row">
                 <button class="btn-secondary" onclick="goStep(4)">← 回到差距比較</button>
+                <button class="btn-primary life-pdf-button" id="life-plan-pdf-btn" type="button" onclick="GPLifePlan.exportPDF(this)">輸出財務人生規劃書 PDF</button>
                 <button class="btn-primary" onclick="goStep(6)">下一步：解決方案 →</button>
             </div>
 
@@ -1287,6 +1295,7 @@
 <div class="modal-overlay" id="m-retirement">
     <div class="modal-box">
         <div class="modal-title">🏖️ 退休生活</div>
+        <div class="form-group"><label class="form-label" for="mr-retire">預計退休年齡</label><div class="input-row"><input id="mr-retire" class="form-input" type="number" min="40" max="80" step="1" oninput="previewRetirementAge()"><span class="unit">歲</span></div></div>
         <div class="form-group">
             <label class="form-label">退休後每月生活費</label>
             <div class="input-row">
@@ -1563,13 +1572,13 @@
 <script src="assets/vendor/jspdf.umd.min.js"></script>
 
 <!-- 主應用邏輯 -->
-<script src="scripts/app.js"></script>
+<script src="scripts/app.js?v=20261014-mortgage"></script>
 <script>document.body.setAttribute('data-step','0');</script>
 
 <!-- UI/UX v3 動畫引擎 -->
 <script src="scripts/ux-animate.js"></script>
 
 <!-- A4 客戶試算摘要 PDF 匯出 -->
-<script src="scripts/a4-summary.js"></script>
+<script src="scripts/life-plan.js?v=20261014-design4"></script>
 
 </div></body></html>

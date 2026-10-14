@@ -1,0 +1,180 @@
+.retirement-revision{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:18px 0;padding:16px;border:1px solid #bacafb;border-radius:16px;background:#eef3ff;color:#223c78}.retirement-revision label{font-weight:750;font-size:15px}.retirement-revision p{font-size:12px;margin:5px 0}.revision-age-control{display:flex;align-items:center;gap:8px;margin-left:auto}.revision-age-control input{width:85px;min-height:42px;padding:8px;border:1px solid #b0c2ee;border-radius:8px;background:white;color:#223c78;font:inherit}.revision-age-control button{padding:10px 14px;border:0;border-radius:8px;background:#456aff;color:white;font:inherit;cursor:pointer}#r-retire-error{width:100%;color:#a74747}.comparison-age-note{margin:14px 0;padding:12px;border-radius:10px;background:#edf2ff;color:#456aff;font-weight:600}.life-discussion{margin:22px 0;border:1px solid #dbe2f3;border-radius:12px;padding:14px}.life-discussion summary{cursor:pointer;font-weight:650}.life-discussion label{display:block;margin:12px 0 6px}.life-discussion textarea{width:100%;box-sizing:border-box;border:1px solid #c4d0ee;border-radius:8px;padding:10px;font:inherit}.life-pdf-button{background:#456aff !important}
+
+/* ============================================================
+   財務人生規劃書 PDF（A4 794 × 1123 px，html2canvas 擷取）
+   色彩：深藍＝品牌主色、陶橘＝理想版、藍＝修正版、綠／紅＝結餘／缺口
+   ============================================================ */
+#life-plan-root{position:fixed;left:-12000px;top:0;width:794px;z-index:-1;pointer-events:none;
+  --ink:#16243f;--ink-2:#3b4a66;--muted:#6f7b91;--faint:#9aa4b5;--line:#e4e8ef;--soft:#f5f7fa;
+  --navy:#16284d;--navy-2:#22396a;--gold:#c9a45c;
+  --ideal:#c0612e;--ideal-soft:#fbf0e8;--ideal-line:#efd4c2;
+  --plan:#1f62b4;--plan-soft:#ebf2fb;--plan-line:#c9dcf2;
+  --good:#2b8a5c;--bad:#bf4630}
+#life-plan-root.lp-exporting{left:0;z-index:10000;pointer-events:auto;max-height:100vh;overflow:auto;background:#fff}
+/* 全站設定的 palt 會壓縮全形標點，html2canvas 無法重現而畫錯位置，報告內一律關閉 */
+#life-plan-root,#life-plan-root *{box-sizing:border-box;text-shadow:none;box-shadow:none;animation:none;transition:none;letter-spacing:0;font-feature-settings:normal;font-kerning:none;text-spacing-trim:space-all}
+#life-plan-root .lp-page{position:relative;width:794px;height:1123px;overflow:hidden;display:flex;flex-direction:column;padding:40px 52px 30px;background:#fff;color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:12px;line-height:1.6}
+#life-plan-root .lp-page::before{content:"";position:absolute;left:0;top:0;right:0;height:6px;background:linear-gradient(90deg,var(--navy) 0%,var(--navy) 62%,var(--gold) 62%,var(--gold) 100%)}
+#life-plan-root h1,#life-plan-root h2,#life-plan-root h3,#life-plan-root p{margin:0}
+#life-plan-root small{font-size:inherit}
+#life-plan-root .lp-num{text-align:right}
+
+/* 頁首 */
+#life-plan-root .lp-head{position:static;width:auto;height:auto;min-height:0;background:transparent;border-radius:0;display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+#life-plan-root .lp-brand{display:flex;align-items:center;gap:10px}
+#life-plan-root .lp-mark{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:7px;background:var(--navy);color:#fff;font:700 13px/1 Georgia,"Times New Roman",serif}
+#life-plan-root .lp-brand>span:not(.lp-mark){font-size:11px;font-weight:700;color:var(--navy);letter-spacing:.12em}
+#life-plan-root .lp-brand small{display:block;font-size:7.5px;font-weight:500;color:var(--faint);letter-spacing:.16em;margin-top:1px}
+#life-plan-root .lp-pageno{display:flex;align-items:baseline;gap:6px;color:var(--muted);font-size:10.5px}
+#life-plan-root .lp-pageno>span{margin-right:6px}
+#life-plan-root .lp-pageno b{font:700 18px/1 Georgia,serif;color:var(--navy)}
+#life-plan-root .lp-pageno i{font-style:normal;font-size:10px;color:var(--faint)}
+
+/* 封面主視覺 */
+#life-plan-root .lp-hero{background:var(--navy);color:#fff;border-radius:14px;padding:30px 32px 26px;margin-bottom:20px;position:relative;overflow:hidden}
+#life-plan-root .lp-hero::after{content:"";position:absolute;right:32px;top:30px;width:64px;height:3px;background:var(--gold)}
+#life-plan-root .lp-hero-kicker{display:inline-block;font-size:10.5px;color:var(--gold);font-weight:700;padding:3px 10px;border:1px solid rgba(201,164,92,.55);border-radius:20px}
+#life-plan-root .lp-hero h1{font-size:30px;line-height:1.3;font-weight:900;margin:12px 0 14px;color:#fff;position:relative;z-index:1}
+#life-plan-root .lp-hero h1 span{color:#f1d9a6;margin-right:4px;overflow-wrap:anywhere}
+#life-plan-root .lp-hero-meta{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
+#life-plan-root .lp-hero-meta span{font-size:11px;color:#d9e1f0;background:rgba(255,255,255,.09);padding:4px 11px;border-radius:5px}
+
+/* 理想 vs 修正 主卡 */
+#life-plan-root .lp-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+#life-plan-root .lp-version{border:1px solid var(--line);border-radius:12px;padding:16px 18px 14px;border-top:4px solid}
+#life-plan-root .lp-version.lp-ideal{border-top-color:var(--ideal);background:linear-gradient(180deg,var(--ideal-soft) 0%,#fff 55%)}
+#life-plan-root .lp-version.lp-adjusted{border-top-color:var(--plan);background:linear-gradient(180deg,var(--plan-soft) 0%,#fff 55%)}
+#life-plan-root .lp-version-top{display:flex;justify-content:space-between;align-items:center}
+#life-plan-root .lp-tag{font-size:12.5px;font-weight:700}
+#life-plan-root .lp-ideal .lp-tag{color:var(--ideal)}#life-plan-root .lp-adjusted .lp-tag{color:var(--plan)}
+#life-plan-root .lp-version-age{font-size:10px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 9px}
+#life-plan-root .lp-version-label{font-size:10px;color:var(--muted);margin-top:10px}
+#life-plan-root .lp-version strong{display:block;font-size:32px;line-height:1.25;font-weight:900;color:var(--ink);white-space:nowrap}
+#life-plan-root .lp-version strong small{font-size:11px;font-weight:500;color:var(--muted);margin-left:4px}
+#life-plan-root .lp-cover{margin:10px 0 10px}
+#life-plan-root .lp-cover-bar{height:7px;border-radius:4px;background:#e9edf3;overflow:hidden}
+#life-plan-root .lp-cover-bar i{display:block;height:100%;border-radius:4px}
+#life-plan-root .lp-ideal .lp-cover-bar i{background:var(--ideal)}#life-plan-root .lp-adjusted .lp-cover-bar i{background:var(--plan)}
+#life-plan-root .lp-cover>span{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+#life-plan-root .lp-cover b{color:var(--ink)}
+#life-plan-root .lp-version-gap{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--line);padding-top:8px;font-size:11px}
+#life-plan-root .lp-version-gap b{font-size:17px;font-weight:800}
+#life-plan-root .lp-version-gap b small{font-size:10px;margin-left:2px;font-weight:500}
+#life-plan-root .lp-bad,#life-plan-root .lp-bad b{color:var(--bad)}#life-plan-root .lp-good,#life-plan-root .lp-good b{color:var(--good)}
+
+#life-plan-root .lp-insight{display:flex;align-items:center;gap:12px;background:#fbf6ea;border:1px solid #efe1bf;border-radius:10px;padding:12px 16px;margin-bottom:24px}
+#life-plan-root .lp-insight-icon{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--gold);color:#fff;font-weight:700;font-size:13px}
+#life-plan-root .lp-insight p{font-size:12px;color:#5a4a26;line-height:1.6}
+#life-plan-root .lp-insight b{color:var(--navy);font-size:13.5px}
+
+/* 區塊標題 */
+#life-plan-root .lp-section{margin-bottom:22px}
+#life-plan-root .lp-section h2{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+#life-plan-root .lp-section h2::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--gold)}
+#life-plan-root .lp-section h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* 退休時間軸 */
+#life-plan-root .lp-timeline{margin:4px 6px 40px}
+#life-plan-root .lp-tl-bar{display:flex;height:26px;border-radius:6px;overflow:hidden}
+#life-plan-root .lp-tl-work{background:var(--plan-soft);border:1px solid var(--plan-line);border-right:0;border-radius:6px 0 0 6px}
+#life-plan-root .lp-tl-rest{flex:1;background:var(--navy)}
+#life-plan-root .lp-tl-bar span{display:block;font-size:10.5px;line-height:24px;padding-left:10px;white-space:nowrap;font-weight:700}
+#life-plan-root .lp-tl-work span{color:var(--plan)}#life-plan-root .lp-tl-rest span{color:#fff}
+#life-plan-root .lp-tl-axis{position:relative;height:0}
+#life-plan-root .lp-tl-mark{position:absolute;top:0}
+#life-plan-root .lp-tl-mark i{display:block;width:1px;height:8px;background:var(--faint)}
+#life-plan-root .lp-tl-mark span{position:absolute;top:9px;left:0;font-size:9.5px;color:var(--muted);white-space:nowrap}
+#life-plan-root .lp-tl-retire span{transform:translateX(-50%);color:var(--navy);font-weight:700}
+#life-plan-root .lp-tl-end span{left:auto;right:0}
+#life-plan-root .lp-tl-payoff i{height:8px;background:var(--gold);width:2px}
+#life-plan-root .lp-tl-payoff span{transform:translateX(-50%);color:#9b7a35;font-weight:700}
+
+#life-plan-root .lp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#life-plan-root .lp-stat{background:var(--soft);border-radius:9px;padding:10px 14px}
+#life-plan-root .lp-stat span{display:block;font-size:10px;color:var(--muted)}
+#life-plan-root .lp-stat b{display:block;font-size:18px;font-weight:800;color:var(--navy);margin-top:2px}
+#life-plan-root .lp-stat b small{font-size:10px;font-weight:500;color:var(--muted);margin-left:3px}
+#life-plan-root .lp-stat em{display:block;font-style:normal;font-size:9.5px;color:#9b7a35;margin-top:1px}
+#life-plan-root .lp-note{font-size:9.5px;color:var(--faint);line-height:1.7;margin-top:8px}
+
+/* 收入來源 */
+#life-plan-root .lp-income-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:#e9edf3}
+#life-plan-root .lp-inc-work{background:var(--navy)}#life-plan-root .lp-inc-slash{background:var(--gold)}#life-plan-root .lp-inc-invest{background:#3e9a8c}
+#life-plan-root .lp-income-legend{display:grid;grid-template-columns:repeat(3,1fr) 1.15fr;gap:10px;margin-top:10px;align-items:stretch}
+#life-plan-root .lp-income-legend>div{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:7px;align-items:center;padding:6px 0}
+#life-plan-root .lp-income-legend>div>i{width:9px;height:9px;border-radius:2px;grid-row:1}
+#life-plan-root .lp-income-legend>div>span{font-size:10px;color:var(--muted)}
+#life-plan-root .lp-income-legend>div>b{grid-column:1/3;font-size:15px;font-weight:800;color:var(--ink)}
+#life-plan-root .lp-income-legend>div>em{display:none}
+#life-plan-root .lp-income-legend .lp-income-total{display:block;background:var(--navy);color:#fff;border-radius:9px;padding:8px 14px}
+#life-plan-root .lp-income-total span{display:block;font-size:10px;color:#c9d3e6}
+#life-plan-root .lp-income-legend .lp-income-total b{display:block;font-size:18px;font-weight:800;color:#fff}
+#life-plan-root .lp-income-total b small{font-size:10px;font-weight:500;margin-left:3px;color:#c9d3e6}
+
+/* 第 2、3 頁標題 */
+#life-plan-root .lp-page-title{margin-bottom:20px}
+#life-plan-root .lp-page-title h1{font-size:25px;font-weight:900;color:var(--navy);line-height:1.3}
+#life-plan-root .lp-page-title p{font-size:11px;color:var(--muted);margin-top:4px}
+#life-plan-root .lp-mini-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+#life-plan-root .lp-mini-compare>div{display:grid;grid-template-columns:1fr auto;align-items:baseline;border-radius:10px;padding:10px 16px;border-left:4px solid}
+#life-plan-root .lp-mini-compare .lp-ideal{background:var(--ideal-soft);border-color:var(--ideal)}
+#life-plan-root .lp-mini-compare .lp-adjusted{background:var(--plan-soft);border-color:var(--plan)}
+#life-plan-root .lp-mini-compare span{font-size:11px;font-weight:700}
+#life-plan-root .lp-mini-compare .lp-ideal span{color:var(--ideal)}#life-plan-root .lp-mini-compare .lp-adjusted span{color:var(--plan)}
+#life-plan-root .lp-mini-compare b{font-size:21px;font-weight:900;color:var(--ink);text-align:right}
+#life-plan-root .lp-mini-compare b small{font-size:10px;font-weight:500;color:var(--muted);margin-left:3px}
+#life-plan-root .lp-mini-compare em{grid-column:1/3;font-style:normal;font-size:10.5px;text-align:right;font-weight:700}
+
+/* 表格 */
+#life-plan-root .lp-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;margin-bottom:26px}
+#life-plan-root .lp-table th,#life-plan-root .lp-table td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--ink-2);background:transparent;vertical-align:middle}
+#life-plan-root .lp-table thead th{font-size:10.5px;font-weight:700;color:var(--muted);border-bottom:2px solid var(--navy);padding-top:6px;padding-bottom:7px;text-align:left}
+#life-plan-root .lp-table thead th.lp-num{text-align:right}
+#life-plan-root .lp-table tbody th{text-align:left;font-weight:600;color:var(--ink)}
+#life-plan-root .lp-table .lp-c-ideal{color:var(--ideal);font-weight:600}
+#life-plan-root .lp-table .lp-c-adjusted{color:var(--plan);font-weight:700}
+#life-plan-root .lp-up{color:var(--bad);font-weight:600}#life-plan-root .lp-down{color:var(--good);font-weight:600}#life-plan-root .lp-flat{color:var(--faint)}
+#life-plan-root .lp-table tfoot th,#life-plan-root .lp-table tfoot td{background:var(--soft);border-bottom:0;border-top:2px solid var(--navy);font-weight:800;font-size:13px;padding-top:11px;padding-bottom:11px}
+#life-plan-root .lp-table tfoot th{color:var(--navy);text-align:left}
+#life-plan-root .lp-bars{padding-left:16px}
+#life-plan-root .lp-bars i{display:block;height:6px;border-radius:3px;min-width:2px}
+#life-plan-root .lp-bars i+i{margin-top:3px}
+#life-plan-root .lp-b-ideal{background:var(--ideal)}#life-plan-root .lp-b-adjusted{background:var(--plan)}
+#life-plan-root .lp-key{display:flex;align-items:center;gap:5px;font-weight:500}
+#life-plan-root .lp-key i{display:inline-block;width:12px;height:6px;border-radius:3px}
+#life-plan-root .lp-key i+*{margin-right:6px}
+#life-plan-root .lp-empty{text-align:center;color:var(--faint)}
+#life-plan-root .lp-ret-table th,#life-plan-root .lp-ret-table td{padding:7px 10px}
+#life-plan-root .lp-dense .lp-table.lp-items th,#life-plan-root .lp-dense .lp-table.lp-items td{padding-top:6px;padding-bottom:6px}
+
+/* 第 3 頁：選擇卡片 */
+#life-plan-root .lp-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+#life-plan-root .lp-choice{border:1px solid var(--line);border-left:3px solid var(--plan);border-radius:8px;padding:9px 13px}
+#life-plan-root .lp-choice-off{border-left-color:var(--faint);background:var(--soft)}
+#life-plan-root .lp-choice-top{display:flex;justify-content:space-between;align-items:baseline}
+#life-plan-root .lp-choice h3{font-size:12.5px;font-weight:700;color:var(--navy)}
+#life-plan-root .lp-choice-top b{font-size:14px;font-weight:800;color:var(--plan)}
+#life-plan-root .lp-choice-off .lp-choice-top b{color:var(--faint);font-size:11px}
+#life-plan-root .lp-choice-top b small{font-size:9px;font-weight:500;color:var(--muted);margin-left:2px}
+#life-plan-root .lp-choice p{font-size:11px;color:var(--ink-2);margin-top:2px}
+#life-plan-root .lp-choice>small{display:block;font-size:9.5px;color:var(--muted);line-height:1.6;margin-top:1px}
+#life-plan-root .lp-choice-before{display:inline-block;margin-top:5px;font-size:9.5px;color:var(--ideal);background:var(--ideal-soft);border-radius:4px;padding:1px 7px}
+#life-plan-root .lp-dense .lp-choices{gap:8px}
+#life-plan-root .lp-dense .lp-choice{padding:7px 12px}
+
+#life-plan-root .lp-discussion{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+#life-plan-root .lp-discussion>div{border:1px solid var(--line);border-radius:10px;padding:14px 18px;min-height:120px}
+#life-plan-root .lp-discussion h2{font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px}
+#life-plan-root .lp-discussion p{font-size:11.5px;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere}
+#life-plan-root .lp-lines i{display:block;height:26px;border-bottom:1px solid var(--line)}
+#life-plan-root .lp-sign{display:grid;grid-template-columns:1fr 1fr .8fr;gap:22px;margin-top:auto;margin-bottom:8px}
+#life-plan-root .lp-sign div{display:flex;align-items:flex-end;gap:8px}
+#life-plan-root .lp-sign span{font-size:10.5px;color:var(--muted);white-space:nowrap}
+#life-plan-root .lp-sign i{flex:1;border-bottom:1px solid var(--ink-2);height:22px}
+
+/* 頁尾 */
+#life-plan-root .lp-footer{position:static;width:auto;min-height:0;background:transparent;border-radius:0;display:flex;justify-content:space-between;gap:12px;margin-top:auto;padding-top:10px;border-top:1px solid var(--line);font-size:8.5px;color:var(--faint)}
+#life-plan-root .lp-footer span:first-child{color:var(--muted);font-weight:700;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#life-plan-root .lp-sign+.lp-note+.lp-footer{margin-top:6px}
+
+@media print{body.life-plan-print>*:not(#life-plan-root){display:none !important}body.life-plan-print #life-plan-root{position:static;left:auto;z-index:auto;width:auto}body.life-plan-print .lp-page{break-after:page;page-break-after:always}body.life-plan-print .lp-page:last-child{break-after:auto;page-break-after:auto}@page{size:A4 portrait;margin:0}}

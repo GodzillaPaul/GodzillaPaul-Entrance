@@ -6,6 +6,7 @@
 let u = { nickname:'', age:0, gender:'M', retire:60, income:0 };
 let exp = {};
 let baselineExp = null;
+let baselineProfile = null;
 let baselineSummary = null;
 let currentSummary = null;
 let currentStep = 0;
@@ -39,12 +40,12 @@ function setGender(g) {
 function step1Next() {
     const nick = document.getElementById('f-nickname').value.trim();
     const age  = parseInt(document.getElementById('f-age').value);
-    const ret  = parseInt(document.getElementById('f-retire').value);
+    const ret  = Number(document.getElementById('f-retire').value);
     const inc  = parseFloat(document.getElementById('f-income').value);
 
     if (!nick)              return alert('請輸入暱稱');
     if (!age||age<18||age>70) return alert('請輸入正確年齡（18-70歲）');
-    if (!ret||ret<=age)     return alert('退休年齡必須大於目前年齡');
+    if (!Number.isInteger(ret)||ret<40||ret>80||ret<=age) return alert('退休年齡須為40–80歲，且大於目前年齡');
     if (!inc||inc<=0)       return alert('請輸入每月收入');
 
     u.nickname = nick;
@@ -60,10 +61,106 @@ function step1Next() {
     updateLiveSummary();
 }
 
+// Retirement is a shared planning input. Baseline data remains immutable.
+function validRetirementAge(value, age=u.age) {
+    const n=Number(value);
+    return Number.isInteger(n)&&n>=40&&n<=80&&n>Number(age);
+}
+function refreshAgeDerivedExpenses(source=exp, profile=u) {
+    const workYears=profile.retire-profile.age, retiredYears=85-profile.retire;
+    const retirement=source.retirement;
+    if(retirement && retirement.data && workYears>0) computeRetirement(source, profile);
+    if(source.living?.amount>0) source.living.label=`每月${source.living.amount.toFixed(2)}萬｜到退休前 ${workYears} 年共 ${(source.living.amount*12*workYears).toFixed(0)} 萬`;
+    if(source.emergency?.amount>0) source.emergency.label=`平均每月${source.emergency.amount.toFixed(2)}萬｜到退休前 ${workYears} 年共 ${(source.emergency.amount*12*workYears).toFixed(0)} 萬`;
+    return source;
+}
+// 房貸年限與 saveModal('house') 的 30 年房貸試算一致
+const MORTGAGE_YEARS = 30;
+// 退休後居住支出：購屋只算到房貸繳清；租屋與自訂金額視為整段退休期都要負擔
+function retirementHousing(source, profile, data) {
+    const retiredYears = Math.max(85 - profile.retire, 0);
+    if (!data || data.housingMode === 'stop') return { monthly: 0, years: 0, note: '' };
+    if (data.housingMode === 'custom') {
+        const monthly = inputYuanToWan(data.housingCustom);
+        return { monthly, years: monthly > 0 ? retiredYears : 0, note: monthly > 0 ? '自訂居住支出' : '' };
+    }
+    const house = source.house;
+    const monthly = house?.amount || 0;
+    if (!monthly) return { monthly: 0, years: 0, note: '' };
+    if (house.ownership === 'buy') {
+        const payoffAge = (house.startAge ?? profile.age) + MORTGAGE_YEARS;
+        const years = Math.min(Math.max(payoffAge - profile.retire, 0), retiredYears);
+        return { monthly, years, payoffAge, note: years > 0 ? `房貸繳到 ${payoffAge} 歲` : `房貸 ${payoffAge} 歲前繳清` };
+    }
+    return { monthly, years: retiredYears, note: '退休後持續付房租' };
+}
+// 退休總需求＝（生活支出 × 退休年數 ＋ 居住支出 × 實際負擔年數）× 12
+function computeRetirement(source, profile) {
+    const r = source.retirement;
+    if (!r || !r.data) return r;
+    const d = r.data;
+    const workYears = Math.max(profile.retire - profile.age, 1);
+    const retiredYears = Math.max(85 - profile.retire, 0);
+    const base = (d.life || 0) + (d.fun || 0) + (d.travel || 0) + (d.care || 0);
+    const h = retirementHousing(source, profile, d);
+    const housingActive = h.years > 0 ? h.monthly : 0;
+    r.baseMonthly = base;
+    r.housingMonthly = housingActive;
+    r.housingYears = h.years;
+    r.housingNote = h.note;
+    r.targetMonthly = base + housingActive;
+    r.targetTotal = (base * retiredYears + housingActive * h.years) * 12;
+    r.amount = r.targetTotal / (workYears * 12);
+    const housingText = housingActive > 0 && h.years < retiredYears ? `（含房貸${housingActive.toFixed(2)}萬，繳 ${h.years} 年）` : '';
+    r.label = `退休後每月${r.targetMonthly.toFixed(2)}萬${housingText}｜退休 ${retiredYears} 年需 ${r.targetTotal.toFixed(0)} 萬｜退休前 ${workYears} 年每月準備 ${r.amount.toFixed(2)} 萬`;
+    return r;
+}
+// 收入來源：工作（第五頁可覆寫）＋ 斜槓 ＋ 投資（本金年化 7% ＋ 手動）
+function getIncomeBreakdown() {
+    const val = id => parseFloat(document.getElementById(id)?.value) || 0;
+    const workOverride = val('inc-work-input');
+    const work = workOverride > 0 ? workOverride : Math.round((u.income || 0) * 10000);
+    const slash = (typeof slashItems !== 'undefined' ? slashItems : []).reduce((s, item) => s + (Number(item.amount) || 0), 0);
+    const principal = val('inc-invest-principal');
+    const invest = Math.round(principal * 0.07 / 12) + val('inc-invest-input');
+    return { work, slash, invest, principal, total: work + slash + invest };
+}
+function syncRetirementAge(value, render=true) {
+    if(!validRetirementAge(value)) return false;
+    u.retire=Number(value);
+    ['f-retire','r-retire-age','mr-retire','s6y-retire','s6n-retire'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=u.retire;});
+    const years=document.getElementById('mr-years-display');if(years)years.value=(85-u.retire)+' 年';
+    refreshAgeDerivedExpenses();
+    baselineSummary=baselineExp?summarizeExp(baselineExp):null;
+    currentSummary=summarizeExp(exp);
+    if(typeof RS!=='undefined') {RS.retirementAge=u.retire;RS.currentAge=u.age;}
+    if(exp.retirement)markFilled('retirement',exp.retirement.amount);
+    const error=document.getElementById('r-retire-error');if(error)error.textContent='';
+    if(render && currentStep===3)calcResults(false);
+    return true;
+}
+function applyRevisionRetirementAge() {
+    const value=document.getElementById('r-retire-age').value;
+    if(!syncRetirementAge(value)) {
+        document.getElementById('r-retire-error').textContent=`請輸入${Math.max(40,u.age+1)}–80歲的整數`;
+        return false;
+    }
+    return true;
+}
+function previewRetirementAge() {
+    const value=document.getElementById('mr-retire').value;
+    document.getElementById('mr-years-display').value=validRetirementAge(value)?(85-Number(value))+' 年':'請確認退休年齡';
+}
+
 // ===== MODAL HELPERS =====
 function openModal(cat) {
     document.getElementById('m-' + cat).classList.add('open');
-    if (cat === 'retirement') onRetirementHousingChange();
+    if (cat === 'retirement') {
+        document.getElementById('mr-retire').value=u.retire;
+        document.getElementById('mr-retire').min=Math.max(40,u.age+1);
+        previewRetirementAge();
+        onRetirementHousingChange();
+    }
 
     // 根據當前步驟顯示或隱藏 "不要" 按鈕：只有在結果頁修正時（步驟≥3）才顯示
     const skipBtn = document.querySelector('#m-' + cat + ' .skip-btn');
@@ -191,7 +288,9 @@ function onRetirementHousingChange() {
     const hint = document.getElementById('mr-housing-link-hint');
     if (mode === 'link') {
         if (exp.house && exp.house.amount > 0) {
-            hint.textContent = '目前房貸 / 房租已帶入：' + exp.house.amount.toFixed(2) + ' 萬 / 月';
+            hint.textContent = exp.house.ownership === 'buy'
+                ? '目前房貸 ' + exp.house.amount.toFixed(2) + ' 萬 / 月，只計算到房貸繳清（' + ((exp.house.startAge ?? u.age) + MORTGAGE_YEARS) + ' 歲）。'
+                : '目前房租 ' + exp.house.amount.toFixed(2) + ' 萬 / 月，退休後持續計算。';
         } else {
             hint.textContent = '前面尚未填房子，若保留此選項會視為 0。';
         }
@@ -317,24 +416,8 @@ function saveModal(cat) {
         case 'retirement': {
             const life = +document.getElementById('mr-monthly').value;
             if (!life || life <= 0) return alert('請輸入退休後每月生活費');
-            const housingMode = document.getElementById('mr-housing-mode').value;
-            let housing = 0;
-            if (housingMode === 'link') housing = exp.house ? (exp.house.amount || 0) : 0;
-            else if (housingMode === 'custom') housing = inputYuanToWan(document.getElementById('mr-housing-custom').value);
-            const funRaw = document.getElementById('mr-fun').value;
-            const travelRaw = document.getElementById('mr-travel').value;
-            const careRaw = document.getElementById('mr-care').value;
-            const fun = funRaw === 'custom' ? inputYuanToWan(document.getElementById('mr-fun-custom').value) : (+funRaw || 0);
-            const travel = travelRaw === 'custom' ? inputYuanToWan(document.getElementById('mr-travel-custom').value) : (+travelRaw || 0);
-            const care = careRaw === 'custom' ? inputYuanToWan(document.getElementById('mr-care-custom').value) : (+careRaw || 0);
-            const retirementMonthlyNeed = life + housing + fun + travel + care;
-            const retirementYears = Math.max(85 - u.retire, 0);
-            const yearsToRetire = Math.max(u.retire - u.age, 1);
-            const targetTotal = retirementMonthlyNeed * 12 * retirementYears;
-            const monthlySavingNeed = targetTotal / (yearsToRetire * 12);
-            amount = monthlySavingNeed;
+            if(!syncRetirementAge(document.getElementById('mr-retire').value,false)) return alert('退休年齡須為40–80歲，且大於目前年齡');
             choice = '🏖️ 退休準備｜退休生活';
-            label = `退休後每月${retirementMonthlyNeed.toFixed(2)}萬｜退休 ${retirementYears} 年需 ${targetTotal.toFixed(0)} 萬｜要在退休前 ${yearsToRetire} 年每月先存 ${monthlySavingNeed.toFixed(2)} 萬`;
             break;
         }
         case 'medical': {
@@ -397,22 +480,25 @@ function saveModal(cat) {
     }
 
     exp[cat] = { amount, label, choice };
+    if (cat === 'house') {
+        exp.house.ownership = document.getElementById('mh-ownership').value;
+        exp.house.startAge = u.age;
+    }
     if (cat === 'retirement') {
-        const life = +document.getElementById('mr-monthly').value || 0;
-        const housingMode = document.getElementById('mr-housing-mode').value;
-        let housing = 0;
-        if (housingMode === 'link') housing = exp.house ? (exp.house.amount || 0) : 0;
-        else if (housingMode === 'custom') housing = inputYuanToWan(document.getElementById('mr-housing-custom').value);
-        const funRaw = document.getElementById('mr-fun').value;
-        const travelRaw = document.getElementById('mr-travel').value;
-        const careRaw = document.getElementById('mr-care').value;
-        const fun = funRaw === 'custom' ? inputYuanToWan(document.getElementById('mr-fun-custom').value) : (+funRaw || 0);
-        const travel = travelRaw === 'custom' ? inputYuanToWan(document.getElementById('mr-travel-custom').value) : (+travelRaw || 0);
-        const care = careRaw === 'custom' ? inputYuanToWan(document.getElementById('mr-care-custom').value) : (+careRaw || 0);
-        const retirementMonthlyNeed = life + housing + fun + travel + care;
-        const retirementYears = Math.max(85 - u.retire, 0);
-        exp[cat].targetMonthly = retirementMonthlyNeed;
-        exp[cat].targetTotal = retirementMonthlyNeed * 12 * retirementYears;
+        const raw = id => document.getElementById(id).value;
+        const pick = (selectId, customId) => raw(selectId) === 'custom' ? inputYuanToWan(raw(customId)) : (+raw(selectId) || 0);
+        exp[cat].data = {
+            life: +raw('mr-monthly') || 0, housingMode: raw('mr-housing-mode'), housingCustom: raw('mr-housing-custom'),
+            fun: pick('mr-fun', 'mr-fun-custom'), travel: pick('mr-travel', 'mr-travel-custom'), care: pick('mr-care', 'mr-care-custom'),
+            funRaw: raw('mr-fun'), travelRaw: raw('mr-travel'), careRaw: raw('mr-care'),
+            funCustom: raw('mr-fun-custom'), travelCustom: raw('mr-travel-custom'), careCustom: raw('mr-care-custom')
+        };
+        computeRetirement(exp, u);
+        amount = exp[cat].amount;
+    }
+    if (cat === 'house' && exp.retirement?.data) {
+        computeRetirement(exp, u);
+        markFilled('retirement', exp.retirement.amount);
     }
     markFilled(cat, amount);
     closeModal(cat);
@@ -485,6 +571,7 @@ function getCurrentNeed() {
 }
 
 function updateLiveSummary() {
+    refreshAgeDerivedExpenses();
     const incomeEl = document.getElementById('liveIncome');
     const needEl = document.getElementById('liveNeed');
     const gapTextEl = document.getElementById('liveGapText');
@@ -541,6 +628,10 @@ async function renderPieChart(chartCanvas, shareItems) {
         return;
     }
 
+    // 連續修正時前一次的非同步繪製可能尚未銷毀，先清掉同一張 canvas 上的舊圖
+    const existingChart = Chart.getChart(chartCanvas);
+    if (existingChart) existingChart.destroy();
+
     try {
         const chartPlugins = (typeof ChartDataLabels !== 'undefined') ? [ChartDataLabels] : [];
         window.sharePieChart = new Chart(chartCanvas.getContext('2d'), {
@@ -591,7 +682,11 @@ async function renderPieChart(chartCanvas, shareItems) {
 
 function calcResults(goToResult = true) {
     if (!Object.keys(exp).length) return alert('請至少填寫一個人生項目！');
-    if (goToResult && !baselineExp) baselineExp = cloneExp(exp);
+    refreshAgeDerivedExpenses();
+    if (goToResult && !baselineExp) {baselineExp=cloneExp(exp);baselineProfile={...u};}
+    currentSummary=summarizeExp(exp);
+    if(baselineExp)baselineSummary=summarizeExp(baselineExp);
+    const revisionAge=document.getElementById('r-retire-age');if(revisionAge){revisionAge.value=u.retire;revisionAge.min=Math.max(40,u.age+1);}
 
     const currentIncome = u.income;
     const yearsToRetire = Math.max(u.retire - u.age, 0);
@@ -886,11 +981,12 @@ function summarizeExp(sourceExp) {
 
 
 function goCompareStep() {
-    if (!baselineExp) baselineExp = cloneExp(exp);
+    if (!baselineExp) {baselineExp=cloneExp(exp);baselineProfile={...u};}
+    refreshAgeDerivedExpenses();
     baselineSummary = summarizeExp(baselineExp);
     currentSummary = summarizeExp(exp);
 
-    const currentIncomeYuan = wanToYuan(u.income || 0);
+    const currentIncomeYuan = getIncomeBreakdown().total;
     const idealTotalYuan = wanToYuan(baselineSummary.total || 0);
     const adjustTotalYuan = wanToYuan(currentSummary.total || 0);
     const idealGapYuan = idealTotalYuan - currentIncomeYuan;
@@ -944,6 +1040,7 @@ function goCompareStep() {
         </div>`;
     }).join('');
 
+    const compareAge=document.getElementById('cmp-retirement-ages');if(compareAge)compareAge.textContent=`退休年齡：理想版 ${baselineProfile?.retire||u.retire} 歲 → 調整版 ${u.retire} 歲`;
     goStep(4);
 }
 
@@ -954,6 +1051,7 @@ function goCompareStep() {
 function restart() {
     exp = {};
     baselineExp = null;
+    baselineProfile = null;
     baselineSummary = null;
     currentSummary = null;
     document.querySelectorAll('.cat-item').forEach(el => {
@@ -999,19 +1097,7 @@ function initStep5() {
 }
 
 function updateIncomeTotals() {
-    // Work income: use override if filled, else step1
-    const workOverride = parseFloat(document.getElementById('inc-work-input')?.value) || 0;
-    const workFromStep1 = Math.round((u.income || 0) * 10000);
-    const workIncome = workOverride > 0 ? workOverride : workFromStep1;
-
-    // Slash income: sum of items
-    const slashIncome = slashItems.reduce((s, item) => s + item.amount, 0);
-
-    // Invest income: 7% principal monthly + manual input (additive)
-    const principal = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
-    const principalMonthly = Math.round(principal * 0.07 / 12);
-    const manualInvest = parseFloat(document.getElementById('inc-invest-input')?.value) || 0;
-    const investIncome = principalMonthly + manualInvest;
+    const { work: workIncome, slash: slashIncome, invest: investIncome } = getIncomeBreakdown();
 
     // Update invest subtotal display
     document.getElementById('invest-subtotal').textContent = Math.round(investIncome).toLocaleString() + ' 元';
@@ -1231,7 +1317,7 @@ function s6RetFillInputs(prefix) {
     // 4. 退休年齡
     const retire = parseInt(document.getElementById('f-retire')?.value) || 65;
     const retireEl = document.getElementById(prefix + '-retire');
-    if (retireEl && !retireEl.value) retireEl.value = Math.max(retire, age + 1);
+    if (retireEl) retireEl.value = Math.max(u.retire, age + 1);
 
     // 5. 退休月現金流（直接輸入每月投資收入）
     const investManual = parseFloat(document.getElementById('inc-invest-input')?.value) || 0;

@@ -115,6 +115,14 @@ function computeRetirement(source, profile) {
     r.label = `退休後每月${r.targetMonthly.toFixed(2)}萬${housingText}｜退休 ${retiredYears} 年需 ${r.targetTotal.toFixed(0)} 萬｜退休前 ${workYears} 年每月準備 ${r.amount.toFixed(2)} 萬`;
     return r;
 }
+// 退休後平均每月支出（元）：房貸只在繳清前計入，攤平到整段退休期，供月配息規劃使用
+function retirementMonthlyAverageYuan(source=exp, profile=u) {
+    const r = source.retirement;
+    if (!r || !(r.targetMonthly > 0)) return 0;
+    const retiredYears = Math.max(85 - profile.retire, 0);
+    const wan = retiredYears > 0 && r.targetTotal > 0 ? r.targetTotal / (12 * retiredYears) : r.targetMonthly;
+    return Math.round(wan * 10000);
+}
 // 收入來源：工作（第五頁可覆寫）＋ 斜槓 ＋ 投資（本金年化 7% ＋ 手動）
 function getIncomeBreakdown() {
     const val = id => parseFloat(document.getElementById(id)?.value) || 0;
@@ -1245,16 +1253,16 @@ function s6FillRetTarget(prefix) {
         const subEl    = document.getElementById(prefix + '-target-sub');
         if (!amountEl) return;
 
-        let target = 0; // 單位：萬
-        if (typeof exp !== 'undefined' && exp && exp.retirement) {
-            target = exp.retirement.targetMonthly || 0;
-        }
-        const yuan = Math.round(target * 10000);
+        const yuan = retirementMonthlyAverageYuan();
+        const r = exp?.retirement || {};
 
         if (yuan > 0) {
             amountEl.innerHTML = yuan.toLocaleString('zh-TW') + ' <span class="unit">元 / 月</span>';
             if (subEl) {
-                subEl.innerHTML = '由你設定的 <b>生活費</b>、<b>娛樂費</b>、<b>旅行費</b>、<b>醫療費</b> 加總而得（約 ' + target.toFixed(2) + ' 萬 / 月）';
+                const housing = r.housingMonthly > 0
+                    ? `，並將退休後 ${r.housingYears} 年的居住支出 <b>${Math.round(r.housingMonthly * 10000).toLocaleString('zh-TW')} 元 / 月</b> 平均攤入`
+                    : '';
+                subEl.innerHTML = '由你設定的 <b>生活費</b>、<b>娛樂費</b>、<b>旅行費</b>、<b>醫療費</b> 加總' + housing + '（退休期間平均每月）';
             }
         } else {
             amountEl.innerHTML = '<span class="s6-ret-highlight-empty">請先完成「退休生活」設定</span>';
@@ -1319,10 +1327,10 @@ function s6RetFillInputs(prefix) {
     const retireEl = document.getElementById(prefix + '-retire');
     if (retireEl) retireEl.value = Math.max(u.retire, age + 1);
 
-    // 5. 退休月現金流（直接輸入每月投資收入）
-    const investManual = parseFloat(document.getElementById('inc-invest-input')?.value) || 0;
+    // 5. 退休月現金流目標＝退休後平均每月支出（不是投資收入）
+    const retirementTarget = retirementMonthlyAverageYuan();
     const cashflowEl = document.getElementById(prefix + '-cashflow');
-    if (cashflowEl && !cashflowEl.value && investManual > 0) cashflowEl.value = investManual;
+    if (cashflowEl && !cashflowEl.value && retirementTarget > 0) cashflowEl.value = retirementTarget;
 
     // 6. 存款（可投資資金 / 投資本金）
     const principal = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
@@ -1360,13 +1368,14 @@ function s6RetCalc(which) {
     // 方案二：月配息 7% 所需本金（扣除已有存款後的缺口本金）
     const capNeed     = netCashflow > 0 ? Math.round(netCashflow * 12 / 0.07) : 0;
     // 每月需自存金額（簡單平均，不含複利）
-    const selfMonthly = workYears > 0 ? Math.round(totalNeed / workYears / 12) : 0;
+    // 與第八頁一致：先扣掉已有存款
+    const selfMonthly = workYears > 0 ? Math.round(Math.max(totalNeed - savings, 0) / workYears / 12) : 0;
 
     // 保單月存（用 retGoalSeek，若已引入）
     let policyMonthly = 0, svAtRetire = 0;
     if (typeof retGoalSeek === 'function' && capNeed > 0) {
         try {
-            const S = { currentAge: age, retirementAge: retire, gender, assumedReturn: 0.06 };
+            const S = { currentAge: age, retirementAge: retire, gender, assumedReturn: 6 }; // retGoalSeek 以百分比計
             const ac = retGoalSeek(S, capNeed);
             policyMonthly = Math.round((ac.at + ac.me * 12) / 12);
             const ri = Math.min(workYears, (ac.res?.length || 1) - 1);
@@ -1523,8 +1532,12 @@ function retGoalSeek(S, capDist) {
 }
 function retCompute(S) {
   const workYears=S.retirementAge-S.currentAge, retireYears=S.lifeExpectancy-S.retirementAge;
-  const totalNeed=S.monthlyExpense*retireYears*12, selfAnnual=workYears>0?totalNeed/workYears:0, selfMonthly=selfAnnual/12;
-  const preparedMonthly=S.preparedAmount*0.07/12;
+  const otherIncome=S.otherIncome||0;
+  const totalNeed=S.monthlyExpense*retireYears*12;
+  // 方案一（自己存）：退休總花費扣掉已準備本金與退休期間的其他投資收入
+  const selfNeed=Math.max(0,totalNeed-S.preparedAmount-otherIncome*12*retireYears);
+  const selfAnnual=workYears>0?selfNeed/workYears:0, selfMonthly=selfAnnual/12;
+  const preparedMonthly=S.preparedAmount*0.07/12+otherIncome;
   const netMonthlyExpense=Math.max(0,S.monthlyExpense-preparedMonthly);
   const capDist=netMonthlyExpense*12/0.07;
   const ac=retGoalSeek(S,capDist);
@@ -1532,7 +1545,7 @@ function retCompute(S) {
   const svR=ac.res[ri]?.sv||0, monthDist=svR*0.07/12;
   const policyAnnual=ac.at+ac.me*12, policyMonthly=policyAnnual/12;
   const expW=S.monthlyExpense/10000, needW=Math.round(totalNeed/10000), capW=Math.round(capDist/10000);
-  return {workYears,retireYears,totalNeed,selfAnnual,selfMonthly,capDist,preparedMonthly,netMonthlyExpense,
+  return {workYears,retireYears,totalNeed,selfNeed,otherIncome,selfAnnual,selfMonthly,capDist,preparedMonthly,netMonthlyExpense,
     monthlySaving:ac.ms,monthlyExtra:ac.me,annualTarget:ac.at,saWan:ac.sw,sa:ac.si,opt:ac.res,ri,svR,monthDist,
     policyAnnual,policyMonthly,expW,needW,capW};
 }
@@ -1542,7 +1555,7 @@ const retFmt = n => n==null?'-':Math.round(n).toLocaleString('zh-TW');
 const RS = {
   page:'input', clientName:'', gender:'M',
   currentAge:30, retirementAge:65, monthlyExpense:30000,
-  lifeExpectancy:85, assumedReturn:6, preparedAmount:0
+  lifeExpectancy:85, assumedReturn:6, preparedAmount:0, otherIncome:0
 };
 
 function retGetDataFromMain() {
@@ -1557,26 +1570,13 @@ function retGetDataFromMain() {
   // 4. 退休年齡
   const retire = parseInt(document.getElementById('f-retire')?.value) || 65;
   RS.retirementAge = Math.max(retire, age+1);
-  // 5. 退休後每月目標花費
-  //    ⚠ 要用 targetMonthly（退休後每月目標，如 5.30 萬），不要用 amount（amount 是「工作期間每月要存多少」的倒推值，如 4.4167 萬）
-  let retirementExpense = 0;
-  if (typeof exp !== 'undefined' && exp.retirement) {
-    const target = exp.retirement.targetMonthly || 0; // 退休後每月目標（萬）
-    retirementExpense = Math.round(target * 10000);
-  }
-  // 6. 扣除每月投資收入（第二格：直接輸入每月投資收入 + 本金 7% 配息）
-  const investManual = parseFloat(document.getElementById('inc-invest-input')?.value) || 0;
-  const investPrincipal = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
-  const investIncome = investManual + Math.round(investPrincipal * 0.07 / 12);
-  // 退休每月需準備的金流 = 退休後目標金流 − 已有投資金流（不能為負）
-  const netExpense = Math.max(retirementExpense - investIncome, 0);
-  RS.monthlyExpense = netExpense > 0 ? netExpense : (retirementExpense > 0 ? retirementExpense : 30000);
-  RS._workIncome = investIncome; // 供顯示用（沿用原有欄位名稱）
-  // 7. 存款（投資本金）
-  const principal = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
-  RS.preparedAmount = principal;
-  // 記錄原始退休費用和薪資，供顯示
+  // 5. 退休後每月花費：退休期間平均每月支出（房貸只算到繳清，攤平到整段退休期）
+  const retirementExpense = retirementMonthlyAverageYuan();
+  RS.monthlyExpense = retirementExpense > 0 ? retirementExpense : 30000;
   RS._retirementRaw = retirementExpense;
+  // 6. 已準備：投資本金（以 7% 換算月配息）＋ 另外填寫的每月投資收入；只在 retCompute 扣除一次
+  RS.preparedAmount = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
+  RS.otherIncome = parseFloat(document.getElementById('inc-invest-input')?.value) || 0;
   // 註：下行為舊版殘留（workIncome 未定義會丟 ReferenceError，導致第七頁空白），已移除
   // RS._workIncome = workIncome;
 }
@@ -1594,12 +1594,12 @@ function retRender() {
 
 function retInputHTML() {
   const D = retCompute(RS);
-  const hasDeduction = RS._retirementRaw > 0 && RS._workIncome > 0 && RS._retirementRaw > RS._workIncome;
+  const hasDeduction = D.preparedMonthly > 0;
   return `
   <div id="ret-input-wrap">
     <div class="ret-page-title">退休財務規劃</div>
     <div class="ret-page-sub">依你填寫的資料自動帶入，可直接微調後產生計畫書</div>
-    ${hasDeduction ? `<div class="ret-note-box">💡 退休月現金流 ${retFmt(RS._retirementRaw)} 元已扣除薪資收入 ${retFmt(RS._workIncome)} 元，實際保單目標缺口為 <b>${retFmt(RS.monthlyExpense)} 元 / 月</b>。</div>` : ''}
+    ${hasDeduction ? `<div class="ret-note-box">💡 退休每月花費 ${retFmt(RS.monthlyExpense)} 元，扣除已準備資產每月可提供的 ${retFmt(Math.round(D.preparedMonthly))} 元後，保單需補足 <b>${retFmt(Math.round(D.netMonthlyExpense))} 元 / 月</b>。</div>` : ''}
     <div class="ret-section">
       <div class="ret-section-title">❶ 客戶基本資料</div>
       <div class="ret-grid2">
@@ -1624,7 +1624,7 @@ function retInputHTML() {
     </div>
     <div class="ret-section">
       <div class="ret-section-title">❸ 保單試算結果（自動）</div>
-      ${RS.preparedAmount > 0 ? `<div style="background:#fffbea;border:1px solid #f0d88a;border-radius:10px;padding:10px 14px;font-size:12px;color:#7a5c10;margin-bottom:12px;">已準備退休金 ${retFmt(RS.preparedAmount)} 元，以 7% 年化換算每月可提供 <b>${retFmt(Math.round(D.preparedMonthly))}</b> 元，保單目標已自動扣除。</div>` : ''}
+      ${D.preparedMonthly > 0 ? `<div style="background:#fffbea;border:1px solid #f0d88a;border-radius:10px;padding:10px 14px;font-size:12px;color:#7a5c10;margin-bottom:12px;">${RS.preparedAmount > 0 ? `已準備退休金 ${retFmt(RS.preparedAmount)} 元，以 7% 年化換算每月 ${retFmt(Math.round(RS.preparedAmount*0.07/12))} 元` : ''}${RS.preparedAmount > 0 && D.otherIncome > 0 ? '；' : ''}${D.otherIncome > 0 ? `其他投資收入每月 ${retFmt(D.otherIncome)} 元` : ''}，保單目標已自動扣除。</div>` : ''}
       <div class="ret-grid2">
         <div class="ret-field"><label>假設投報率 %</label><input type="number" class="ret-ic" id="ret-return" value="${RS.assumedReturn}" min="0" max="12" step="0.5"></div>
         <div class="ret-field"><label>需準備退休資金</label><div class="ret-ro">${retFmt(Math.round(D.capDist))}</div></div>
@@ -1739,7 +1739,7 @@ function retReportHTML() {
           <td style="text-align:center">打造月配息每個月領 ${D.expW} 萬元</td>
         </tr>
         <tr>
-          <td style="text-align:center">需準備：${D.expW}萬 × 12個月 × ${D.retireYears}年 ＝ <span style="color:#dc2626;font-weight:900;font-size:1.1em">${D.needW}萬</span></td>
+          <td style="text-align:center">需準備：${D.expW}萬 × 12個月 × ${D.retireYears}年 ＝ <span style="color:#dc2626;font-weight:900;font-size:1.1em">${D.needW}萬</span>${D.selfNeed<D.totalNeed?`<div style="font-size:11px;color:#d97706;margin-top:4px">扣除已準備資產後，需再存 ${retFmt(Math.round(D.selfNeed/10000))} 萬</div>`:''}</td>
           <td style="text-align:center">需準備：月配息保單 7%<span style="color:#1d4ed8;font-weight:900;font-size:1.1em">（約${D.capW}萬）</span>${RS.preparedAmount>0?`<div style="font-size:11px;color:#d97706;margin-top:4px">已扣除已準備退休金每月 ${retFmt(Math.round(D.preparedMonthly))} 元</div>`:''}</td>
         </tr>
         <tr>
@@ -1786,130 +1786,11 @@ function retReportHTML() {
   </div>`;
 }
 
-// 動態載入 CDN 腳本（若頁面初次載入時 onerror fallback 失敗，這裡再救一次）
-function retLoadScript(src) {
-  return new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = src;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error('Failed to load ' + src));
-    document.head.appendChild(s);
-  });
-}
-
-async function retEnsureLibs() {
-  // html2canvas
-  if (typeof html2canvas === 'undefined') {
-    await retLoadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
-  }
-  // jsPDF
-  if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
-    await retLoadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
-  }
-  if (typeof html2canvas === 'undefined') throw new Error('html2canvas 無法載入，請檢查網路連線');
-  if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) throw new Error('jsPDF 無法載入，請檢查網路連線');
-}
-
 function retBindReport() {
   const btn = document.getElementById('ret-pdf-btn');
   if (!btn) return;
-  btn.onclick = async () => {
-    const label = document.getElementById('ret-pdf-label');
-    const origText = label ? label.textContent : '儲存為 PDF';
-    btn.disabled = true;
-    if (label) label.textContent = '載入中…';
-
-    try {
-      // ── 1. 確保兩個 CDN 腳本都已載入 ──
-      await retEnsureLibs();
-      const { jsPDF } = window.jspdf;
-
-      // ── 2. 取得報表 DOM ──
-      const wrapEl = document.getElementById('ret-report-wrap');
-      if (!wrapEl) throw new Error('找不到報表內容（#ret-report-wrap）');
-
-      // 暫時隱藏「返回」「PDF」按鈕列以免拍進去
-      const navRow = wrapEl.querySelector('.ret-back-row');
-      const prevNavDisplay = navRow ? navRow.style.display : null;
-      if (navRow) navRow.style.display = 'none';
-
-      // 暫時移除任何外層 transform 並讓 layout 穩定
-      const prevT = wrapEl.style.transform;
-      wrapEl.style.transform = 'none';
-
-      if (label) label.textContent = '產生中…（請稍候）';
-
-      // 等字型與圖片都 ready
-      if (document.fonts && document.fonts.ready) {
-        try { await document.fonts.ready; } catch (e) {}
-      }
-      await new Promise(r => setTimeout(r, 120));
-
-      // ── 3. html2canvas 渲染（scale=2，避免超大 canvas 爆炸則降為 1.5） ──
-      let canvas;
-      try {
-        canvas = await html2canvas(wrapEl, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: false,
-          backgroundColor: '#ffffff',
-          logging: false,
-          windowWidth: wrapEl.scrollWidth,
-          windowHeight: wrapEl.scrollHeight
-        });
-      } catch (inner) {
-        console.warn('[PDF] scale=2 失敗，降級為 scale=1.5：', inner);
-        canvas = await html2canvas(wrapEl, {
-          scale: 1.5,
-          useCORS: true,
-          backgroundColor: '#ffffff',
-          logging: false
-        });
-      }
-
-      // 還原 UI
-      if (navRow) navRow.style.display = prevNavDisplay || '';
-      wrapEl.style.transform = prevT;
-
-      if (!canvas || !canvas.width || !canvas.height) throw new Error('html2canvas 回傳空白畫布');
-
-      // ── 4. 整份報表縮放到單張 A4 橫式 ──
-      const PDF_W = 297, PDF_H = 210;          // A4 橫式 mm
-      const MARGIN = 8;
-      const contentW = PDF_W - MARGIN * 2;     // 可用寬度 (mm)
-      const contentH = PDF_H - MARGIN * 2;     // 可用高度 (mm)
-
-      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
-      const clientTag = (RS.clientName || '客戶').replace(/[\\/:*?"<>|]/g, '');
-
-      // 以 contain 邏輯算出放進去後的尺寸：先試寬滿版，高超出就改高滿版
-      let iW = contentW;
-      let iH = (canvas.height / canvas.width) * contentW;
-      if (iH > contentH) {
-        iH = contentH;
-        iW = (canvas.width / canvas.height) * contentH;
-      }
-      const x = MARGIN + (contentW - iW) / 2;
-      const y = MARGIN + (contentH - iH) / 2;
-      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', x, y, iW, iH);
-
-      pdf.save('退休財務計畫書_' + clientTag + '.pdf');
-      if (label) label.textContent = '✓ 已儲存';
-      setTimeout(() => { if (label) label.textContent = origText; }, 1600);
-
-    } catch (e) {
-      console.error('[PDF export] 失敗：', e);
-      const msg = (e && e.message) ? e.message : String(e);
-      if (label) label.textContent = '失敗：請重試';
-      // 顯示友善錯誤訊息
-      try {
-        alert('PDF 匯出失敗：\n' + msg + '\n\n請確認網路連線，或按 F12 查看詳細錯誤。');
-      } catch (_) {}
-      setTimeout(() => { if (label) label.textContent = '儲存為 PDF'; }, 2500);
-    } finally {
-      btn.disabled = false;
-    }
-  };
+  // PDF 另外排版成 A4 直式兩頁（scripts/retirement-plan.js），不直接擷取畫面
+  btn.onclick = () => GPRetirementPlan.exportPDF(btn);
 }
 
 // ── 進入 Step 7 時自動帶入資料並渲染 ──

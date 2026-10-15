@@ -23,10 +23,10 @@ function retirementData(profile,expenses){
     return {retire:profile.retire,age:profile.age,workYears:profile.retire-profile.age,retiredYears:85-profile.retire,monthly:yuan(monthly),total:yuan(r.targetTotal||0),saving:yuan(r.amount||0),housing:yuan(r.housingMonthly||0),housingYears:r.housingYears||0,housingNote:r.housingNote||'',payoffAge,set:monthly>0};
 }
 const logo='<span class="lp-mark">GP</span>';
-function pageHeader(title,n){return `<div class="lp-head"><div class="lp-brand">${logo}<span>GODZILLAPAUL<small>LIFE &amp; CASHFLOW PLANNING</small></span></div><div class="lp-pageno"><span>${escape(title)}</span><b>0${n}</b><i>/ 03</i></div></div>`;}
-function footer(name){return `<div class="lp-footer"><span>${escape(name||'客戶')}｜財務人生規劃書</span><span>本試算依填寫條件估算，未計通膨與投資報酬，不構成保證</span><span>金額單位：新臺幣元</span></div>`;}
+function pageHeader(title,n,total=3){return `<div class="lp-head"><div class="lp-brand">${logo}<span>GODZILLAPAUL<small>LIFE &amp; CASHFLOW PLANNING</small></span></div><div class="lp-pageno"><span>${escape(title)}</span><b>${String(n).padStart(2,'0')}</b><i>/ ${String(total).padStart(2,'0')}</i></div></div>`;}
+function footer(name,doc='財務人生規劃書'){return `<div class="lp-footer"><span>${escape(name||'客戶')}｜${escape(doc)}</span><span>本文件依填寫條件試算，不構成任何保證</span><span>金額單位：新臺幣元</span></div>`;}
 function stat(label,value,unit='元',note=''){return `<div class="lp-stat"><span>${escape(label)}</span><b>${value}<small>${unit}</small></b>${note?`<em>${escape(note)}</em>`:''}</div>`;}
-function section(title,html,extra=''){return `<section class="lp-section ${extra}"><h2>${escape(title)}</h2>${html}</section>`;}
+function section(title,html,extra=''){return `<section class="lp-section ${extra}"><h2><span>${escape(title)}</span></h2>${html}</section>`;}
 
 function versionCard(kind,title,need,income,ret){
     const g=gapInfo(need,income),cover=pct(income,need);
@@ -88,7 +88,7 @@ function build(data=snapshot()){
         <div class="lp-page-title"><h1>生活版本比較</h1><p>同一份人生清單，理想版與修正版逐項對照；退休準備為退休前每月需存下的金額。</p></div>
         <div class="lp-mini-compare"><div class="lp-ideal"><span>理想生活</span><b>${fmt(idealNeed)}<small>元／月</small></b><em class="${gi.cls}">${gapText(idealNeed,data.income)}</em></div><div class="lp-adjusted"><span>修正後生活</span><b>${fmt(need)}<small>元／月</small></b><em class="${gr.cls}">${gapText(need,data.income)}</em></div></div>
         <table class="lp-table lp-items"><colgroup><col style="width:20%"><col style="width:16%"><col style="width:16%"><col style="width:15%"><col style="width:33%"></colgroup>
-        <thead><tr><th>項目（每月）</th><th class="lp-num">理想生活</th><th class="lp-num">修正後</th><th class="lp-num">增減</th><th><span class="lp-key"><i class="lp-b-ideal"></i>理想 <i class="lp-b-adjusted"></i>修正後</span></th></tr></thead>
+        <thead><tr><th>項目（每月）</th><th class="lp-num">理想生活</th><th class="lp-num">修正後</th><th class="lp-num">增減</th><th><span class="lp-key"><i class="lp-b-ideal"></i><b>理想</b><i class="lp-b-adjusted"></i><b>修正後</b></span></th></tr></thead>
         <tbody>${rows||'<tr><td colspan="5" class="lp-empty">尚未設定生活項目</td></tr>'}</tbody>
         <tfoot><tr><th>每月總需求</th><td class="lp-num lp-c-ideal">${fmt(idealNeed)}</td><td class="lp-num lp-c-adjusted">${fmt(need)}</td><td class="lp-num ${diff>0?'lp-up':diff<0?'lp-down':'lp-flat'}">${diff>0?'+':diff<0?'−':''}${fmt(Math.abs(diff))}</td><td></td></tr></tfoot></table>`;
     html+=section('退休條件的影響',`<table class="lp-table lp-ret-table"><colgroup><col style="width:34%"><col style="width:33%"><col style="width:33%"></colgroup><thead><tr><th>條件</th><th class="lp-num">理想生活</th><th class="lp-num">修正後生活</th></tr></thead><tbody>
@@ -123,27 +123,32 @@ async function loadReportFonts(root){
     try{await Promise.all(['400','500','700','800','900'].map(w=>document.fonts.load(`${w} 16px "Noto Sans TC"`,text)));}catch(e){}
     await document.fonts.ready;
 }
-function prepare(){let root=document.getElementById('life-plan-root');if(!root){root=document.createElement('div');root.id='life-plan-root';document.body.appendChild(root);}root.innerHTML=build();return root;}
-async function exportPDF(button){
-    if(!baselineExp||!validRetirementAge(u.retire))return alert('請先完成生活模擬與有效的退休年齡設定。');
-    const label=button?.textContent;let root;const savedZoom=document.body.style.zoom,savedTransform=document.body.style.transform;
+function prepare(html=build()){let root=document.getElementById('life-plan-root');if(!root){root=document.createElement('div');root.id='life-plan-root';document.body.appendChild(root);}root.innerHTML=html;return root;}
+// 共用：把多頁 .lp-page HTML 逐頁擷取成 A4 直式 PDF
+async function exportPages(html,filename,button){
+    const labelEl=button?.querySelector('span[id$="-label"]')||button;
+    const label=labelEl?.textContent;let root;const savedZoom=document.body.style.zoom,savedTransform=document.body.style.transform;
     try{
         if(!window.html2canvas||!window.jspdf?.jsPDF)throw Error('PDF 元件尚未載入，請重新整理頁面');
-        if(button){button.disabled=true;button.textContent='正在製作 PDF…';}
-        document.body.style.zoom='1';document.body.style.transform='none';root=prepare();root.classList.add('lp-exporting');
+        if(button){button.disabled=true;labelEl.textContent='正在製作 PDF…';}
+        document.body.style.zoom='1';document.body.style.transform='none';root=prepare(html);root.classList.add('lp-exporting');
         await loadReportFonts(root);
         const pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
         const pages=Array.from(root.querySelectorAll('.lp-page'));
         for(let i=0;i<pages.length;i++){
             root.replaceChildren(pages[i]);
             await nextPaint();
-            if(pages[i].scrollHeight>pages[i].clientHeight+2)throw Error('內容超出頁面，請精簡討論紀錄後再匯出');
+            if(pages[i].scrollHeight>pages[i].clientHeight+2)throw Error('內容超出頁面，請精簡文字後再匯出');
             const canvas=await window.html2canvas(pages[i],{scale:2,backgroundColor:'#fff',logging:false,useCORS:true,windowWidth:1200,scrollX:0,scrollY:0,onclone:doc=>{doc.documentElement.style.zoom='1';doc.body.style.zoom='1';doc.body.style.transform='none';const clone=doc.getElementById('life-plan-root');if(clone){Object.assign(clone.style,{position:'absolute',left:'0',top:'0',maxHeight:'none',overflow:'visible',transform:'none',zoom:'1'});}}});
             if(i)pdf.addPage();pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,0,210,297,undefined,'FAST');
         }
-        const name=String(u.nickname||'客戶').replace(/[\\/:*?"<>|]/g,'');pdf.save('財務人生規劃書_'+name+'.pdf');
+        pdf.save(String(filename).replace(/[\\/:*?"<>|]/g,''));
         return pdf;
-    }catch(error){console.error(error);alert('PDF 製作失敗：'+error.message);}finally{document.body.style.zoom=savedZoom;document.body.style.transform=savedTransform;root?.remove();if(button){button.disabled=false;button.textContent=label;}}
+    }catch(error){console.error(error);alert('PDF 製作失敗：'+error.message);}finally{document.body.style.zoom=savedZoom;document.body.style.transform=savedTransform;root?.remove();if(button){button.disabled=false;labelEl.textContent=label;}}
 }
-window.GPLifePlan={snapshot,build,prepare,exportPDF,loadReportFonts};
+function exportPDF(button){
+    if(!baselineExp||!validRetirementAge(u.retire))return alert('請先完成生活模擬與有效的退休年齡設定。');
+    return exportPages(build(),'財務人生規劃書_'+(u.nickname||'客戶')+'.pdf',button);
+}
+window.GPLifePlan={snapshot,build,prepare,exportPDF,exportPages,loadReportFonts,kit:{fmt,yuan,escape,pct,pageHeader,footer,stat,section}};
 })();

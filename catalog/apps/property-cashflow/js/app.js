@@ -760,7 +760,8 @@
       cumCash+=annualCash;
       var unavailable=!!pfkRow.isCompressed||!!pfkRow.unavailable;
       var pfkGap=unavailable?-Infinity:surr-loan.balance;
-      var redeem=surr+cumCash-loan.balance;
+      // 只用 PFK 解約金還剩餘房貸；配息每月已用於繳房貸，不再計入結清金額
+      var redeem=surr-loan.balance;
       if(!payoffYear&&pfkGap>=0) payoffYear=year;
       rows.push({year:year,balance:loan.balance,surr:surr,pfkGap:pfkGap,cumCash:cumCash,redeem:redeem,unavailable:unavailable});
     }

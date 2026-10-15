@@ -72,7 +72,8 @@
   function setMarketStatus(text){['a-market-status','b-market-status','d-market-status','q-market-status'].forEach(function(id){var el=$(id); if(el) el.textContent=text});}
   function syncFxFields(){
     ['a-fx','b-fx','d-fx','q-fx'].forEach(function(id){var el=$(id); if(el&&!el.dataset.touched) el.value=Number(market.fxRate).toFixed(3)});
-    ['a-fx-date','b-fx-date','d-fx-date','q-fx-date'].forEach(function(id){var el=$(id); if(el) el.textContent='USD/TWD '+Number(market.fxRate).toFixed(3)+(market.fxDate?'｜'+market.fxDate:'')+'｜AUD/TWD '+Number(market.audRate).toFixed(3)});
+    // 目前沒有澳幣標的，只顯示美元匯率，避免露出長期未更新的澳幣預設值
+    ['a-fx-date','b-fx-date','d-fx-date','q-fx-date'].forEach(function(id){var el=$(id); if(el) el.textContent='USD/TWD '+Number(market.fxRate).toFixed(3)+(market.fxDate?'｜'+market.fxDate:'')});
   }
   function updateDividendNotes(){
     [['a','a-fund','a-fx'],['b','b-fund','b-fx'],['d','d-fund','d-fx'],['q','q-fund','q-fx']].forEach(function(x){

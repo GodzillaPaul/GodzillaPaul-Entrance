@@ -33,8 +33,8 @@
     googleSheetCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTlWEVTc0tmVbJfFWoKfOIIjmFDeiBKCqQGtgflSfV280ul1EjXP-1UexQORI1dUt0cZsIQnKoQmJgp/pub?gid=971675466&single=true&output=csv',
     fundMarketApi: '/.netlify/functions/fund-market',
     officialCodes: funds.map(function (fund) { return fund.code; }),
-    fxRate: 31.7776,
-    fxDate: '2026-09-24',
+    fxRate: 32.3061,
+    fxDate: '2026-10-15',
     funds: funds,
     startMarketRefresh: startMarketRefresh,
     cloneFunds: cloneFunds

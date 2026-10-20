@@ -144,21 +144,28 @@ function downloadFile(file){
     a.href=url;a.download=file.name;a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),60000);
 }
-// 完成後讓使用者選：系統分享（LINE、Google 雲端硬碟、iCloud…）或下載
-// navigator.share 必須由點擊觸發，所以不能在製作完成時直接呼叫
+// 完成後：能分享的裝置（手機、平板）只給「分享」，因為 iPhone／iPad 下載 PDF 會直接開啟檔案、回不到計算機；
+// 不支援分享的電腦瀏覽器才給「下載」。navigator.share 必須由點擊觸發，所以不能在製作完成時直接呼叫
 function showDone(file){
     const el=exportOverlay();
     const canShare=!!(navigator.canShare&&navigator.share&&navigator.canShare({files:[file]}));
     const sizeMb=(file.size/1048576).toFixed(1);
+    const action=canShare
+        ?'<button type="button" class="lpx-primary" data-act="share">分享（LINE、雲端硬碟…）</button>'
+        :'<button type="button" class="lpx-primary" data-act="download">下載 PDF</button>';
     el.innerHTML=`<div class="lpx-card"><div class="lpx-check" aria-hidden="true">✓</div><p class="lpx-title">PDF 已完成</p><p class="lpx-sub">${escape(file.name)}・${sizeMb} MB</p>
-        <div class="lpx-actions">${canShare?'<button type="button" class="lpx-primary" data-act="share">分享（LINE、雲端硬碟…）</button>':''}<button type="button" class="${canShare?'lpx-secondary':'lpx-primary'}" data-act="download">下載到這台裝置</button><button type="button" class="lpx-link" data-act="close">關閉</button></div>
-        ${canShare?'':'<p class="lpx-hint">這個瀏覽器不支援直接分享，請先下載，再從檔案傳到 LINE 或上傳雲端。</p>'}</div>`;
+        <div class="lpx-actions">${action}<button type="button" class="lpx-link" data-act="close">關閉</button></div>
+        <p class="lpx-hint" id="lpx-msg">${canShare?'':'下載後，再從檔案傳到 LINE 或上傳雲端。'}</p></div>`;
     el.onclick=async e=>{
         const act=e.target.closest('button')?.dataset.act;if(!act)return;
         if(act==='close')return closeOverlay();
         if(act==='download'){downloadFile(file);return;}
         try{await navigator.share({files:[file],title:file.name.replace(/\.pdf$/,'')});closeOverlay();}
-        catch(err){if(err&&err.name!=='AbortError'){console.error(err);downloadFile(file);}}
+        catch(err){
+            if(err&&err.name==='AbortError')return; // 使用者自己關掉分享面板
+            console.error(err);
+            const msg=document.getElementById('lpx-msg');if(msg)msg.textContent='分享沒有成功，請再按一次「分享」。';
+        }
     };
 }
 // 共用：把多頁 .lp-page HTML 逐頁擷取成 A4 直式 PDF

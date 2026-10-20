@@ -124,27 +124,79 @@ async function loadReportFonts(root){
     await document.fonts.ready;
 }
 function prepare(html=build()){let root=document.getElementById('life-plan-root');if(!root){root=document.createElement('div');root.id='life-plan-root';document.body.appendChild(root);}root.innerHTML=html;return root;}
+// 匯出進度與完成視窗：蓋在報告上方，避免使用者看到報告閃現、以為畫面卡住
+function exportOverlay(){
+    let el=document.getElementById('lp-export-overlay');
+    if(!el){el=document.createElement('div');el.id='lp-export-overlay';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');document.documentElement.appendChild(el);} // 掛在 <html> 下，不受 body 縮放影響，手機上按鈕才不會變很小
+    // 頁面固定 1320px 寬，手機、平板會整頁縮小；視窗按同樣比例放大回來，按鈕才按得到
+    const k=screen.width&&innerWidth>screen.width?innerWidth/screen.width:1;
+    el.style.setProperty('--lpx-k',String(Math.min(k,4)));
+    return el;
+}
+function showProgress(text){
+    const el=exportOverlay();
+    el.innerHTML=`<div class="lpx-card"><div class="lpx-spinner" aria-hidden="true"></div><p class="lpx-title">正在製作 PDF</p><p class="lpx-sub">${escape(text)}</p></div>`;
+}
+function closeOverlay(){document.getElementById('lp-export-overlay')?.remove();}
+// 下載：iPhone／iPad 的 Safari 不一定支援 download 屬性，失敗時改開新分頁讓使用者自己存
+function downloadFile(file){
+    const url=URL.createObjectURL(file),a=document.createElement('a');
+    a.href=url;a.download=file.name;a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+// 完成後讓使用者選：系統分享（LINE、Google 雲端硬碟、iCloud…）或下載
+// navigator.share 必須由點擊觸發，所以不能在製作完成時直接呼叫
+function showDone(file){
+    const el=exportOverlay();
+    const canShare=!!(navigator.canShare&&navigator.share&&navigator.canShare({files:[file]}));
+    const sizeMb=(file.size/1048576).toFixed(1);
+    el.innerHTML=`<div class="lpx-card"><div class="lpx-check" aria-hidden="true">✓</div><p class="lpx-title">PDF 已完成</p><p class="lpx-sub">${escape(file.name)}・${sizeMb} MB</p>
+        <div class="lpx-actions">${canShare?'<button type="button" class="lpx-primary" data-act="share">分享（LINE、雲端硬碟…）</button>':''}<button type="button" class="${canShare?'lpx-secondary':'lpx-primary'}" data-act="download">下載到這台裝置</button><button type="button" class="lpx-link" data-act="close">關閉</button></div>
+        ${canShare?'':'<p class="lpx-hint">這個瀏覽器不支援直接分享，請先下載，再從檔案傳到 LINE 或上傳雲端。</p>'}</div>`;
+    el.onclick=async e=>{
+        const act=e.target.closest('button')?.dataset.act;if(!act)return;
+        if(act==='close')return closeOverlay();
+        if(act==='download'){downloadFile(file);return;}
+        try{await navigator.share({files:[file],title:file.name.replace(/\.pdf$/,'')});closeOverlay();}
+        catch(err){if(err&&err.name!=='AbortError'){console.error(err);downloadFile(file);}}
+    };
+}
 // 共用：把多頁 .lp-page HTML 逐頁擷取成 A4 直式 PDF
 async function exportPages(html,filename,button){
     const labelEl=button?.querySelector('span[id$="-label"]')||button;
     const label=labelEl?.textContent;let root;const savedZoom=document.body.style.zoom,savedTransform=document.body.style.transform;
+    // 手機、平板記憶體較少，解析度降一點，速度快、也不容易因畫布過大而失敗
+    const mobile=matchMedia('(pointer:coarse)').matches||Math.min(screen.width,screen.height)<900;
+    const scale=mobile?1.6:2;
+    let file=null;
     try{
         if(!window.html2canvas||!window.jspdf?.jsPDF)throw Error('PDF 元件尚未載入，請重新整理頁面');
         if(button){button.disabled=true;labelEl.textContent='正在製作 PDF…';}
+        showProgress('準備版面…');
+        await nextPaint();
         document.body.style.zoom='1';document.body.style.transform='none';root=prepare(html);root.classList.add('lp-exporting');
         await loadReportFonts(root);
         const pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
         const pages=Array.from(root.querySelectorAll('.lp-page'));
         for(let i=0;i<pages.length;i++){
+            showProgress(`第 ${i+1} / ${pages.length} 頁`);
             root.replaceChildren(pages[i]);
             await nextPaint();
             if(pages[i].scrollHeight>pages[i].clientHeight+2)throw Error('內容超出頁面，請精簡文字後再匯出');
-            const canvas=await window.html2canvas(pages[i],{scale:2,backgroundColor:'#fff',logging:false,useCORS:true,windowWidth:1200,scrollX:0,scrollY:0,onclone:doc=>{doc.documentElement.style.zoom='1';doc.body.style.zoom='1';doc.body.style.transform='none';const clone=doc.getElementById('life-plan-root');if(clone){Object.assign(clone.style,{position:'absolute',left:'0',top:'0',maxHeight:'none',overflow:'visible',transform:'none',zoom:'1'});}}});
-            if(i)pdf.addPage();pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,0,210,297,undefined,'FAST');
+            const canvas=await window.html2canvas(pages[i],{scale,backgroundColor:'#fff',logging:false,useCORS:true,windowWidth:1200,scrollX:0,scrollY:0,onclone:doc=>{doc.documentElement.style.zoom='1';doc.body.style.zoom='1';doc.body.style.transform='none';const clone=doc.getElementById('life-plan-root');if(clone){Object.assign(clone.style,{position:'absolute',left:'0',top:'0',maxHeight:'none',overflow:'visible',transform:'none',zoom:'1'});}}});
+            // JPEG 比 PNG 快很多、檔案也小，傳 LINE 比較順
+            if(i)pdf.addPage();pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,210,297,undefined,'FAST');
+            canvas.width=canvas.height=0;
+            await nextPaint();
         }
-        pdf.save(String(filename).replace(/[\\/:*?"<>|]/g,''));
+        file=new File([pdf.output('blob')],String(filename).replace(/[\\/:*?"<>|]/g,''),{type:'application/pdf'});
         return pdf;
-    }catch(error){console.error(error);alert('PDF 製作失敗：'+error.message);}finally{document.body.style.zoom=savedZoom;document.body.style.transform=savedTransform;root?.remove();if(button){button.disabled=false;labelEl.textContent=label;}}
+    }catch(error){console.error(error);closeOverlay();alert('PDF 製作失敗：'+error.message);}
+    finally{
+        document.body.style.zoom=savedZoom;document.body.style.transform=savedTransform;root?.remove();
+        if(button){button.disabled=false;labelEl.textContent=label;}
+        if(file)showDone(file);
+    }
 }
 function exportPDF(button){
     if(!baselineExp||!validRetirementAge(u.retire))return alert('請先完成生活模擬與有效的退休年齡設定。');

@@ -259,3 +259,10 @@
 #lp-export-overlay .lpx-secondary{border:1.5px solid #16284d;background:#fff;color:#16284d}
 #lp-export-overlay .lpx-link{min-height:40px;border:0;background:none;color:#6f7b91;font-weight:500}
 #lp-export-overlay .lpx-hint{margin:14px 0 0;font-size:13px;color:#6f7b91;line-height:1.6}
+
+/* 退休後支出分兩段（房貸在退休期間中途繳清） */
+#life-plan-root .lp-stat-phases .lp-phase{display:flex;justify-content:space-between;align-items:baseline;margin-top:3px}
+#life-plan-root .lp-stat-phases .lp-phase em{font-style:normal;font-size:10px;color:var(--muted)}
+#life-plan-root .lp-stat-phases .lp-phase b{display:inline;font-size:16px;margin:0}
+#life-plan-root .lp-stat-phases .lp-phase+.lp-phase b{color:var(--ink-2)}
+#life-plan-root .lp-stat-phases .lp-phase-note em{display:block;font-style:normal;font-size:9.5px;color:#9b7a35;text-align:right;margin-top:-1px}

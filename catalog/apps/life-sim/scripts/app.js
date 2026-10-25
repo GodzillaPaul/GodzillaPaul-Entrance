@@ -111,8 +111,11 @@ function computeRetirement(source, profile) {
     r.targetMonthly = base + housingActive;
     r.targetTotal = (base * retiredYears + housingActive * h.years) * 12;
     r.amount = r.targetTotal / (workYears * 12);
-    const housingText = housingActive > 0 && h.years < retiredYears ? `（含房貸${housingActive.toFixed(2)}萬，繳 ${h.years} 年）` : '';
-    r.label = `退休後每月${r.targetMonthly.toFixed(2)}萬${housingText}｜退休 ${retiredYears} 年需 ${r.targetTotal.toFixed(0)} 萬｜退休前 ${workYears} 年每月準備 ${r.amount.toFixed(2)} 萬`;
+    // 房貸在退休期間中途繳清時分兩段寫，避免被誤用「每月支出 × 12 × 退休年數」來驗算
+    const monthlyText = housingActive > 0 && h.years < retiredYears
+        ? `退休後前 ${h.years} 年每月${r.targetMonthly.toFixed(2)}萬（含房貸${housingActive.toFixed(2)}萬），之後每月${base.toFixed(2)}萬`
+        : `退休後每月${r.targetMonthly.toFixed(2)}萬`;
+    r.label = `${monthlyText}｜退休 ${retiredYears} 年需 ${r.targetTotal.toFixed(0)} 萬｜退休前 ${workYears} 年每月準備 ${r.amount.toFixed(2)} 萬`;
     return r;
 }
 // 退休後平均每月支出（元）：房貸只在繳清前計入，攤平到整段退休期，供月配息規劃使用
@@ -753,7 +756,7 @@ function calcResults(goToResult = true) {
     const noteEl = document.getElementById('r-note');
     if (noteEl) {
         const retirementLine = retirementTargetTotal > 0
-            ? `你設定的退休生活，代表退休後每月要 <strong>${formatYuanPerMonthFromWan(retirementMonthlyNeed)}</strong>，而且要在退休前 <strong>${yearsToRetire} 年</strong> 先存到 <strong>${formatYuanFromWan(retirementTargetTotal)}</strong>。`
+            ? `你設定的退休生活，代表退休後每月要 <strong>${formatYuanPerMonthFromWan(retirementMonthlyNeed)}</strong>${(exp.retirement?.housingMonthly>0&&exp.retirement.housingYears<Math.max(85-u.retire,0))?`（前 ${exp.retirement.housingYears} 年含房貸，之後每月 <strong>${formatYuanPerMonthFromWan(exp.retirement.baseMonthly)}</strong>）`:''}，而且要在退休前 <strong>${yearsToRetire} 年</strong> 先存到 <strong>${formatYuanFromWan(retirementTargetTotal)}</strong>。`
             : '你剛剛填的每一項，不是想像，而是未來真實會發生的現金流。';
         noteEl.innerHTML = `你剛剛不是在填表，你是在替未來的自己選生活。<br>${retirementLine}`;
     }

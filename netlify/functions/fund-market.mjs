@@ -1,7 +1,7 @@
 const PATHS = {
   DSP5: 'WFUND/25/DSP5', NGB1: 'WFUND/32/NGB1', NGB2: 'WFUND/32/NGB2',
   FBD6: 'DIA/45/FBD6', ACE17: 'WFUND/40/ACE17', DST3: 'FUND/10/DST3',
-  ACC3: 'FUND/20/ACC3', JFP11: 'WFUND/39/JFP11',
+  ACC3: 'FUND/20/ACC3', JFP11: 'WFUND/39/JFP11', SCP6: 'WFUND/29/SCP6',
 };
 const SOURCE_URL = 'https://invest.fubonlife.com.tw/funds/overview/' + PATHS.JFP11;
 function date(value) {

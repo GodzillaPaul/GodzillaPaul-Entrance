@@ -1038,7 +1038,7 @@ input::placeholder {
 </div>
 
 
-<script src="../shared/monthly-dividend-funds.js?v=20261015"></script>
+<script src="../shared/monthly-dividend-funds.js?v=20261030"></script>
 <script>
 // ===== 設定 =====
 const MONTHLY_FUND_SOURCE = window.GP_MONTHLY_DIVIDEND;
@@ -1119,6 +1119,7 @@ function sanitizeState() {
     if (code.indexOf("JFP11") >= 0) { min = 30; max = 150; }
     if (code.indexOf("DST3") >= 0) { min = 5; max = 200; }
     if (code.indexOf("ACC3") >= 0) { min = 5; max = 200; }
+    if (code.indexOf("SCP6") >= 0) { min = 50; max = 300; }
 
     if (!isFinite(Number(f.nav)) || Number(f.nav) < min || Number(f.nav) > max) {
       const def = DEFAULT_STATE.funds.find(d => d.name === f.name);
@@ -1129,7 +1130,7 @@ function sanitizeState() {
       }
     }
 
-    // FBD6 提解率固定；其餘七檔保留各月最新快取。
+    // FBD6 提解率固定；其餘八檔保留各月最新快取。
     const defForRate = DEFAULT_STATE.funds.find(d => d.name === f.name);
     if (defForRate && !defForRate.dynamicRate && isFinite(Number(defForRate.rate)) && Number(defForRate.rate) > 0) {
       f.rate = defForRate.rate;

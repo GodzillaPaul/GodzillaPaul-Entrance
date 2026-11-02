@@ -501,3 +501,5 @@ div.card:hover { transform: translateY(-7px); box-shadow: 0 32px 90px rgba(0,0,0
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+
+.card-fpe { --c: #a77b32; --soft: rgba(167,123,50,.18); }

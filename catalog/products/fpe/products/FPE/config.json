@@ -1,0 +1,164 @@
+{
+  "code": "FPE",
+  "name": "鴻運穩傳",
+  "fullName": "富邦人壽鴻運穩傳外幣分紅終身壽險",
+  "currency": "USD",
+  "engineType": "wholelife_dividend",
+  "keyPrefix": "FPE",
+  "periodOptions": [
+    "lump",
+    2
+  ],
+  "periodLabels": {
+    "lump": "躉繳",
+    "2": "2 年期"
+  },
+  "ageRange": {
+    "lump": {
+      "min": 0,
+      "max": 80
+    },
+    "2": {
+      "min": 0,
+      "max": 78
+    }
+  },
+  "sumLimits": [
+    {
+      "ageMax": 15,
+      "min": 2,
+      "max": 30
+    },
+    {
+      "ageMax": 80,
+      "min": 2,
+      "max": 200
+    }
+  ],
+  "discount": {
+    "lump": {
+      "highAmount": [
+        {
+          "minSum": 20,
+          "pct": 1
+        }
+      ],
+      "paymentMethod": 0,
+      "cap": 1
+    },
+    "2": {
+      "highAmount": [
+        {
+          "minSum": 20,
+          "pct": 1
+        }
+      ],
+      "paymentMethod": 1,
+      "cap": 2
+    }
+  },
+  "modes": {
+    "lump": [
+      {
+        "key": "lumpAmount",
+        "label": "躉繳金額",
+        "default": 30,
+        "quickPicks": [
+          10,
+          30,
+          60,
+          100,
+          200
+        ]
+      },
+      {
+        "key": "target",
+        "label": "目標壽險金額",
+        "default": 100,
+        "quickPicks": [
+          50,
+          100,
+          300,
+          500,
+          1000
+        ],
+        "targetField": "death",
+        "targetYear": 6
+      }
+    ],
+    "2": [
+      {
+        "key": "total",
+        "label": "2年總存",
+        "default": 60,
+        "quickPicks": [
+          30,
+          60,
+          100,
+          200,
+          400
+        ]
+      },
+      {
+        "key": "annual",
+        "label": "年存",
+        "default": 30,
+        "quickPicks": [
+          15,
+          30,
+          50,
+          100,
+          200
+        ]
+      },
+      {
+        "key": "target",
+        "label": "目標壽險金額",
+        "default": 100,
+        "quickPicks": [
+          50,
+          100,
+          300,
+          500,
+          1000
+        ],
+        "targetField": "death",
+        "targetYear": 6
+      }
+    ]
+  },
+  "columns": [
+    {
+      "key": "year",
+      "label": "年度"
+    },
+    {
+      "key": "age",
+      "label": "年齡"
+    },
+    {
+      "key": "paid_yr",
+      "label": "折扣後保費"
+    },
+    {
+      "key": "paid_cum",
+      "label": "折扣後總保費"
+    },
+    {
+      "key": "surr",
+      "label": "解約金"
+    },
+    {
+      "key": "profit",
+      "label": "解約獲利"
+    },
+    {
+      "key": "death",
+      "label": "身故金",
+      "bold": true
+    }
+  ],
+  "sourceVersion": "1151023",
+  "dividendScenario": "最可能紅利",
+  "paymentAssumption": "2 年期首期匯款且續期轉帳，或金融機構轉帳；繳費方式折扣 1%"
+}

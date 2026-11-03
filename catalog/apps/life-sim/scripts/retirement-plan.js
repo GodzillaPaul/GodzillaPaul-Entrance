@@ -69,7 +69,7 @@ function build(){
     html+=`<article class="lp-page">${pageHeader('保單規劃明細',2,2)}
         <div class="lp-page-title"><h1>月配息保單規劃明細</h1><p>每月存入 ${fmt(policyMonthly)} 元、存到 ${RS.retirementAge} 歲，退休後以解約金每月配息。</p></div>
         <div class="rp-params">
-            ${stat('年目標保費',fmt(D.annualTarget))}${stat('月超額保費',fmt(D.monthlyExtra))}${stat('壽險保額',fmt(D.saWan),'萬')}${stat('假設投報率',String(RS.assumedReturn),'%')}
+            ${stat('年目標保費',fmt(D.annualTarget))}${stat('月超額保費',fmt(D.monthlyExtra))}${stat('壽險保額',String(D.saWan),'萬')}${stat('假設投報率',String(RS.assumedReturn),'%')}
         </div>`;
     html+=section('帳戶價值成長',chart);
     html+=section('逐年試算',table);

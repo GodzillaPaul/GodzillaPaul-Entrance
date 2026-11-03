@@ -48,63 +48,6 @@ function calcMonthsBefore15(birth) {
 }
 
 function getMultTable(sex) { return sex === 'M' ? MULT_M : MULT_F; }
-function getMult(age, sex) { return getMultTable(sex)[age] || null; }
-
-// 投保規則：下限取「最低與最高倍數的平均值」，無條件進位至千元，且不低於 10 萬
-function calcMinSA(target, age, sex) {
-  const mult = getMult(age, sex);
-  if (!mult) return 0;
-  const [lo, hi] = mult;
-  const v = Math.ceil(target * (lo + hi) / 2 / 1000) * 1000;
-  return Math.min(SA_HARD_MAX, Math.max(SA_HARD_MIN, v));
-}
-
-// 投保規則：上限無條件捨去至千元（單一倍數時進位），且不超過 6,000 萬
-function calcMaxSA(target, age, sex) {
-  const mult = getMult(age, sex);
-  if (!mult) return 0;
-  const [lo, hi] = mult;
-  const raw = target * hi / 1000;
-  const v = (lo === hi ? Math.ceil(raw) : Math.floor(raw)) * 1000;
-  return Math.min(SA_HARD_MAX, v);
-}
-
-function getHighFeeDiscount(t) {
-  if (t >= 500000) return .035;
-  if (t >= 300000) return .03;
-  if (t >= 200000) return .02;
-  if (t >= 150000) return .015;
-  if (t >= 100000) return .01;
-  if (t >=  60000) return .005;
-  return 0;
-}
-
-/* ── 第十一條：保額比例門檻（甲型、乙型皆適用）────────────────
-   比例 = 分子 ÷（帳戶價值 + 當次預定投資保費）≥ 門檻，始得繳交該次保費
-   甲型分子 = MAX(基本保額, 帳戶價值 + 當次預定投資保費)
-   乙型分子 = 基本保額 + 帳戶價值 + 當次預定投資保費
-   未滿 15 足歲：甲型分子 = MAX(基本保額 − (帳戶價值 + 預定投資), 0)；乙型分子 = 基本保額
-   ──────────────────────────────────────────────────────────── */
-function getSAThreshold(age) {
-  if (age <= 30) return 1.90;
-  if (age <= 40) return 1.60;
-  if (age <= 50) return 1.40;
-  if (age <= 60) return 1.20;
-  if (age <= 70) return 1.10;
-  if (age <= 90) return 1.02;
-  return 1.00;
-}
-
-function round8(n) { return Math.round(n * 1e8) / 1e8; }
-
-// denom = 帳戶價值 + 當次預定投資保費（預定投資保費依 Excel：保費扣「未折扣」保費費用）
-function canPayPremium(ptype, SA, denom, age, before15) {
-  if (denom <= 0) return true;
-  let numer;
-  if (ptype === 'A') numer = before15 ? Math.max(SA - denom, 0) : Math.max(SA, denom);
-  else               numer = before15 ? SA : SA + denom;
-  return round8(denom * getSAThreshold(age)) <= round8(numer);
-}
 
 function fmt(n) { return Math.round(n).toLocaleString('zh-TW'); }
 function pct(r) { return (r * 100).toFixed(1) + '%'; }
@@ -144,14 +87,6 @@ function getSingleEvents() {
 
 function getSingleAtYear(yr, events) {
   return events.filter(e => e.yr === yr).reduce((sum, e) => sum + e.amt, 0);
-}
-
-// 超額保險費前置費用級距
-function getSingleFeeRate(amount) {
-  if (amount >= 10000000) return .025;
-  if (amount >=  5000000) return .03;
-  if (amount >=  2000000) return .04;
-  return amount > 0 ? .05 : 0;
 }
 
 function getPayway(id, fallback) {
@@ -260,7 +195,6 @@ function runCalc() {
     }
   }
 
-  const COI       = sex === 'M' ? COI_M : COI_F;
   const highDisc  = getHighFeeDiscount(target);
   const firstDisc = PAYWAY_FIRST_DISC[payFirst] ? PAYWAY_DISC : 0;
   const renewDisc = PAYWAY_RENEW_DISC[payRenew] ? PAYWAY_DISC : 0;
@@ -281,105 +215,16 @@ function runCalc() {
     }
   }
 
-  let av = 0, globalMonth = 0, cumPaid = 0, targetPaidCount = 0;
-  const rows = [];
-
   let payLimitLabel = '終身繳費（至 110 歲）';
   if (payLimit.mode === 'age' && payLimit.val < 999) payLimitLabel = `繳費至 ${payLimit.val} 歲（含）`;
   else if (payLimit.mode === 'yr' && payLimit.val < 999) payLimitLabel = `繳費 ${payLimit.val} 年`;
 
-  for (let yr = 1; yr <= years; yr++) {
-    const ageStart   = iAge + yr - 1;
-    const COIrate    = COI[Math.min(ageStart, 110)];
-    const userPayStop = yr > lastPayYear;
-    const extraAmt   = userPayStop ? 0 : getExtraAtYear(yr, extraStages);
-    const singleAmt  = userPayStop ? 0 : getSingleAtYear(yr, singleEvents);
-    let yFee = 0, yMgmt = 0, yCOI = 0;
-    let yTarget = 0, yExtra = 0, ySingle = 0;
-    let targetSkipped = false, rejectedSingle = 0, rejectedExtra = 0, capHit = false;
-    let feeRate = 0, before15Any = false;
-
-    for (let mo = 1; mo <= 12; mo++) {
-      globalMonth++;
-      const before15 = globalMonth <= monthsBefore15;
-      if (before15) before15Any = true;
-      const avPrev = av;
-
-      // 本期預定繳費
-      let O_t = (mo === 1 && !userPayStop) ? target : 0;
-      let O_s = (mo === 1) ? singleAmt : 0;
-      let O_e = extraAmt;
-
-      // 保險費年度（依已繳目標保費次數）決定保費費用率
-      const premYear = targetPaidCount + 1;
-      const baseFee  = premYear <= 5 ? BASE_FEE[premYear - 1] : 0;
-      const F = O_t - Math.round(O_t * baseFee);           // 第十一條用：預定投資（未折扣費率）
-
-      if (globalMonth > 1) {
-        // 第十一條逐期判斷（不永久停繳，門檻調降後可恢復）
-        if (O_t > 0 && !canPayPremium(ptype, SA, avPrev + F, ageStart, before15)) {
-          O_t = 0; targetSkipped = true;
-        }
-        const G = O_s - Math.round(O_s * getSingleFeeRate(O_s));
-        if (O_s > 0 && !canPayPremium(ptype, SA, avPrev + F + G, ageStart, before15)) {
-          rejectedSingle += O_s; O_s = 0;
-        }
-        const Gact = O_s - Math.round(O_s * getSingleFeeRate(O_s));
-        const H = O_e - Math.round(O_e * getSingleFeeRate(O_e));
-        if (O_e > 0 && !canPayPremium(ptype, SA, avPrev + F + Gact + H, ageStart, before15)) {
-          rejectedExtra += O_e; O_e = 0;
-        }
-      }
-
-      // 累計保費 6,000 萬上限
-      if (O_t > 0 && cumPaid + O_t > PREMIUM_CUM_MAX) { O_t = 0; capHit = true; }
-      if (O_s > 0 && cumPaid + O_t + O_s > PREMIUM_CUM_MAX) { rejectedSingle += O_s; O_s = 0; capHit = true; }
-      if (O_e > 0 && cumPaid + O_t + O_s + O_e > PREMIUM_CUM_MAX) { rejectedExtra += O_e; O_e = 0; capHit = true; }
-
-      let adjFee = 0;
-      if (O_t > 0) {
-        const payDisc = targetPaidCount === 0 ? firstDisc : renewDisc;
-        adjFee = premYear <= 5 ? Math.max(0, baseFee - highDisc - payDisc) : 0;
-        feeRate = adjFee;
-        targetPaidCount++;
-      }
-
-      const O = O_t + O_e + O_s;
-      cumPaid += O;
-      const U = Math.round(O_t * adjFee) + Math.round(O_e * getSingleFeeRate(O_e)) + Math.round(O_s * getSingleFeeRate(O_s));
-      const V = (globalMonth === 1 || avPrev > 0) ? 100 : 0;
-      const Y = O - U - V;
-      const AC = globalMonth === 1 ? Math.max(Y, 0) : Math.max(avPrev + Y, 0);
-      let riskSA;
-      if (ptype === 'B')          riskSA = SA;
-      else if (globalMonth === 1) riskSA = SA - (O - U);
-      else                        riskSA = Math.max(SA - AC, 0);
-      const AB = (globalMonth > 1 && AC === 0) ? 0 : Math.round(riskSA * COIrate / 10000);
-      av = Math.max((AC - AB) * Math.pow(1 + ror, 1 / 12), 0);
-
-      yFee += U; yMgmt += V; yCOI += AB;
-      yTarget += O_t; yExtra += O_e; ySingle += O_s;
-    }
-
-    const avR = Math.round(av);
-    const death = avR === 0 ? 0 : (ptype === 'B' ? Math.round(SA + av) : Math.round(Math.max(SA, av)));
-    rows.push({
-      yr, age: ageStart, feeRate,
-      yearTarget: yTarget,
-      yearExtra:  yExtra,
-      yearSingle: ySingle,
-      rejectedSingle, rejectedExtra,
-      yearFee: Math.round(yFee),
-      yearMgmt: Math.round(yMgmt),
-      yearCOI: Math.round(yCOI),
-      av: avR, death,
-      targetSkipped,          // 第十一條：本年度目標保費暫停
-      capHit,                 // 累計 6,000 萬上限
-      userPayStop,            // 使用者設定的繳費期間已到
-      before15: before15Any   // 未滿 15 足歲期間
-    });
-    if (av <= 0) break;       // 帳戶價值歸零，契約停效
-  }
+  const rows = UNDEngine.simulate({
+    iAge, sex, ptype, target, SA, ror, lastPayYear,
+    extraAtYear:  yr => getExtraAtYear(yr, extraStages),
+    singleAtYear: yr => getSingleAtYear(yr, singleEvents),
+    firstDisc, renewDisc, monthsBefore15
+  });
 
   const [lo_, hi_] = getMult(iAge, sex);
   const avg_       = (lo_ + hi_) / 2;

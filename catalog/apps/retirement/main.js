@@ -1,99 +1,25 @@
 // ═══ constants.js V1.26 ═══
-const COI_MALE={0:2.7e-5,1:1.6e-5,2:1.4e-5,3:1.2e-5,4:1e-5,5:1e-5,6:9e-6,7:9e-6,8:1e-5,9:1e-5,10:1e-5,11:1.1e-5,12:1.3e-5,13:1.5e-5,14:1.9e-5,15:2.5e-5,16:2.8e-5,17:3.2e-5,18:3.4e-5,19:3.6e-5,20:3.6e-5,21:3.7e-5,22:3.8e-5,23:3.9e-5,24:3.9e-5,25:4.1e-5,26:4.2e-5,27:4.3e-5,28:4.5e-5,29:4.7e-5,30:5.5e-5,31:5.8e-5,32:6.2e-5,33:6.7e-5,34:7.3e-5,35:8.1e-5,36:8.9e-5,37:9.7e-5,38:1.06e-4,39:1.16e-4,40:1.27e-4,41:1.39e-4,42:1.51e-4,43:1.64e-4,44:1.78e-4,45:2.01e-4,46:2.17e-4,47:2.34e-4,48:2.52e-4,49:2.71e-4,50:2.89e-4,51:3.1e-4,52:3.32e-4,53:3.56e-4,54:3.82e-4,55:4.22e-4,56:4.51e-4,57:4.84e-4,58:5.19e-4,59:5.57e-4,60:6.23e-4,61:6.68e-4,62:7.19e-4,63:7.74e-4,64:8.38e-4,65:9.39e-4,66:1.02e-3,67:1.112e-3,68:1.214e-3,69:1.33e-3,70:1.501e-3,71:1.604e-3,72:1.719e-3,73:1.861e-3,74:2.024e-3,75:2.257e-3,76:2.443e-3,77:2.649e-3,78:2.878e-3,79:3.133e-3,80:3.456e-3,81:3.766e-3,82:4.107e-3,83:4.486e-3,84:4.907e-3,85:5.418e-3,86:5.94e-3,87:6.518e-3,88:7.158e-3,89:7.867e-3,90:8.677e-3,91:9.565e-3,92:1.0555e-2,93:1.1651e-2,94:1.2867e-2,95:1.4214e-2,96:1.5704e-2,97:1.735e-2,98:1.917e-2,99:2.118e-2,100:2.341e-2,101:2.5885e-2,102:2.8622e-2,103:3.165e-2,104:3.5e-2,105:3.8698e-2,106:4.278e-2,107:4.729e-2,108:5.227e-2,109:5.777e-2,110:1};
-const COI_FEMALE={0:1.2e-5,1:7e-6,2:7e-6,3:6e-6,4:5e-6,5:4e-6,6:4e-6,7:4e-6,8:4e-6,9:4e-6,10:4e-6,11:4e-6,12:5e-6,13:5e-6,14:6e-6,15:7e-6,16:8e-6,17:8e-6,18:8e-6,19:9e-6,20:9e-6,21:9e-6,22:1e-5,23:1e-5,24:1e-5,25:1.1e-5,26:1.1e-5,27:1.1e-5,28:1.2e-5,29:1.2e-5,30:1.4e-5,31:1.5e-5,32:1.6e-5,33:1.7e-5,34:1.8e-5,35:1.9e-5,36:4e-5,37:4.2e-5,38:4.5e-5,39:4.8e-5,40:5.1e-5,41:5.4e-5,42:5.8e-5,43:6.2e-5,44:6.7e-5,45:7.3e-5,46:7.8e-5,47:8.4e-5,48:9e-5,49:9.7e-5,50:1.05e-4,51:1.13e-4,52:1.22e-4,53:1.32e-4,54:1.43e-4,55:1.58e-4,56:1.7e-4,57:1.84e-4,58:2e-4,59:2.17e-4,60:2.41e-4,61:2.6e-4,62:2.82e-4,63:3.07e-4,64:3.35e-4,65:4.67e-4,66:5.11e-4,67:5.6e-4,68:6.14e-4,69:6.75e-4,70:7.56e-4,71:8.16e-4,72:8.82e-4,73:9.64e-4,74:1.057e-3,75:1.19e-3,76:1.3e-3,77:1.424e-3,78:1.563e-3,79:1.72e-3,80:1.92e-3,81:2.115e-3,82:2.332e-3,83:2.574e-3,84:2.843e-3,85:3.174e-3,86:3.514e-3,87:3.893e-3,88:4.317e-3,89:4.792e-3,90:5.343e-3,91:5.953e-3,92:6.636e-3,93:7.402e-3,94:8.262e-3,95:9.232e-3,96:1.0322e-2,97:1.1549e-2,98:1.2929e-2,99:1.4483e-2,100:1.6231e-2,101:1.8198e-2,102:2.0411e-2,103:2.2903e-2,104:2.571e-2,105:2.887e-2,106:3.2423e-2,107:3.6417e-2,108:4.0909e-2,109:4.5958e-2,110:1};
-const FFT={1:0.60,2:0.30,3:0.30,4:0.15,5:0.15};
-const FFE=0.05, ADM=100, MAX_MS=10000;
-// UND-main-excel-fixed 4 / tbULMultiple-1150101：頁面下限使用低倍與高倍平均值。
-const SA_M={0:[61,92],1:[61,92],2:[60,92],3:[58,92],4:[57,92],5:[57,92],6:[55,92],7:[54,92],8:[53,92],9:[52,92],10:[51,92],11:[50,92],12:[49,92],13:[48,92],14:[47,92],15:[46,92],16:[45,190],17:[44,190],18:[43,190],19:[43,190],20:[42,190],21:[41,185],22:[40,180],23:[40,175],24:[39,170],25:[38,165],26:[38,160],27:[37,155],28:[36,150],29:[35,145],30:[35,140],31:[34,135],32:[33,130],33:[33,125],34:[32,120],35:[31,115],36:[31,110],37:[30,105],38:[30,100],39:[29,95],40:[29,90],41:[28,85],42:[27,85],43:[27,80],44:[26,80],45:[26,75],46:[25,75],47:[25,70],48:[24,70],49:[24,65],50:[23,65],51:[23,60],52:[22,60],53:[22,55],54:[22,55],55:[21,50],56:[21,50],57:[20,45],58:[20,45],59:[19,40],60:[19,40],61:[18,35],62:[18,35],63:[17,30],64:[17,30]};
-const SA_F={0:[69,92],1:[68,92],2:[66,92],3:[65,92],4:[65,92],5:[65,92],6:[61,92],7:[60,92],8:[59,92],9:[58,92],10:[57,92],11:[56,92],12:[55,92],13:[53,92],14:[52,92],15:[52,92],16:[50,240],17:[50,240],18:[49,240],19:[48,240],20:[47,240],21:[46,230],22:[45,225],23:[44,220],24:[43,215],25:[43,210],26:[41,200],27:[41,195],28:[40,190],29:[39,185],30:[39,180],31:[38,170],32:[37,165],33:[36,160],34:[36,155],35:[35,150],36:[34,140],37:[34,135],38:[33,130],39:[32,125],40:[32,120],41:[31,110],42:[31,105],43:[30,100],44:[29,95],45:[29,90],46:[28,90],47:[28,85],48:[27,85],49:[27,80],50:[26,80],51:[26,70],52:[25,70],53:[25,65],54:[24,65],55:[24,60],56:[23,60],57:[23,55],58:[22,55],59:[22,50],60:[21,50],61:[21,45],62:[20,45],63:[20,40],64:[19,40]};
 var DEFAULT_MALE='data:image/jpeg;base64,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';
 var DEFAULT_FEMALE='data:image/jpeg;base64,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';
 
 // ═══ engine.js V1.26 — 純運算邏輯 ═══
 
-// 保額自動計算（U系列正確倍數，回傳萬元，無條件進位到萬）
-function calcSA(g, age, ap) {
-  const t = g === "M" ? SA_M : SA_F;
-  const [lo, hi] = t[Math.max(0, Math.min(64, age))] || [10, 10];
-  const avg = (lo + hi) / 2;
-  const raw = Math.min(60000000, avg * ap);
-  return Math.ceil(raw / 10000); // 回傳萬元單位
-}
+// UND 試算統一使用共用引擎 apps/shared/und-engine.js（與 UND 試算頁、公司 Excel 一致）
+const MAX_MS = 10000;   // 目標保費每月上限，超過部分轉為定期定額超額保費
 
-// 保單帳戶逐月模擬（甲型 UNDA）
-function simulate(p) {
-  const coi = p.gender === "M" ? COI_MALE : COI_FEMALE;
-  const months = Math.min(p.paymentYears * 12, (110 - p.currentAge) * 12);
-  const res = [];
-  let av = 0, cum = 0;
-  const mr = Math.pow(1 + p.assumedReturn, 1 / 12) - 1;
-
-  for (let m = 0; m < months; m++) {
-    const yr = Math.floor(m / 12) + 1, mo = (m % 12) + 1, age = p.currentAge + yr - 1;
-    const tp = mo === 1 ? p.annualTarget : 0, ep = p.monthlyExtra;
-    const fr = FFT[Math.min(yr, 6)] || 0;
-    const fee = Math.round(tp * fr) + Math.round(ep * FFE);
-    cum += tp + ep;
-    const adm = av > 0 || (tp + ep - fee) > 0 ? ADM : 0;
-
-    // Step 1: avMid = 期初AV + 投入 - 前置費用 - 管理費
-    const avMid = av + tp + ep - fee - adm;
-
-    // Step 2: COI 用 avMid 計算危險保額（不是期初 AV）
-    const coiRate = coi[Math.min(age, 110)] || 1;
-    const coiCost = Math.round(Math.max(p.sumInsured - avMid, 0) * coiRate);
-
-    // Step 3: 期末AV = MAX(avMid - COI, 0) × (1 + 月報酬率)
-    av = Math.max(avMid - coiCost, 0) * (1 + mr);
-
-    if (mo === 12 || m === months - 1) {
-      const avRound = Math.round(av);
-      // 甲型（UNDA）：身故保障 = MAX(保額, 帳戶價值)
-      const db = Math.max(p.sumInsured, avRound);
-      res.push({ year: yr, age, av: avRound, db, sv: avRound, cum: Math.round(cum) });
-    }
-  }
-  return res;
+// 假設投報率限制在 -20% ～ 20%（與 UND 試算頁相同）；空白或非數字則維持原值
+function clampReturn(v, fallback) {
+  const n = parseFloat(v);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(UNDEngine.ROR_MIN, Math.min(UNDEngine.ROR_MAX, n));
 }
 
 // 數字格式化
 const fmt = n => n == null ? "-" : Math.round(n).toLocaleString("zh-TW");
 
-// 目標搜尋：找出最低每月存入金額使退休解約金 >= capDist
+// 目標搜尋：找出最低每月存入金額使退休當年帳戶價值 >= capDist
 function goalSeek(S, capDist) {
-  const workYears = S.retirementAge - S.currentAge;
-  const payYears = workYears + 1;
-  const ar = S.assumedReturn / 100;
-
-  function trySV(totalMonthly) {
-    const ms = Math.min(MAX_MS, totalMonthly);
-    const me = Math.max(0, Math.round((totalMonthly - ms) / 500) * 500);
-    const at = ms * 12;
-    const sw = calcSA(S.gender, S.currentAge, at);
-    const si = sw * 10000;
-    const res = simulate({
-      currentAge: S.currentAge, retirementAge: S.retirementAge, gender: S.gender,
-      annualTarget: at, monthlyExtra: me, assumedReturn: ar, paymentYears: payYears, sumInsured: si
-    });
-    const idx = Math.min(workYears, (res?.length || 1) - 1);
-    return { sv: res[idx]?.sv || 0, ms, me, at, sw, si, res };
-  }
-
-  // 二分搜尋
-  let lo = 500, hi = 200000, best = hi;
-  for (let i = 0; i < 30; i++) {
-    const mid = Math.round((lo + hi) / 2 / 500) * 500;
-    if (mid <= lo) break;
-    if (trySV(mid).sv >= capDist) { best = mid; hi = mid; }
-    else lo = mid;
-  }
-  // 微調
-  while (best > 500) {
-    if (trySV(best - 500).sv >= capDist) best -= 500;
-    else break;
-  }
-
-  return trySV(best);
+  return UNDEngine.retirementGoalSeek(S, capDist);
 }
 
 // 完整計算：整合所有衍生值
@@ -155,7 +81,8 @@ function compute(S) {
     capDist, preparedMonthly, netMonthlyExpense,
     monthlySaving: ac.ms, monthlyExtra: ac.me, annualTarget: ac.at,
     saWan: ac.sw, sa: ac.si, opt: ac.res, ri, svR, units, monthDist,
-    policyAnnual, policyMonthly, expW, needW, capW, distRate, distNav
+    policyAnnual, policyMonthly, expW, needW, capW, distRate, distNav,
+    reached: ac.reached, saRaised: ac.saRaised, ptype: ac.ptype
   };
 }
 
@@ -394,7 +321,7 @@ function renderInputPage(S, onStateChange, onGenerate) {
             ${inputNum('iExpense','退休每月花費',S.monthlyExpense,{step:5000})}
             ${inputNum('iPrepared','已準備退休金',S.preparedAmount,{step:100000})}
             ${inputNum('iBankRate','銀行存款年利率 %',S.bankRate ?? 1.2,{min:0,max:10,step:.1})}
-            ${inputNum('iReturn','方案假設投報率 %',S.assumedReturn,{min:0,max:12,step:.5})}
+            ${inputNum('iReturn','方案假設投報率 %（-20～20）',S.assumedReturn,{min:UNDEngine.ROR_MIN,max:UNDEngine.ROR_MAX,step:.5})}
           </div>
 
           <div class="gp-mini-result">
@@ -403,6 +330,7 @@ function renderInputPage(S, onStateChange, onGenerate) {
             <div class="gp-result-card"><small>月超額保費</small><strong>${fmt(D.monthlyExtra)}</strong></div>
             <div class="gp-result-card"><small>壽險保額</small><strong>${D.saWan}萬</strong></div>
           </div>
+          ${D.reached === false ? '<div style="font-size:11px;color:#fbbf24;margin-top:6px">※ 月存已達試算上限仍不足目標，請調整退休年齡或投報率</div>' : ''}${D.saRaised ? '<div style="font-size:11px;opacity:.75;margin-top:6px">※ 依條款第十一條，保額已調高至繳費期間保費都能繳入的最低保額</div>' : ''}
 
           <div class="gp-action">
             <button id="btnGenerate" class="gp-btn primary" type="button">產生報告 →</button>
@@ -436,7 +364,7 @@ function renderInputPage(S, onStateChange, onGenerate) {
       document.getElementById('iLife').onchange = e => update('lifeExpectancy', +e.target.value);
       document.getElementById('iExpense').onchange = e => update('monthlyExpense', +e.target.value);
       document.getElementById('iPrepared').onchange = e => update('preparedAmount', +e.target.value);
-      document.getElementById('iReturn').onchange = e => update('assumedReturn', +e.target.value);
+      document.getElementById('iReturn').onchange = e => update('assumedReturn', clampReturn(e.target.value, S.assumedReturn));
       document.getElementById('iBankRate').onchange = e => update('bankRate', +e.target.value);
       document.getElementById('btnGenerate').onclick = onGenerate;
     }

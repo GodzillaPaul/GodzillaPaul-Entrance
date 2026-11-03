@@ -1476,62 +1476,10 @@ updateLiveSummary();
 // Secondary block — originally at lines 7320-7794
 // ============================================================
 
-// ── COI & SA tables (from retirement_preview.html) ──
-const RET_COI_MALE={0:2.7e-5,1:1.6e-5,2:1.4e-5,3:1.2e-5,4:1e-5,5:1e-5,6:9e-6,7:9e-6,8:1e-5,9:1e-5,10:1e-5,11:1.1e-5,12:1.3e-5,13:1.5e-5,14:1.9e-5,15:2.5e-5,16:2.8e-5,17:3.2e-5,18:3.4e-5,19:3.6e-5,20:3.6e-5,21:3.7e-5,22:3.8e-5,23:3.9e-5,24:3.9e-5,25:4.1e-5,26:4.2e-5,27:4.3e-5,28:4.5e-5,29:4.7e-5,30:5.5e-5,31:5.8e-5,32:6.2e-5,33:6.7e-5,34:7.3e-5,35:8.1e-5,36:8.9e-5,37:9.7e-5,38:1.06e-4,39:1.16e-4,40:1.27e-4,41:1.39e-4,42:1.51e-4,43:1.64e-4,44:1.78e-4,45:2.01e-4,46:2.17e-4,47:2.34e-4,48:2.52e-4,49:2.71e-4,50:2.89e-4,51:3.1e-4,52:3.32e-4,53:3.56e-4,54:3.82e-4,55:4.22e-4,56:4.51e-4,57:4.84e-4,58:5.19e-4,59:5.57e-4,60:6.23e-4,61:6.68e-4,62:7.19e-4,63:7.74e-4,64:8.38e-4,65:9.39e-4,66:1.02e-3,67:1.112e-3,68:1.214e-3,69:1.33e-3,70:1.501e-3,71:1.604e-3,72:1.719e-3,73:1.861e-3,74:2.024e-3,75:2.257e-3,76:2.443e-3,77:2.649e-3,78:2.878e-3,79:3.133e-3,80:3.456e-3,81:3.766e-3,82:4.107e-3,83:4.486e-3,84:4.907e-3,85:5.418e-3,86:5.94e-3,87:6.518e-3,88:7.158e-3,89:7.867e-3,90:8.677e-3,91:9.565e-3,92:1.0555e-2,93:1.1651e-2,94:1.2867e-2,95:1.4214e-2,96:1.5704e-2,97:1.735e-2,98:1.917e-2,99:2.118e-2,100:2.341e-2,110:1};
-const RET_COI_FEMALE={0:1.2e-5,1:7e-6,2:7e-6,3:6e-6,4:5e-6,5:4e-6,6:4e-6,7:4e-6,8:4e-6,9:4e-6,10:4e-6,11:4e-6,12:5e-6,13:5e-6,14:6e-6,15:7e-6,16:8e-6,17:8e-6,18:8e-6,19:9e-6,20:9e-6,21:9e-6,22:1e-5,23:1e-5,24:1e-5,25:1.1e-5,26:1.1e-5,27:1.1e-5,28:1.2e-5,29:1.2e-5,30:1.4e-5,31:1.5e-5,32:1.6e-5,33:1.7e-5,34:1.8e-5,35:1.9e-5,36:4e-5,37:4.2e-5,38:4.5e-5,39:4.8e-5,40:5.1e-5,41:5.4e-5,42:5.8e-5,43:6.2e-5,44:6.7e-5,45:7.3e-5,46:7.8e-5,47:8.4e-5,48:9e-5,49:9.7e-5,50:1.05e-4,51:1.13e-4,52:1.22e-4,53:1.32e-4,54:1.43e-4,55:1.58e-4,56:1.7e-4,57:1.84e-4,58:2e-4,59:2.17e-4,60:2.41e-4,61:2.6e-4,62:2.82e-4,63:3.07e-4,64:3.35e-4,65:4.67e-4,66:5.11e-4,67:5.6e-4,68:6.14e-4,69:6.75e-4,70:7.56e-4,71:8.16e-4,72:8.82e-4,73:9.64e-4,74:1.057e-3,75:1.19e-3,76:1.3e-3,77:1.424e-3,78:1.563e-3,79:1.72e-3,80:1.92e-3,81:2.115e-3,82:2.332e-3,83:2.574e-3,84:2.843e-3,85:3.174e-3,86:3.514e-3,87:3.893e-3,88:4.317e-3,89:4.792e-3,90:5.343e-3,110:1};
-const RET_FFT={1:0.60,2:0.30,3:0.30,4:0.15,5:0.15};
-const RET_FFE=0.05, RET_ADM=100, RET_MAX_MS=10000;
-const RET_SA_M={0:[50,61.5],10:[42,61.5],16:[38,190],20:[35,190],25:[32,165],30:[29,140],35:[27,110],40:[24,85],45:[22,70],50:[19,60],55:[17,45],60:[15,30],65:[14,15],70:[12,15]};
-const RET_SA_F={0:[57,61.5],10:[49,61.5],16:[43,240],20:[40,240],25:[37,210],30:[33,180],35:[30,145],40:[27,115],45:[25,85],50:[22,75],55:[20,55],60:[18,40],65:[17,25],70:[15,15]};
-
-function retGetSAMult(g, age) {
-  const t = g==='M' ? RET_SA_M : RET_SA_F;
-  const keys = Object.keys(t).map(Number).sort((a,b)=>a-b);
-  let k = keys[0];
-  for (const kk of keys) { if (age >= kk) k = kk; else break; }
-  return t[k];
-}
-function retCalcSA(g, age, ap) {
-  const [lo,hi] = retGetSAMult(g, age);
-  const avg = (lo+hi)/2;
-  return Math.ceil(Math.min(60000000, avg*ap)/10000);
-}
-function retSimulate(p) {
-  const coi = p.gender==='M' ? RET_COI_MALE : RET_COI_FEMALE;
-  const months = Math.min(p.paymentYears*12, (110-p.currentAge)*12);
-  const res = []; let av=0, cum=0;
-  const mr = Math.pow(1+p.assumedReturn, 1/12)-1;
-  for (let m=0; m<months; m++) {
-    const yr=Math.floor(m/12)+1, mo=(m%12)+1, age=p.currentAge+yr-1;
-    const tp = mo===1 ? p.annualTarget : 0, ep=p.monthlyExtra;
-    const fr = RET_FFT[Math.min(yr,6)]||0;
-    const fee = Math.round(tp*fr)+Math.round(ep*RET_FFE);
-    cum += tp+ep;
-    const adm = av>0||(tp+ep-fee)>0 ? RET_ADM : 0;
-    const avMid = av+tp+ep-fee-adm;
-    const coiRate = coi[Math.min(age,110)]||1;
-    const coiCost = Math.round(Math.max(p.sumInsured-avMid,0)*coiRate);
-    av = Math.max(avMid-coiCost,0)*(1+mr);
-    if (mo===12||m===months-1) {
-      const avR=Math.round(av), db=Math.max(p.sumInsured,avR);
-      res.push({year:yr,age,av:avR,db,sv:avR,cum:Math.round(cum)});
-    }
-  }
-  return res;
-}
+// ── UND 試算：統一使用共用引擎 apps/shared/und-engine.js（與 UND 試算頁、公司 Excel 一致）──
+const RET_MAX_MS = 10000;   // 目標保費每月上限，超過部分轉為定期定額超額保費
 function retGoalSeek(S, capDist) {
-  const workYears=S.retirementAge-S.currentAge, payYears=workYears+1, ar=S.assumedReturn/100;
-  function trySV(tm) {
-    const ms=Math.min(RET_MAX_MS,tm), me=Math.max(0,Math.round((tm-ms)/500)*500), at=ms*12;
-    const sw=retCalcSA(S.gender,S.currentAge,at), si=sw*10000;
-    const res=retSimulate({currentAge:S.currentAge,retirementAge:S.retirementAge,gender:S.gender,annualTarget:at,monthlyExtra:me,assumedReturn:ar,paymentYears:payYears,sumInsured:si});
-    const idx=Math.min(workYears,(res?.length||1)-1);
-    return {sv:res[idx]?.sv||0,ms,me,at,sw,si,res};
-  }
-  let lo=500,hi=200000,best=hi;
-  for (let i=0;i<30;i++){const mid=Math.round((lo+hi)/2/500)*500;if(mid<=lo)break;if(trySV(mid).sv>=capDist){best=mid;hi=mid;}else lo=mid;}
-  while(best>500){if(trySV(best-500).sv>=capDist)best-=500;else break;}
-  return trySV(best);
+  return UNDEngine.retirementGoalSeek(S, capDist);
 }
 function retCompute(S) {
   const workYears=S.retirementAge-S.currentAge, retireYears=S.lifeExpectancy-S.retirementAge;
@@ -1550,7 +1498,7 @@ function retCompute(S) {
   const expW=S.monthlyExpense/10000, needW=Math.round(totalNeed/10000), capW=Math.round(capDist/10000);
   return {workYears,retireYears,totalNeed,selfNeed,otherIncome,selfAnnual,selfMonthly,capDist,preparedMonthly,netMonthlyExpense,
     monthlySaving:ac.ms,monthlyExtra:ac.me,annualTarget:ac.at,saWan:ac.sw,sa:ac.si,opt:ac.res,ri,svR,monthDist,
-    policyAnnual,policyMonthly,expW,needW,capW};
+    policyAnnual,policyMonthly,expW,needW,capW,reached:ac.reached,saRaised:ac.saRaised,ptype:ac.ptype};
 }
 const retFmt = n => n==null?'-':Math.round(n).toLocaleString('zh-TW');
 
@@ -1629,13 +1577,14 @@ function retInputHTML() {
       <div class="ret-section-title">❸ 保單試算結果（自動）</div>
       ${D.preparedMonthly > 0 ? `<div style="background:#fffbea;border:1px solid #f0d88a;border-radius:10px;padding:10px 14px;font-size:12px;color:#7a5c10;margin-bottom:12px;">${RS.preparedAmount > 0 ? `已準備退休金 ${retFmt(RS.preparedAmount)} 元，以 7% 年化換算每月 ${retFmt(Math.round(RS.preparedAmount*0.07/12))} 元` : ''}${RS.preparedAmount > 0 && D.otherIncome > 0 ? '；' : ''}${D.otherIncome > 0 ? `其他投資收入每月 ${retFmt(D.otherIncome)} 元` : ''}，保單目標已自動扣除。</div>` : ''}
       <div class="ret-grid2">
-        <div class="ret-field"><label>假設投報率 %</label><input type="number" class="ret-ic" id="ret-return" value="${RS.assumedReturn}" min="0" max="12" step="0.5"></div>
+        <div class="ret-field"><label>假設投報率 %（-20～20）</label><input type="number" class="ret-ic" id="ret-return" value="${RS.assumedReturn}" min="${UNDEngine.ROR_MIN}" max="${UNDEngine.ROR_MAX}" step="0.5"></div>
         <div class="ret-field"><label>需準備退休資金</label><div class="ret-ro">${retFmt(Math.round(D.capDist))}</div></div>
         <div class="ret-field"><label>月存金額</label><div class="ret-ro">${retFmt(D.monthlySaving)}${D.monthlySaving>=RET_MAX_MS?'<span style="color:#e85d4a;font-size:11px;margin-left:6px;">已達上限</span>':''}</div></div>
         <div class="ret-field"><label>年目標保費</label><div class="ret-ro">${retFmt(D.annualTarget)}</div></div>
         <div class="ret-field"><label>月超額保費</label><div class="ret-ro">${retFmt(D.monthlyExtra)}</div></div>
-        <div class="ret-field"><label>基本保額（萬）</label><div class="ret-ro">${retFmt(D.saWan)}</div></div>
+        <div class="ret-field"><label>基本保額</label><div class="ret-ro">${retFmt(D.sa)}</div></div>
       </div>
+      ${D.reached===false?'<div style="font-size:12px;color:#e85d4a;margin-top:8px;">※ 月存已達試算上限仍不足目標，請調整退休年齡或投報率</div>':''}${D.saRaised?'<div style="font-size:12px;color:#6b7280;margin-top:8px;">※ 依條款第十一條，保額已調高至繳費期間保費都能繳入的最低保額</div>':''}
       <div style="background:#f0f7ff;border:1px solid #c0d8ff;border-radius:12px;padding:12px 16px;font-size:13px;color:#17305e;margin-top:10px;">
         <b>每月總存入：</b>${retFmt(Math.round(D.policyMonthly))} 元 → 退休時預估解約金 <b style="color:#1a8f5a;">${retFmt(D.svR)}</b> 元
       </div>
@@ -1656,7 +1605,9 @@ function retBindInput() {
     RS.lifeExpectancy = +document.getElementById('ret-life').value||85;
     RS.monthlyExpense = +document.getElementById('ret-expense').value||30000;
     RS.preparedAmount = +document.getElementById('ret-prepared').value||0;
-    RS.assumedReturn = +document.getElementById('ret-return').value||6;
+    // 假設投報率限制在 -20% ～ 20%（可為 0 或負值）；空白或非數字則維持原值
+    const rr = parseFloat(document.getElementById('ret-return').value);
+    if (Number.isFinite(rr)) RS.assumedReturn = Math.max(UNDEngine.ROR_MIN, Math.min(UNDEngine.ROR_MAX, rr));
     retRender();
   };
   ['ret-name','ret-gender','ret-age','ret-retire','ret-life','ret-expense','ret-prepared','ret-return'].forEach(id => {

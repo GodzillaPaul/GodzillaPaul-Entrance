@@ -124,12 +124,28 @@ function computeRetirement(source, profile) {
     return r;
 }
 // 退休後仍在繳的房貸提醒（不計入退休金）；retireAge 有給時依該退休年齡重算剩餘年數
-function mortgageReminderText(r, retireAge) {
+function mortgageRemaining(r, retireAge) {
     const m = r && r.mortgageAfterRetire;
-    if (!m) return '';
+    if (!m) return null;
     const years = retireAge ? m.payoffAge - retireAge : m.years;
-    if (!(years > 0)) return '';
-    return `退休後房貸還要繳 ${years} 年（每月 ${Math.round(m.monthly * 10000).toLocaleString('zh-TW')} 元，繳到 ${m.payoffAge} 歲），未計入退休金，需另行規劃`;
+    if (!(years > 0)) return null;
+    const monthly = Math.round(m.monthly * 10000);
+    return { years, monthly, total: monthly * 12 * years, payoffAge: m.payoffAge };
+}
+function mortgageReminderText(r, retireAge) {
+    const x = mortgageRemaining(r, retireAge);
+    if (!x) return '';
+    const f = n => n.toLocaleString('zh-TW');
+    return `退休後房貸還要繳 ${x.years} 年（每月 ${f(x.monthly)} 元，繳到 ${x.payoffAge} 歲），剩餘應繳總額約 ${f(x.total)} 元，未計入退休金，需另行規劃`;
+}
+// 醒目版房貸提醒（放大加粗、顯示剩餘應繳總額）
+function mortgageReminderHTML(r, retireAge) {
+    const x = mortgageRemaining(r, retireAge);
+    if (!x) return '';
+    const f = n => n.toLocaleString('zh-TW');
+    return `<div style="font-size:15px;font-weight:900;color:#c2410c;background:#fff7ed;border:1.5px solid #fdba74;border-radius:10px;padding:10px 14px;margin-top:10px;line-height:1.7;text-align:left;">`
+        + `⚠️ 退休後房貸還要繳 ${x.years} 年（每月 ${f(x.monthly)} 元，繳到 ${x.payoffAge} 歲）<br>`
+        + `剩餘應繳總額 <span style="font-size:19px;">${f(x.total)} 元</span>，未計入退休金，需另行規劃</div>`;
 }
 // 退休後平均每月支出（元）：房貸只在繳清前計入，攤平到整段退休期，供月配息規劃使用
 function retirementMonthlyAverageYuan(source=exp, profile=u) {
@@ -771,8 +787,7 @@ function calcResults(goToResult = true) {
         const retirementLine = retirementTargetTotal > 0
             ? `你設定的退休生活，代表退休後每月要 <strong>${formatYuanPerMonthFromWan(retirementMonthlyNeed)}</strong>${(exp.retirement?.housingMonthly>0&&exp.retirement.housingYears<Math.max(85-u.retire,0))?`（前 ${exp.retirement.housingYears} 年含房貸，之後每月 <strong>${formatYuanPerMonthFromWan(exp.retirement.baseMonthly)}</strong>）`:''}，而且要在退休前 <strong>${yearsToRetire} 年</strong> 先存到 <strong>${formatYuanFromWan(retirementTargetTotal)}</strong>。`
             : '你剛剛填的每一項，不是想像，而是未來真實會發生的現金流。';
-        const mortgageLine = mortgageReminderText(exp.retirement);
-        noteEl.innerHTML = `你剛剛不是在填表，你是在替未來的自己選生活。<br>${retirementLine}${mortgageLine ? `<br>※ ${mortgageLine}` : ''}`;
+        noteEl.innerHTML = `你剛剛不是在填表，你是在替未來的自己選生活。<br>${retirementLine}${mortgageReminderHTML(exp.retirement)}`;
     }
 
     const gEl = document.getElementById('r-gap');
@@ -1279,9 +1294,8 @@ function s6FillRetTarget(prefix) {
                 const housing = r.housingMonthly > 0
                     ? `，並含退休後居住支出 <b>${Math.round(r.housingMonthly * 10000).toLocaleString('zh-TW')} 元 / 月</b>`
                     : '';
-                const mortgage = mortgageReminderText(r);
                 subEl.innerHTML = '由你設定的 <b>生活費</b>、<b>娛樂費</b>、<b>旅行費</b>、<b>醫療費</b> 加總' + housing + '（退休期間平均每月）'
-                    + (mortgage ? `<br>※ ${mortgage}` : '');
+                    + mortgageReminderHTML(r);
             }
         } else {
             amountEl.innerHTML = '<span class="s6-ret-highlight-empty">請先完成「退休生活」設定</span>';
@@ -1446,8 +1460,7 @@ function s6RetCalc(which) {
         if (D.reached === false) html += row('提醒', '月存已達試算上限仍不足目標', 'red');
     }
     html += `<div style="font-size:12px;color:#7a90b8;margin-top:8px;">假設投報率 ${RS.assumedReturn ?? 6}%｜平均餘命 ${RS.lifeExpectancy || 85} 歲（可於完整退休規劃調整）</div>`;
-    const mortgage = mortgageReminderText(exp?.retirement, retire);
-    if (mortgage) html += `<div style="font-size:12px;color:#c2410c;margin-top:6px;">※ ${mortgage}</div>`;
+    html += mortgageReminderHTML(exp?.retirement, retire);
 
     resultEl.innerHTML = html;
 }
@@ -1585,7 +1598,7 @@ function retInputHTML() {
         <div class="ret-field"><label>每月確定現金流（元）</label><input type="number" class="ret-ic" id="ret-other-income" value="${RS.otherIncome || 0}" step="1000"></div>
       </div>
       <div style="font-size:12px;color:#6b7280;margin-top:8px;">存款以 7% 換算每月配息、加上每月確定現金流（租金、年金、月配息等），會從退休每月花費中扣除；與「資產配息」頁同步。</div>
-      ${mortgageReminderText(exp?.retirement, RS.retirementAge) ? `<div style="font-size:12px;color:#c2410c;margin-top:6px;">※ ${mortgageReminderText(exp.retirement, RS.retirementAge)}</div>` : ''}
+      ${mortgageReminderHTML(exp?.retirement, RS.retirementAge)}
     </div>
     <div class="ret-section">
       <div class="ret-section-title">❸ 保單試算結果（自動）</div>
@@ -1693,7 +1706,7 @@ function retReportHTML() {
           <td style="background:#f9fafb;font-weight:700;text-align:center;">預計退休花費</td>
           <td style="font-weight:700;text-align:center;">${D.expW}萬 / 月</td>
           <td style="background:#f9fafb;font-weight:700;text-align:center;">已準備退休金</td>
-          <td style="font-weight:700;text-align:center;">${RS.preparedAmount>0?retFmt(RS.preparedAmount):'—'}</td>
+          <td style="font-weight:700;text-align:center;">${D.preparedMonthly>0?`${Math.round(D.preparedMonthly/100)/100}萬 / 月<div style="font-size:11px;font-weight:600;color:#6b7280;margin-top:2px">${[RS.preparedAmount>0?`存款 ${retFmt(Math.round(RS.preparedAmount/10000))} 萬以 7% 換算`:'',D.otherIncome>0?`確定現金流 ${retFmt(D.otherIncome)} 元`:''].filter(Boolean).join('＋')}</div>`:'—'}</td>
         </tr>
       </tbody>
     </table>
@@ -1724,7 +1737,7 @@ function retReportHTML() {
         </tr>
         <tr>
           <td style="text-align:center">需準備：${D.expW}萬 × 12個月 × ${D.retireYears}年 ＝ <span style="color:#dc2626;font-weight:900;font-size:1.1em">${D.needW}萬</span>${D.selfNeed<D.totalNeed?`<div style="font-size:11px;color:#d97706;margin-top:4px">扣除已準備資產後，需再存 ${retFmt(Math.round(D.selfNeed/10000))} 萬</div>`:''}</td>
-          <td style="text-align:center">需準備：月配息保單 7%<span style="color:#1d4ed8;font-weight:900;font-size:1.1em">（約${D.capW}萬）</span>${RS.preparedAmount>0?`<div style="font-size:11px;color:#d97706;margin-top:4px">已扣除已準備退休金每月 ${retFmt(Math.round(D.preparedMonthly))} 元</div>`:''}</td>
+          <td style="text-align:center">需準備：月配息保單 7%<span style="color:#1d4ed8;font-weight:900;font-size:1.1em">（約${D.capW}萬）</span>${D.preparedMonthly>0?`<div style="font-size:11px;color:#d97706;margin-top:4px">已扣除已準備退休金每月 ${retFmt(Math.round(D.preparedMonthly))} 元</div>`:''}</td>
         </tr>
         <tr>
           <td style="text-align:center;background:#f9fafb;font-weight:700">自己存</td>

@@ -56,7 +56,7 @@ function build(){
         ${plan('self','方案一','自己存，退休後花存款',selfRows,selfMonthly,`存款會隨時間用完；退休 ${D.retireYears} 年後，若活得更久就沒有現金流。`)}
         ${plan('policy','方案二','月配息保單，打造每月現金流',policyRows,policyMonthly,`以本金年化 7% 配息，每月領約 ${fmt(D.netMonthlyExpense)} 元，本金持續保留。`)}
     </div><div class="lp-insight rp-insight"><span class="lp-insight-icon">→</span><p>${insight}</p></div>`);
-    html+=`<p class="lp-note">試算假設：退休花費為退休期間平均每月支出，含退休後仍需繳納的房貸；平均餘命 ${RS.lifeExpectancy} 歲；月配息以年化 7% 試算；未計通膨。<br>方案一的每年存款為簡單平均，未計投資報酬。</p>${footer(name,docName)}</article>`;
+    html+=`<p class="lp-note">試算假設：退休花費為退休期間平均每月支出，不含退休後仍需繳納的房貸（需另行規劃）；已扣除存款以 7% 換算的月配息與每月確定現金流；平均餘命 ${RS.lifeExpectancy} 歲；月配息以年化 7% 試算；未計通膨。<br>方案一的每年存款為簡單平均，未計投資報酬。</p>${footer(name,docName)}</article>`;
 
     // ── 第 2 頁：保單規劃明細 ──
     const rows=(D.opt||[]).filter((_,i)=>(i+1)%5===0||i===0||i===D.ri);

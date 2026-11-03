@@ -99,7 +99,7 @@ function build(data=snapshot()){
         ${a.split||b.split
             ?retRow('退休後每月支出（繳房貸期間）',a.set?fmt(a.monthly)+' 元'+(a.split?`・${a.retire}～${a.splitAge} 歲`:''):'未設定',b.set?fmt(b.monthly)+' 元'+(b.split?`・${b.retire}～${b.splitAge} 歲`:''):'未設定')
              +retRow('退休後每月支出（房貸繳清後）',a.split?`${fmt(a.base)} 元・${a.splitAge} 歲後`:(a.set?'同上':'未設定'),b.split?`${fmt(b.base)} 元・${b.splitAge} 歲後`:(b.set?'同上':'未設定'))
-            :retRow('退休後每月支出',money(a,a.monthly),money(b,b.monthly))}${retRow('退休後居住支出',a.housing>0?`${fmt(a.housing)} 元・${a.housingYears} 年`:(a.mortgage?`房貸 ${fmt(yuan(a.mortgage.monthly))} 元・${a.mortgage.years} 年（未計入，需另行規劃）`:'無'),b.housing>0?`${fmt(b.housing)} 元・${b.housingYears} 年`:(b.mortgage?`房貸 ${fmt(yuan(b.mortgage.monthly))} 元・${b.mortgage.years} 年（未計入，需另行規劃）`:'無'))}
+            :retRow('退休後每月支出',money(a,a.monthly),money(b,b.monthly))}${retRow('退休後居住支出',a.housing>0?`${fmt(a.housing)} 元・${a.housingYears} 年`:(a.mortgage?`房貸 ${fmt(yuan(a.mortgage.monthly))} 元・${a.mortgage.years} 年，剩餘約 ${fmt(yuan(a.mortgage.monthly)*12*a.mortgage.years)} 元（未計入，需另行規劃）`:'無'),b.housing>0?`${fmt(b.housing)} 元・${b.housingYears} 年`:(b.mortgage?`房貸 ${fmt(yuan(b.mortgage.monthly))} 元・${b.mortgage.years} 年，剩餘約 ${fmt(yuan(b.mortgage.monthly)*12*b.mortgage.years)} 元（未計入，需另行規劃）`:'無'))}
         ${retRow('退休總需求',money(a,a.total),money(b,b.total))}${retRow('退休前每月準備',money(a,a.saving),money(b,b.saving))}
         </tbody></table>`);
     html+=`<p class="lp-note">增減＝修正後 − 理想生活，負數代表每月支出減少。退休準備會隨退休年齡、退休後支出與房貸繳清時間重新計算。</p>`+footer(name)+'</article>';

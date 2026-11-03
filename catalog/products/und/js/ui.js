@@ -53,7 +53,7 @@ function updatePayHint() {
   const el = document.getElementById('pay-hint');
   if (!el) return;
   if (payVal >= 999) {
-    el.textContent = '終身繳費（不限制）';
+    el.textContent = '終身繳費（至 110 歲）';
   } else if (payMode === 'age') {
     el.textContent = `繳費至 ${payVal} 歲`;
   } else {
@@ -75,23 +75,37 @@ function getCurrentInputs() {
   return { birth, sex, target, ptype };
 }
 
-function onMonthlyChange() {
-  const monthly     = parseFloat(document.getElementById('monthly').value) || 0;
-  const annualTarget = Math.round(monthly * 12 / 100) * 100;
-  document.getElementById('target').value = annualTarget;
+// 依生日與月存金額決定年繳目標保費；未滿 15 足歲固定年繳 7,500 元
+function syncTarget(animate) {
+  const birth   = parseRoc(document.getElementById('bday').value.trim());
+  const child   = isChild(birth);
+  const monthlyEl = document.getElementById('monthly');
+  const monthly = parseFloat(monthlyEl.value) || 0;
+  const annualTarget = child ? CHILD_TARGET : Math.round(monthly * 12 / 100) * 100;
+  const targetEl = document.getElementById('target');
+  const changed = String(annualTarget) !== targetEl.value;
+  targetEl.value = annualTarget;
 
-  // Animate annual value flip
+  monthlyEl.disabled = child;
+  document.getElementById('child-note').style.display = child ? '' : 'none';
+
   const valEl = document.getElementById('target-display');
-  valEl.classList.remove('anim-flip');
-  void valEl.offsetWidth;
+  if (animate || changed) {
+    valEl.classList.remove('anim-flip');
+    void valEl.offsetWidth;
+    valEl.classList.add('anim-flip');
+  }
   valEl.textContent = fmt(annualTarget);
-  valEl.classList.add('anim-flip');
+}
 
+function onMonthlyChange() {
+  syncTarget(true);
   onInputChange();
 }
 
 function onInputChange() {
   userEditedSA = false;
+  syncTarget(false);
   updateUI();
 }
 
@@ -118,10 +132,17 @@ function onSAInput() {
 }
 
 function updateUI() {
-  const { birth, sex, target } = getCurrentInputs();
+  const { birth, sex, target, ptype } = getCurrentInputs();
   if (!birth || target <= 0) return;
 
   const age   = calcInsureAge(birth.year, birth.month, birth.day);
+  const maxAge = MAX_AGE_BY_TYPE[ptype];
+  if (age > maxAge) {
+    document.getElementById('sa-range-vals').textContent = '—';
+    document.getElementById('sa-range-note').textContent =
+      `投保年齡 ${age} 歲，超過${ptype === 'A' ? '甲型上限 64 歲（乙型可至 70 歲）' : '乙型上限 70 歲'}`;
+    return;
+  }
   const minSA = calcMinSA(target, age, sex);
   const maxSA = calcMaxSA(target, age, sex);
 
@@ -203,69 +224,86 @@ function calc() {
   }, 320);
 }
 
-function renderResults({ rows, iAge, minSA, maxSA, SA, target, highDisc, lo_, hi_, avg_, stages, singleEvents, premiumStopYear, payLimitLabel }) {
-  // Info metrics
-  const stopAge = premiumStopYear ? iAge + premiumStopYear - 1 : null;
+function insertNotice(id, cls, html) {
+  const old = document.getElementById(id);
+  if (old) old.remove();
+  if (!html) return;
+  const notice = document.createElement('div');
+  notice.id = id;
+  notice.className = cls;
+  notice.innerHTML = html;
+  const tblCard = document.querySelector('[data-card="r2"]');
+  tblCard.parentNode.insertBefore(notice, tblCard);
+}
+
+function yearRanges(list) {
+  const out = [];
+  for (let i = 0; i < list.length; i++) {
+    let j = i;
+    while (j + 1 < list.length && list[j + 1] === list[j] + 1) j++;
+    out.push(i === j ? `第 ${list[i]} 年` : `第 ${list[i]}–${list[j]} 年`);
+    i = j;
+  }
+  return out.join('、');
+}
+
+function renderResults({ rows, iAge, child, minSA, maxSA, SA, target, highDisc, firstDisc, renewDisc, rorPct, lo_, hi_, avg_, stages, singleEvents, skippedYears, payLimitLabel, lapsed }) {
   const singleSummary = singleEvents.map(e => `第${e.yr}年 ${fmt(e.amt)}（${pct(getSingleFeeRate(e.amt))}）`);
+  const lastRow = rows[rows.length - 1];
   document.getElementById('info-cards').innerHTML = `
     <div class="metric"><div class="metric-label">投保年齡</div><div class="metric-val">${iAge} 歲</div></div>
     <div class="metric"><div class="metric-label">低/建議/高倍</div><div class="metric-val sm">${lo_}x / ${avg_}x / ${hi_}x</div></div>
-    <div class="metric"><div class="metric-label">建議保額下限</div><div class="metric-val sm">${fmt(minSA)}</div></div>
+    <div class="metric"><div class="metric-label">保額下限</div><div class="metric-val sm">${fmt(minSA)}</div></div>
     <div class="metric"><div class="metric-label">最高保額</div><div class="metric-val sm">${fmt(maxSA)}</div></div>
     <div class="metric"><div class="metric-label">實際保額</div><div class="metric-val sm">${fmt(SA)}</div></div>
-    <div class="metric"><div class="metric-label">目標保費（年）</div><div class="metric-val sm">${fmt(target)}</div></div>
+    <div class="metric"><div class="metric-label">目標保費（年）</div><div class="metric-val sm">${fmt(target)}${child ? '（未滿15足歲）' : ''}</div></div>
+    <div class="metric"><div class="metric-label">預估年投報率</div><div class="metric-val">${rorPct}%</div></div>
     <div class="metric"><div class="metric-label">高保費折扣</div><div class="metric-val">${pct(highDisc)}</div></div>
+    <div class="metric"><div class="metric-label">繳費方式折扣（首期／續期）</div><div class="metric-val sm">${pct(firstDisc)} ／ ${pct(renewDisc)}</div></div>
     <div class="metric"><div class="metric-label">分段增額</div><div class="metric-val sm">${stages.length ? stages.join(' → ') : '—'}</div></div>
     <div class="metric"><div class="metric-label">單筆增額</div><div class="metric-val sm">${singleSummary.length ? singleSummary.join(' → ') : '—'}</div></div>
     <div class="metric metric-warn pay-limit-metric"><div class="metric-label">繳費期間</div><div class="metric-val sm" style="color:#4338ca">${payLimitLabel}</div></div>
-    ${stopAge ? `<div class="metric metric-warn"><div class="metric-label">停繳保費年齡</div><div class="metric-val" style="color:var(--red,#e05)">${stopAge} 歲（第 ${premiumStopYear} 年）</div></div>` : ''}`;
+    ${lapsed ? `<div class="metric metric-warn"><div class="metric-label">帳戶價值歸零</div><div class="metric-val" style="color:var(--red,#e05)">${lastRow.age} 歲（第 ${lastRow.yr} 年）</div></div>` : ''}`;
 
-  // 停繳提示框
-  const existingNotice = document.getElementById('premium-stop-notice');
-  if (existingNotice) existingNotice.remove();
-  if (premiumStopYear) {
-    const notice = document.createElement('div');
-    notice.id = 'premium-stop-notice';
-    notice.className = 'note-box';
-    notice.className = 'premium-stop-notice';
-    notice.innerHTML = `<strong>甲型保額比例限制</strong><br>第 <strong>${premiumStopYear} 年度</strong> 起停止繳入保費；當年度保險年齡 <strong>${stopAge} 歲</strong>，門檻 <strong>${pct(getSAThreshold(stopAge))}</strong>。`;
-    const tblCard = document.querySelector('[data-card="r2"]');
-    tblCard.parentNode.insertBefore(notice, tblCard);
-  }
+  // 第十一條：目標保費暫停年度（門檻調降後會自動恢復）
+  insertNotice('premium-stop-notice', 'premium-stop-notice', skippedYears.length
+    ? `<strong>保額比例限制（條款第十一條）</strong><br>${yearRanges(skippedYears)}因帳戶價值相對保額過高，當年度目標保費暫停繳入；門檻隨年齡調降（61、71、91 歲）後符合規定即恢復繳費。`
+    : '');
 
-  const oldSingleNotice = document.getElementById('single-premium-notice');
-  if (oldSingleNotice) oldSingleNotice.remove();
-  const rejectedRows = rows.filter(r => r.rejectedSingle > 0);
-  if (rejectedRows.length) {
-    const notice = document.createElement('div');
-    notice.id = 'single-premium-notice';
-    notice.className = 'single-premium-notice';
-    notice.innerHTML = `<strong>單筆增額未投入</strong><br>${rejectedRows.map(r => `第 <strong>${r.yr}</strong> 年 ${fmt(r.rejectedSingle)} 元`).join('、')} 因甲型保額比例限制未通過，試算已保留原本目標保費與定期定額。`;
-    const tblCard = document.querySelector('[data-card="r2"]');
-    tblCard.parentNode.insertBefore(notice, tblCard);
-  }
+  const rejectedRows = rows.filter(r => r.rejectedSingle > 0 || r.rejectedExtra > 0);
+  insertNotice('single-premium-notice', 'single-premium-notice', rejectedRows.length
+    ? `<strong>增額保費未投入</strong><br>${rejectedRows.map(r => `第 <strong>${r.yr}</strong> 年 ${fmt(r.rejectedSingle + r.rejectedExtra)} 元`).join('、')} 因保額比例限制或累計 6,000 萬上限未投入。`
+    : '');
 
-  // Table rows (rendered but invisible — animate.js will reveal them)
+  insertNotice('child-notice', 'single-premium-notice', child
+    ? '<strong>未滿 15 足歲被保險人</strong><br>滿 15 足歲前身故，身故保險金依法改為喪葬費用保險金（喪葬費用不含帳戶價值，帳戶價值另返還），表中標示「未滿15」之年度身故保障僅供參考。'
+    : '');
+
+  const firstUserStop = rows.find(x => x.userPayStop);
   document.getElementById('tbl-body').innerHTML = rows.map(r => {
-    const trClass = r.premiumStopped ? ' class="row-stopped"' : '';
+    const trClass = (r.userPayStop || r.targetSkipped) ? ' class="row-stopped"' : '';
     let stopMark = '';
-    if (r.userPayStop && r.yr === rows.find(x => x.userPayStop)?.yr) {
+    if (firstUserStop && r.yr === firstUserStop.yr) {
       stopMark = ' <span class="stop-chip" style="background:rgba(79,70,229,.12);color:#4338ca;border-color:rgba(99,102,241,.30)" title="使用者設定繳費期間已到">目標停繳</span>';
-    } else if (!r.userPayStop && r.premiumStopped && r.yr === premiumStopYear) {
-      stopMark = ' <span class="stop-chip" title="甲型保額比例限制：目標保費與定期定額停止">停繳</span>';
+    } else if (r.targetSkipped) {
+      stopMark = ' <span class="stop-chip" title="條款第十一條保額比例限制：本年度目標保費暫停">比例暫停</span>';
     }
+    const extraCell = r.yearExtra > 0
+      ? fmt(r.yearExtra) + (r.rejectedExtra > 0 ? ` <span class="stop-chip" title="部分月份未投入">部分未投入</span>` : '')
+      : (r.rejectedExtra > 0 ? `<span class="muted">${fmt(r.rejectedExtra)}</span> <span class="stop-chip">未投入</span>` : '<span class="muted">—</span>');
+    const deathCell = fmt(r.death) + (r.before15 ? ' <span class="stop-chip" title="未滿15足歲身故改給付喪葬費用保險金">未滿15</span>' : '');
     return `
     <tr${trClass}>
       <td>${r.yr}${stopMark}</td>
       <td>${r.age}</td>
       <td>${r.yearTarget > 0 ? fmt(r.yearTarget) : '<span class="muted">—</span>'}</td>
-      <td>${r.yearExtra > 0 ? fmt(r.yearExtra) : '<span class="muted">—</span>'}</td>
-      <td>${r.yearSingle > 0 ? fmt(r.yearSingle) : (r.rejectedSingle > 0 ? `<span class="muted">${fmt(r.rejectedSingle)}</span> <span class="stop-chip" title="甲型保額比例限制未通過">未投入</span>` : '<span class="muted">—</span>')}</td>
+      <td>${extraCell}</td>
+      <td>${r.yearSingle > 0 ? fmt(r.yearSingle) : (r.rejectedSingle > 0 ? `<span class="muted">${fmt(r.rejectedSingle)}</span> <span class="stop-chip" title="未通過檢核">未投入</span>` : '<span class="muted">—</span>')}</td>
       <td class="neg">${fmt(r.yearFee)}</td>
       <td class="neg">${fmt(r.yearMgmt)}</td>
       <td class="neg">${fmt(r.yearCOI)}</td>
       <td class="pos">${fmt(r.av)}</td>
-      <td>${fmt(r.death)}</td>
+      <td>${deathCell}</td>
     </tr>`;
   }).join('');
 
@@ -280,7 +318,7 @@ function renderResults({ rows, iAge, minSA, maxSA, SA, target, highDisc, lo_, hi
 
 // Init
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => { onMonthlyChange(); updateUI(); });
+  document.addEventListener('DOMContentLoaded', () => { onMonthlyChange(); });
 } else {
-  onMonthlyChange(); updateUI();
+  onMonthlyChange();
 }

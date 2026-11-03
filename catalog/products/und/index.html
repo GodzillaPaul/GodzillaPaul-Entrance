@@ -63,7 +63,7 @@
       <div class="field">
         <label>月存金額（元）</label>
         <input type="number" id="monthly" value="5000" min="2000" step="100" oninput="onMonthlyChange()">
-        <span class="hint">×12 = 年繳，下限 2,000 元</span>
+        <span class="hint" id="monthly-hint">×12 = 年繳，下限 2,000 元</span>
       </div>
     </div>
 
@@ -74,6 +74,7 @@
           <span class="annual-value" id="target-display">60,000</span>
           <span class="annual-unit">元／年</span>
         </div>
+        <div class="hint" id="child-note" style="display:none;margin-top:4px">未滿 15 足歲限年繳，目標保費固定 7,500 元</div>
       </div>
     </div>
     <input type="hidden" id="target">
@@ -88,7 +89,8 @@
       <div>
         <div class="field">
           <label>保額（元）</label>
-          <input type="number" id="sa" step="10000" min="10000" value="" oninput="onSAInput()">
+          <input type="number" id="sa" step="1000" min="100000" value="" oninput="onSAInput()">
+          <span class="hint">以千元為單位</span>
         </div>
         <div class="sa-badge" id="sa-badge">建議保額下限</div>
       </div>
@@ -200,7 +202,7 @@
         </div>
       </div>
     </div>
-    <div class="single-hint">依公司 Excel：單筆增額最低 10,000 元，投入時另依金額級距扣除 5%／4%／3%／2.5% 前置費用。</div>
+    <div class="single-hint">依公司 Excel：單筆增額最低 10,000 元，投入時另依金額級距扣除 5%／4%／3%／2.5% 前置費用。同一保單年度超額保費（定期定額＋單筆）合計不得超過當年度目標保費 100 倍；累計所繳保費上限 6,000 萬。</div>
   </div>
 
   <!-- CARD 3 — 試算參數 -->
@@ -217,10 +219,32 @@
           <option value="A">甲型｜身故 = MAX(保額, 帳戶價值)</option>
           <option value="B">乙型｜身故 = 保額 + 帳戶價值</option>
         </select>
+        <span class="hint">投保年齡：甲型 0–64 歲、乙型 0–70 歲</span>
       </div>
       <div class="field">
         <label>預估年投報率（%）</label>
-        <input type="number" id="ror" value="3" min="-10" max="20" step="0.1">
+        <input type="number" id="ror" value="3" min="-20" max="20" step="0.1">
+        <span class="hint">可輸入 -20% ～ 20%</span>
+      </div>
+    </div>
+
+    <div class="form-grid-2" style="margin-top:14px">
+      <div class="field">
+        <label>首期繳費方式</label>
+        <select id="payway_first">
+          <option value="transfer">金融機構轉帳（享 1% 折扣）</option>
+          <option value="card">富邦信用卡（享 1% 折扣）</option>
+          <option value="remit">匯款（無折扣）</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>續期繳費方式</label>
+        <select id="payway_renew">
+          <option value="transfer">金融機構轉帳（享 1% 折扣）</option>
+          <option value="card">富邦信用卡（享 1% 折扣）</option>
+          <option value="self">自行繳費（享 1% 折扣）</option>
+          <option value="remit">匯款（無折扣）</option>
+        </select>
       </div>
     </div>
 
@@ -249,7 +273,7 @@
     </div>
 
     <div class="pay-custom-row">
-      <input type="number" id="pay-custom" placeholder="自訂" min="1" max="120" oninput="setPayCustom(this)">
+      <input type="number" id="pay-custom" placeholder="自訂" min="1" max="111" step="1" oninput="setPayCustom(this)">
       <span id="pay-hint">繳費至 65 歲</span>
     </div>
 

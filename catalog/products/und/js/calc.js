@@ -200,10 +200,11 @@ function runCalc() {
   // 繳費期間
   let lastPayYear = years;
   if (payLimit.mode === 'age' && payLimit.val < 999) {
-    if (!Number.isInteger(payLimit.val) || payLimit.val <= iAge || payLimit.val > LAST_INSURE_AGE + 1) {
-      return { error: `「存到幾歲」須大於投保年齡 ${iAge} 歲，且不超過 ${LAST_INSURE_AGE + 1} 歲` };
+    // 「存到 65 歲」= 繳完保險年齡 65 歲那一年的保費（含該歲）
+    if (!Number.isInteger(payLimit.val) || payLimit.val < iAge || payLimit.val > LAST_INSURE_AGE) {
+      return { error: `「存到幾歲」須介於投保年齡 ${iAge} 歲 ～ ${LAST_INSURE_AGE} 歲` };
     }
-    lastPayYear = payLimit.val - iAge;
+    lastPayYear = payLimit.val - iAge + 1;
   }
   if (payLimit.mode === 'yr' && payLimit.val < 999) {
     if (!Number.isInteger(payLimit.val) || payLimit.val < 1 || payLimit.val > years) {
@@ -284,7 +285,7 @@ function runCalc() {
   const rows = [];
 
   let payLimitLabel = '終身繳費（至 110 歲）';
-  if (payLimit.mode === 'age' && payLimit.val < 999) payLimitLabel = `繳費至 ${payLimit.val} 歲`;
+  if (payLimit.mode === 'age' && payLimit.val < 999) payLimitLabel = `繳費至 ${payLimit.val} 歲（含）`;
   else if (payLimit.mode === 'yr' && payLimit.val < 999) payLimitLabel = `繳費 ${payLimit.val} 年`;
 
   for (let yr = 1; yr <= years; yr++) {

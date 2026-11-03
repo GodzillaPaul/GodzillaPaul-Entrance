@@ -55,7 +55,7 @@ function updatePayHint() {
   if (payVal >= 999) {
     el.textContent = '終身繳費（至 110 歲）';
   } else if (payMode === 'age') {
-    el.textContent = `繳費至 ${payVal} 歲`;
+    el.textContent = `繳費至 ${payVal} 歲（含 ${payVal} 歲當年）`;
   } else {
     el.textContent = `繳費 ${payVal} 年`;
   }

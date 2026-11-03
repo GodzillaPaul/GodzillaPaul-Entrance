@@ -575,7 +575,7 @@
 
                         <!-- 手動輸入 -->
                         <div class="income-col-override" style="margin-top:14px;">
-                            <div class="income-col-override-label">或直接輸入每月投資收入</div>
+                            <div class="income-col-override-label">或直接輸入每月確定現金流（租金、年金、月配息等，退休後仍持續）</div>
                             <div class="income-input-row">
                                 <input type="number" class="income-input" id="inc-invest-input" placeholder="例：5833" min="0" oninput="onInvestManualInput()">
                                 <span class="income-unit">元 / 月</span>
@@ -954,6 +954,10 @@
                       <label>存款 / 可投資資金（元）</label>
                       <input type="number" class="s6-ret-input" id="s6y-savings" step="100000" oninput="s6RetCalc(&#39;yes&#39;)">
                     </div>
+                    <div class="s6-ret-field">
+                      <label>每月確定現金流（元）</label>
+                      <input type="number" class="s6-ret-input" id="s6y-income" step="1000" placeholder="租金、年金、月配息等" oninput="s6RetCalc(&#39;yes&#39;)">
+                    </div>
                   </div>
                   <div class="s6-ret-result" id="s6y-result" style="display:none;"></div>
                 </div>
@@ -1009,6 +1013,10 @@
                     <div class="s6-ret-field">
                       <label>存款 / 可投資資金（元）</label>
                       <input type="number" class="s6-ret-input" id="s6n-savings" step="100000" oninput="s6RetCalc(&#39;no&#39;)">
+                    </div>
+                    <div class="s6-ret-field">
+                      <label>每月確定現金流（元）</label>
+                      <input type="number" class="s6-ret-input" id="s6n-income" step="1000" placeholder="租金、年金、月配息等" oninput="s6RetCalc(&#39;no&#39;)">
                     </div>
                   </div>
                   <div class="s6-ret-result" id="s6n-result" style="display:none;"></div>
@@ -1573,14 +1581,14 @@
 
 <!-- 主應用邏輯 -->
 <script src="../shared/und-engine.js?v=20261103"></script>
-<script src="scripts/app.js?v=20261103-und"></script>
+<script src="scripts/app.js?v=20261103-sync"></script>
 <script>document.body.setAttribute('data-step','0');</script>
 
 <!-- UI/UX v3 動畫引擎 -->
 <script src="scripts/ux-animate.js"></script>
 
 <!-- A4 客戶試算摘要 PDF 匯出 -->
-<script src="scripts/life-plan.js?v=20261025-phases"></script>
-<script src="scripts/retirement-plan.js?v=20261103-und"></script>
+<script src="scripts/life-plan.js?v=20261103-sync"></script>
+<script src="scripts/retirement-plan.js?v=20261103-sync"></script>
 
 </div></body></html>

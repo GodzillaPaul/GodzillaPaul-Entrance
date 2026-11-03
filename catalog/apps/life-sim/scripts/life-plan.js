@@ -23,7 +23,7 @@ function retirementData(profile,expenses){
     const housing=yuan(r.housingMonthly||0),housingYears=r.housingYears||0,retiredYears=85-profile.retire;
     // split：房貸在退休期間中途繳清，退休支出分成「繳房貸期間」與「繳清後」兩段
     const split=housing>0&&housingYears>0&&housingYears<retiredYears;
-    return {split,splitAge:profile.retire+housingYears,base:yuan(r.baseMonthly!=null?r.baseMonthly:monthly-(r.housingMonthly||0)),retire:profile.retire,age:profile.age,workYears:profile.retire-profile.age,retiredYears,monthly:yuan(monthly),total:yuan(r.targetTotal||0),saving:yuan(r.amount||0),housing:yuan(r.housingMonthly||0),housingYears:r.housingYears||0,housingNote:r.housingNote||'',payoffAge,set:monthly>0};
+    return {split,splitAge:profile.retire+housingYears,base:yuan(r.baseMonthly!=null?r.baseMonthly:monthly-(r.housingMonthly||0)),retire:profile.retire,age:profile.age,workYears:profile.retire-profile.age,retiredYears,monthly:yuan(monthly),total:yuan(r.targetTotal||0),saving:yuan(r.amount||0),housing:yuan(r.housingMonthly||0),housingYears:r.housingYears||0,housingNote:r.housingNote||'',mortgage:r.mortgageAfterRetire?.years>0?r.mortgageAfterRetire:null,payoffAge,set:monthly>0};
 }
 const logo='<span class="lp-mark">GP</span>';
 function pageHeader(title,n,total=3){return `<div class="lp-head"><div class="lp-brand">${logo}<span>GODZILLAPAUL<small>LIFE &amp; CASHFLOW PLANNING</small></span></div><div class="lp-pageno"><span>${escape(title)}</span><b>${String(n).padStart(2,'0')}</b><i>/ ${String(total).padStart(2,'0')}</i></div></div>`;}
@@ -99,7 +99,7 @@ function build(data=snapshot()){
         ${a.split||b.split
             ?retRow('退休後每月支出（繳房貸期間）',a.set?fmt(a.monthly)+' 元'+(a.split?`・${a.retire}～${a.splitAge} 歲`:''):'未設定',b.set?fmt(b.monthly)+' 元'+(b.split?`・${b.retire}～${b.splitAge} 歲`:''):'未設定')
              +retRow('退休後每月支出（房貸繳清後）',a.split?`${fmt(a.base)} 元・${a.splitAge} 歲後`:(a.set?'同上':'未設定'),b.split?`${fmt(b.base)} 元・${b.splitAge} 歲後`:(b.set?'同上':'未設定'))
-            :retRow('退休後每月支出',money(a,a.monthly),money(b,b.monthly))}${retRow('退休後居住支出',a.housing>0?`${fmt(a.housing)} 元・${a.housingYears} 年`:'無',b.housing>0?`${fmt(b.housing)} 元・${b.housingYears} 年`:'無')}
+            :retRow('退休後每月支出',money(a,a.monthly),money(b,b.monthly))}${retRow('退休後居住支出',a.housing>0?`${fmt(a.housing)} 元・${a.housingYears} 年`:(a.mortgage?`房貸 ${fmt(yuan(a.mortgage.monthly))} 元・${a.mortgage.years} 年（未計入，需另行規劃）`:'無'),b.housing>0?`${fmt(b.housing)} 元・${b.housingYears} 年`:(b.mortgage?`房貸 ${fmt(yuan(b.mortgage.monthly))} 元・${b.mortgage.years} 年（未計入，需另行規劃）`:'無'))}
         ${retRow('退休總需求',money(a,a.total),money(b,b.total))}${retRow('退休前每月準備',money(a,a.saving),money(b,b.saving))}
         </tbody></table>`);
     html+=`<p class="lp-note">增減＝修正後 − 理想生活，負數代表每月支出減少。退休準備會隨退休年齡、退休後支出與房貸繳清時間重新計算。</p>`+footer(name)+'</article>';

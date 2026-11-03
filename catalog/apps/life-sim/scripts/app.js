@@ -103,11 +103,15 @@ function computeRetirement(source, profile) {
     const retiredYears = Math.max(85 - profile.retire, 0);
     const base = (d.life || 0) + (d.fun || 0) + (d.travel || 0) + (d.care || 0);
     const h = retirementHousing(source, profile, d);
-    const housingActive = h.years > 0 ? h.monthly : 0;
+    // 房貸不計入退休金：退休後仍在繳的房貸只做提醒、需另行規劃；房租與自訂居住支出仍算退休生活費
+    const isMortgage = d.housingMode !== 'custom' && source.house?.ownership === 'buy';
+    const housingActive = h.years > 0 && !isMortgage ? h.monthly : 0;
+    // 保留繳清年齡：快速試算／完整規劃改了退休年齡時，提醒可依新的退休年齡重算
+    r.mortgageAfterRetire = isMortgage && h.payoffAge ? { monthly: h.monthly, years: h.years, payoffAge: h.payoffAge } : null;
     r.baseMonthly = base;
     r.housingMonthly = housingActive;
-    r.housingYears = h.years;
-    r.housingNote = h.note;
+    r.housingYears = housingActive > 0 ? h.years : 0;
+    r.housingNote = housingActive > 0 ? h.note : '';
     r.targetMonthly = base + housingActive;
     r.targetTotal = (base * retiredYears + housingActive * h.years) * 12;
     r.amount = r.targetTotal / (workYears * 12);
@@ -115,8 +119,17 @@ function computeRetirement(source, profile) {
     const monthlyText = housingActive > 0 && h.years < retiredYears
         ? `退休後前 ${h.years} 年每月${r.targetMonthly.toFixed(2)}萬（含房貸${housingActive.toFixed(2)}萬），之後每月${base.toFixed(2)}萬`
         : `退休後每月${r.targetMonthly.toFixed(2)}萬`;
-    r.label = `${monthlyText}｜退休 ${retiredYears} 年需 ${r.targetTotal.toFixed(0)} 萬｜退休前 ${workYears} 年每月準備 ${r.amount.toFixed(2)} 萬`;
+    r.label = `${monthlyText}｜退休 ${retiredYears} 年需 ${r.targetTotal.toFixed(0)} 萬｜退休前 ${workYears} 年每月準備 ${r.amount.toFixed(2)} 萬`
+        + (r.mortgageAfterRetire?.years > 0 ? `｜退休後房貸 ${r.mortgageAfterRetire.years} 年未計入` : '');
     return r;
+}
+// 退休後仍在繳的房貸提醒（不計入退休金）；retireAge 有給時依該退休年齡重算剩餘年數
+function mortgageReminderText(r, retireAge) {
+    const m = r && r.mortgageAfterRetire;
+    if (!m) return '';
+    const years = retireAge ? m.payoffAge - retireAge : m.years;
+    if (!(years > 0)) return '';
+    return `退休後房貸還要繳 ${years} 年（每月 ${Math.round(m.monthly * 10000).toLocaleString('zh-TW')} 元，繳到 ${m.payoffAge} 歲），未計入退休金，需另行規劃`;
 }
 // 退休後平均每月支出（元）：房貸只在繳清前計入，攤平到整段退休期，供月配息規劃使用
 function retirementMonthlyAverageYuan(source=exp, profile=u) {
@@ -758,7 +771,8 @@ function calcResults(goToResult = true) {
         const retirementLine = retirementTargetTotal > 0
             ? `你設定的退休生活，代表退休後每月要 <strong>${formatYuanPerMonthFromWan(retirementMonthlyNeed)}</strong>${(exp.retirement?.housingMonthly>0&&exp.retirement.housingYears<Math.max(85-u.retire,0))?`（前 ${exp.retirement.housingYears} 年含房貸，之後每月 <strong>${formatYuanPerMonthFromWan(exp.retirement.baseMonthly)}</strong>）`:''}，而且要在退休前 <strong>${yearsToRetire} 年</strong> 先存到 <strong>${formatYuanFromWan(retirementTargetTotal)}</strong>。`
             : '你剛剛填的每一項，不是想像，而是未來真實會發生的現金流。';
-        noteEl.innerHTML = `你剛剛不是在填表，你是在替未來的自己選生活。<br>${retirementLine}`;
+        const mortgageLine = mortgageReminderText(exp.retirement);
+        noteEl.innerHTML = `你剛剛不是在填表，你是在替未來的自己選生活。<br>${retirementLine}${mortgageLine ? `<br>※ ${mortgageLine}` : ''}`;
     }
 
     const gEl = document.getElementById('r-gap');
@@ -1263,9 +1277,11 @@ function s6FillRetTarget(prefix) {
             amountEl.innerHTML = yuan.toLocaleString('zh-TW') + ' <span class="unit">元 / 月</span>';
             if (subEl) {
                 const housing = r.housingMonthly > 0
-                    ? `，並將退休後 ${r.housingYears} 年的居住支出 <b>${Math.round(r.housingMonthly * 10000).toLocaleString('zh-TW')} 元 / 月</b> 平均攤入`
+                    ? `，並含退休後居住支出 <b>${Math.round(r.housingMonthly * 10000).toLocaleString('zh-TW')} 元 / 月</b>`
                     : '';
-                subEl.innerHTML = '由你設定的 <b>生活費</b>、<b>娛樂費</b>、<b>旅行費</b>、<b>醫療費</b> 加總' + housing + '（退休期間平均每月）';
+                const mortgage = mortgageReminderText(r);
+                subEl.innerHTML = '由你設定的 <b>生活費</b>、<b>娛樂費</b>、<b>旅行費</b>、<b>醫療費</b> 加總' + housing + '（退休期間平均每月）'
+                    + (mortgage ? `<br>※ ${mortgage}` : '');
             }
         } else {
             amountEl.innerHTML = '<span class="s6-ret-highlight-empty">請先完成「退休生活」設定</span>';
@@ -1335,10 +1351,48 @@ function s6RetFillInputs(prefix) {
     const cashflowEl = document.getElementById(prefix + '-cashflow');
     if (cashflowEl && !cashflowEl.value && retirementTarget > 0) cashflowEl.value = retirementTarget;
 
-    // 6. 存款（可投資資金 / 投資本金）
-    const principal = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
+    // 6. 已準備資產（可投資資金、每月確定現金流）：一律帶入最新值，三頁雙向同步
+    const prep = getPreparedAssets();
     const savingsEl = document.getElementById(prefix + '-savings');
-    if (savingsEl && !savingsEl.value && principal > 0) savingsEl.value = principal;
+    if (savingsEl) savingsEl.value = prep.principal > 0 ? prep.principal : '';
+    const incomeEl = document.getElementById(prefix + '-income');
+    if (incomeEl) incomeEl.value = prep.cashflow > 0 ? prep.cashflow : '';
+}
+
+// ── 已準備資產：資產配息頁、退休快速試算、完整退休規劃三頁共用（雙向同步）──
+// 單一來源是資產配息頁的兩個欄位：可投資資金（以 7% 換算月配息）、每月確定現金流
+function getPreparedAssets() {
+    const val = id => parseFloat(document.getElementById(id)?.value) || 0;
+    return { principal: val('inc-invest-principal'), cashflow: val('inc-invest-input') };
+}
+function setPreparedAssets({ principal, cashflow }) {
+    const put = (id, v) => {
+        const el = document.getElementById(id);
+        if (el && el !== document.activeElement) el.value = v > 0 ? v : '';
+    };
+    ['inc-invest-principal', 's6y-savings', 's6n-savings'].forEach(id => put(id, principal));
+    ['inc-invest-input', 's6y-income', 's6n-income'].forEach(id => put(id, cashflow));
+    RS.preparedAmount = principal || 0;
+    RS.otherIncome = cashflow || 0;
+    calcInvestReturn();   // 更新資產配息頁的 7% 換算與收入小計
+}
+// 目前顯示中的快速試算區塊（理想版 s6y／調整版 s6n），沒有則回傳 null
+function activeS6Prefix() {
+    if (document.getElementById('s6-yes')?.style.display === 'block') return 's6y';
+    if (document.getElementById('s6-no')?.style.display === 'block') return 's6n';
+    return null;
+}
+// 完整退休規劃修改後，同步回快速試算欄位（返回上一步時看到的是同一組數字）
+function pushRetirementToQuick() {
+    ['s6y', 's6n'].forEach(p => {
+        const set = (id, v) => { const el = document.getElementById(p + id); if (el) el.value = v; };
+        set('-name', RS.clientName || '');
+        set('-gender', RS.gender);
+        set('-age', RS.currentAge);
+        set('-retire', RS.retirementAge);
+        set('-cashflow', RS.monthlyExpense);
+    });
+    setPreparedAssets({ principal: RS.preparedAmount, cashflow: RS.otherIncome });
 }
 
 function s6RetCalc(which) {
@@ -1346,108 +1400,54 @@ function s6RetCalc(which) {
     const resultEl = document.getElementById(prefix + '-result');
     if (!resultEl) return;
 
-    const age     = parseInt(document.getElementById(prefix + '-age')?.value) || 0;
-    const retire  = parseInt(document.getElementById(prefix + '-retire')?.value) || 0;
-    const cashflow= parseFloat(document.getElementById(prefix + '-cashflow')?.value) || 0;
-    const savings = parseFloat(document.getElementById(prefix + '-savings')?.value) || 0;
-    const gender  = document.getElementById(prefix + '-gender')?.value || 'M';
+    const num = id => parseFloat(document.getElementById(prefix + id)?.value) || 0;
+    const age      = parseInt(document.getElementById(prefix + '-age')?.value) || 0;
+    const retire   = parseInt(document.getElementById(prefix + '-retire')?.value) || 0;
+    const cashflow = num('-cashflow');
+    const savings  = num('-savings');
+    const income   = num('-income');
+    const gender   = document.getElementById(prefix + '-gender')?.value || 'M';
+
+    // 已準備資產與資產配息頁、完整退休規劃雙向同步
+    setPreparedAssets({ principal: savings, cashflow: income });
 
     if (!age || !retire || retire <= age) {
         resultEl.innerHTML = '<span style="color:#aaa;font-size:13px;">請填寫年齡與退休年齡</span>';
         return;
     }
+    if (!cashflow) {
+        resultEl.innerHTML = '<span style="color:#aaa;font-size:13px;">請填入退休月現金流以開始試算</span>';
+        return;
+    }
 
     const fmt = n => Math.round(n).toLocaleString('zh-TW');
-    const workYears  = retire - age;
-    const retireYears = 85 - retire; // 預設平均餘命 85 歲
+    // 與完整退休規劃同一套公式（retCompute）；投報率、平均餘命沿用完整規劃的設定
+    const D = retCompute({
+        currentAge: age, retirementAge: retire, gender,
+        lifeExpectancy: RS.lifeExpectancy || 85, assumedReturn: RS.assumedReturn ?? 6,
+        monthlyExpense: cashflow, preparedAmount: savings, otherIncome: income
+    });
+    const row = (label, val, cls = '') =>
+        `<div class="ret-row"><span class="ret-label">${label}</span><span class="ret-val ${cls}">${val}</span></div>`;
 
-    // 退休需求試算
-    // 月現金流缺口：若已有存款，先用 7% 年化換算每月配息扣除
-    const savingsMonthly = Math.round(savings * 0.07 / 12);
-    const netCashflow    = Math.max(cashflow - savingsMonthly, 0);
-
-    // 方案一：自行存款所需總額
-    const totalNeed   = cashflow * 12 * retireYears;
-    // 方案二：月配息 7% 所需本金（扣除已有存款後的缺口本金）
-    const capNeed     = netCashflow > 0 ? Math.round(netCashflow * 12 / 0.07) : 0;
-    // 每月需自存金額（簡單平均，不含複利）
-    // 與第八頁一致：先扣掉已有存款
-    const selfMonthly = workYears > 0 ? Math.round(Math.max(totalNeed - savings, 0) / workYears / 12) : 0;
-
-    // 保單月存（用 retGoalSeek，若已引入）
-    let policyMonthly = 0, svAtRetire = 0;
-    if (typeof retGoalSeek === 'function' && capNeed > 0) {
-        try {
-            const S = { currentAge: age, retirementAge: retire, gender, assumedReturn: 6 }; // retGoalSeek 以百分比計
-            const ac = retGoalSeek(S, capNeed);
-            policyMonthly = Math.round((ac.at + ac.me * 12) / 12);
-            const ri = Math.min(workYears, (ac.res?.length || 1) - 1);
-            svAtRetire = ac.res[ri]?.sv || 0;
-        } catch(e) {}
+    let html = row('工作年數 / 退休年數', `${D.workYears} 年 ／ ${D.retireYears} 年`)
+        + row('退休月現金流目標', `${fmt(cashflow)} 元 / 月`, 'blue');
+    if (savings > 0) html += row('存款每月可配息（7%）', `+${fmt(savings * 0.07 / 12)} 元 / 月`, 'green');
+    if (income > 0)  html += row('每月確定現金流', `+${fmt(income)} 元 / 月`, 'green');
+    if (savings > 0 || income > 0) {
+        html += row('尚需補足月現金流', D.netMonthlyExpense > 0 ? `${fmt(D.netMonthlyExpense)} 元 / 月` : '已足夠 ✓', D.netMonthlyExpense > 0 ? 'red' : 'green');
     }
-
-    let html = `
-      <div class="ret-row">
-        <span class="ret-label">工作年數 / 退休年數</span>
-        <span class="ret-val">${workYears} 年 ／ ${retireYears} 年</span>
-      </div>`;
-
-    if (cashflow > 0) {
-        html += `
-      <div class="ret-row">
-        <span class="ret-label">退休月現金流目標</span>
-        <span class="ret-val blue">${fmt(cashflow)} 元 / 月</span>
-      </div>`;
+    html += row('方案一｜需自存退休總金額', `${fmt(D.selfNeed)} 元`)
+        + row('方案一｜每月自存', `${fmt(D.selfMonthly)} 元 / 月`, 'red');
+    if (D.capDist > 0) {
+        html += row('方案二｜月配息所需本金（7%）', `${fmt(D.capDist)} 元`, 'blue')
+            + row('方案二｜保單月存', `${fmt(D.policyMonthly)} 元 / 月`, 'blue')
+            + row('退休時預估解約金', `${fmt(D.svR)} 元`, 'green');
+        if (D.reached === false) html += row('提醒', '月存已達試算上限仍不足目標', 'red');
     }
-    if (savings > 0) {
-        html += `
-      <div class="ret-row">
-        <span class="ret-label">存款每月可配息（7%）</span>
-        <span class="ret-val green">+${fmt(savingsMonthly)} 元 / 月</span>
-      </div>
-      <div class="ret-row">
-        <span class="ret-label">尚需補足月現金流</span>
-        <span class="ret-val ${netCashflow > 0 ? 'red' : 'green'}">${netCashflow > 0 ? fmt(netCashflow) + ' 元 / 月' : '已足夠 ✓'}</span>
-      </div>`;
-    }
-
-    if (cashflow > 0) {
-        html += `
-      <div class="ret-row">
-        <span class="ret-label">方案一｜需準備退休總金額</span>
-        <span class="ret-val">${fmt(totalNeed)} 元</span>
-      </div>
-      <div class="ret-row">
-        <span class="ret-label">方案一｜每月自存</span>
-        <span class="ret-val red">${fmt(selfMonthly)} 元 / 月</span>
-      </div>`;
-    }
-
-    if (capNeed > 0) {
-        html += `
-      <div class="ret-row">
-        <span class="ret-label">方案二｜月配息所需本金（7%）</span>
-        <span class="ret-val blue">${fmt(capNeed)} 元</span>
-      </div>`;
-        if (policyMonthly > 0) {
-            html += `
-      <div class="ret-row">
-        <span class="ret-label">方案二｜保單月存</span>
-        <span class="ret-val blue">${fmt(policyMonthly)} 元 / 月</span>
-      </div>`;
-        }
-        if (svAtRetire > 0) {
-            html += `
-      <div class="ret-row">
-        <span class="ret-label">退休時預估解約金</span>
-        <span class="ret-val green">${fmt(svAtRetire)} 元</span>
-      </div>`;
-        }
-    }
-
-    if (!cashflow && !savings) {
-        html = '<span style="color:#aaa;font-size:13px;">請填入退休月現金流或存款以開始試算</span>';
-    }
+    html += `<div style="font-size:12px;color:#7a90b8;margin-top:8px;">假設投報率 ${RS.assumedReturn ?? 6}%｜平均餘命 ${RS.lifeExpectancy || 85} 歲（可於完整退休規劃調整）</div>`;
+    const mortgage = mortgageReminderText(exp?.retirement, retire);
+    if (mortgage) html += `<div style="font-size:12px;color:#c2410c;margin-top:6px;">※ ${mortgage}</div>`;
 
     resultEl.innerHTML = html;
 }
@@ -1525,9 +1525,20 @@ function retGetDataFromMain() {
   const retirementExpense = retirementMonthlyAverageYuan();
   RS.monthlyExpense = retirementExpense > 0 ? retirementExpense : 30000;
   RS._retirementRaw = retirementExpense;
-  // 6. 已準備：投資本金（以 7% 換算月配息）＋ 另外填寫的每月投資收入；只在 retCompute 扣除一次
-  RS.preparedAmount = parseFloat(document.getElementById('inc-invest-principal')?.value) || 0;
-  RS.otherIncome = parseFloat(document.getElementById('inc-invest-input')?.value) || 0;
+  // 6. 已準備：投資本金（以 7% 換算月配息）＋ 每月確定現金流；只在 retCompute 扣除一次
+  const prep = getPreparedAssets();
+  RS.preparedAmount = prep.principal;
+  RS.otherIncome = prep.cashflow;
+  // 7. 從快速試算頁進來時，以快速試算頁上（可能修改過）的欄位為準
+  const p = activeS6Prefix();
+  if (p) {
+    const v = id => document.getElementById(p + id)?.value;
+    if (v('-name')) RS.clientName = v('-name').trim();
+    if (v('-gender')) RS.gender = v('-gender');
+    if (+v('-age') > 0) RS.currentAge = +v('-age');
+    if (+v('-retire') > 0) RS.retirementAge = Math.max(+v('-retire'), RS.currentAge + 1);
+    if (+v('-cashflow') > 0) RS.monthlyExpense = +v('-cashflow');
+  }
   // 註：下行為舊版殘留（workIncome 未定義會丟 ReferenceError，導致第七頁空白），已移除
   // RS._workIncome = workIncome;
 }
@@ -1570,12 +1581,15 @@ function retInputHTML() {
         <div class="ret-field"><label>預計退休年齡</label><input type="number" class="ret-ic" id="ret-retire" value="${RS.retirementAge}" min="40" max="80"></div>
         <div class="ret-field"><label>平均餘命</label><input type="number" class="ret-ic" id="ret-life" value="${RS.lifeExpectancy}" min="60" max="110"></div>
         <div class="ret-field"><label>退休每月花費（元）</label><input type="number" class="ret-ic" id="ret-expense" value="${RS.monthlyExpense}" step="1000"></div>
-        <div class="ret-field"><label>已準備退休金（元）</label><input type="number" class="ret-ic" id="ret-prepared" value="${RS.preparedAmount}" step="100000"></div>
+        <div class="ret-field"><label>存款 / 可投資資金（元）</label><input type="number" class="ret-ic" id="ret-prepared" value="${RS.preparedAmount}" step="100000"></div>
+        <div class="ret-field"><label>每月確定現金流（元）</label><input type="number" class="ret-ic" id="ret-other-income" value="${RS.otherIncome || 0}" step="1000"></div>
       </div>
+      <div style="font-size:12px;color:#6b7280;margin-top:8px;">存款以 7% 換算每月配息、加上每月確定現金流（租金、年金、月配息等），會從退休每月花費中扣除；與「資產配息」頁同步。</div>
+      ${mortgageReminderText(exp?.retirement, RS.retirementAge) ? `<div style="font-size:12px;color:#c2410c;margin-top:6px;">※ ${mortgageReminderText(exp.retirement, RS.retirementAge)}</div>` : ''}
     </div>
     <div class="ret-section">
       <div class="ret-section-title">❸ 保單試算結果（自動）</div>
-      ${D.preparedMonthly > 0 ? `<div style="background:#fffbea;border:1px solid #f0d88a;border-radius:10px;padding:10px 14px;font-size:12px;color:#7a5c10;margin-bottom:12px;">${RS.preparedAmount > 0 ? `已準備退休金 ${retFmt(RS.preparedAmount)} 元，以 7% 年化換算每月 ${retFmt(Math.round(RS.preparedAmount*0.07/12))} 元` : ''}${RS.preparedAmount > 0 && D.otherIncome > 0 ? '；' : ''}${D.otherIncome > 0 ? `其他投資收入每月 ${retFmt(D.otherIncome)} 元` : ''}，保單目標已自動扣除。</div>` : ''}
+      ${D.preparedMonthly > 0 ? `<div style="background:#fffbea;border:1px solid #f0d88a;border-radius:10px;padding:10px 14px;font-size:12px;color:#7a5c10;margin-bottom:12px;">${RS.preparedAmount > 0 ? `存款 ${retFmt(RS.preparedAmount)} 元，以 7% 年化換算每月 ${retFmt(Math.round(RS.preparedAmount*0.07/12))} 元` : ''}${RS.preparedAmount > 0 && D.otherIncome > 0 ? '；' : ''}${D.otherIncome > 0 ? `每月確定現金流 ${retFmt(D.otherIncome)} 元` : ''}，保單目標已自動扣除。</div>` : ''}
       <div class="ret-grid2">
         <div class="ret-field"><label>假設投報率 %（-20～20）</label><input type="number" class="ret-ic" id="ret-return" value="${RS.assumedReturn}" min="${UNDEngine.ROR_MIN}" max="${UNDEngine.ROR_MAX}" step="0.5"></div>
         <div class="ret-field"><label>需準備退休資金</label><div class="ret-ro">${retFmt(Math.round(D.capDist))}</div></div>
@@ -1605,12 +1619,28 @@ function retBindInput() {
     RS.lifeExpectancy = +document.getElementById('ret-life').value||85;
     RS.monthlyExpense = +document.getElementById('ret-expense').value||30000;
     RS.preparedAmount = +document.getElementById('ret-prepared').value||0;
+    RS.otherIncome = +document.getElementById('ret-other-income').value||0;
     // 假設投報率限制在 -20% ～ 20%（可為 0 或負值）；空白或非數字則維持原值
     const rr = parseFloat(document.getElementById('ret-return').value);
     if (Number.isFinite(rr)) RS.assumedReturn = Math.max(UNDEngine.ROR_MIN, Math.min(UNDEngine.ROR_MAX, rr));
+    pushRetirementToQuick();   // 同步回快速試算頁與資產配息頁
+    // 重繪會換掉整個表單：記住正在輸入的欄位，重繪後把游標放回去，避免每打一個字就跳出欄位
+    const activeId = document.activeElement?.id;
+    let caret = null;
+    try { caret = document.activeElement?.selectionStart ?? null; } catch (e) {}
     retRender();
+    const el = activeId && document.getElementById(activeId);
+    if (el) {
+      el.focus();
+      // 數字欄位讀不到游標位置：暫時切成文字欄位，把游標放到最後面
+      const pos = caret != null ? caret : String(el.value).length;
+      try {
+        if (el.type === 'number') { el.type = 'text'; el.setSelectionRange(pos, pos); el.type = 'number'; }
+        else el.setSelectionRange(pos, pos);
+      } catch (e) {}
+    }
   };
-  ['ret-name','ret-gender','ret-age','ret-retire','ret-life','ret-expense','ret-prepared','ret-return'].forEach(id => {
+  ['ret-name','ret-gender','ret-age','ret-retire','ret-life','ret-expense','ret-prepared','ret-other-income','ret-return'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.oninput = el.onchange = syncAndRender; }
   });

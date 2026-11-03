@@ -48,7 +48,7 @@ function build(){
         </div>
         <div class="rp-keys">
             ${stat('退休後每月花費',fmt(RS.monthlyExpense))}
-            ${stat('已準備資產每月可提供',fmt(prepared),'元',RS.preparedAmount>0?`已準備 ${wan(RS.preparedAmount)} 萬，以 7% 換算`:'')}
+            ${stat('已準備資產每月可提供',fmt(prepared),'元',[RS.preparedAmount>0?`存款 ${wan(RS.preparedAmount)} 萬以 7% 換算`:'',RS.otherIncome>0?`確定現金流 ${fmt(RS.otherIncome)} 元`:''].filter(Boolean).join('＋'))}
             <div class="lp-stat rp-key-gap"><span>每月需要補足</span><b>${fmt(D.netMonthlyExpense)}<small>元</small></b><em>退休後每個月的現金流缺口</em></div>
         </div>`;
     html+=section('人生時間軸',timeline);
